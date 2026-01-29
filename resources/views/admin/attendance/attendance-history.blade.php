@@ -1,0 +1,187 @@
+<x-layouts.dash-admin active="attendances">
+    @include('components.language')
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="mb-4">
+            <a href="{{ route('classrooms.show', $classroom) }}"
+                class="text-decoration-none text-secondary d-inline-block mb-3">
+                <i class="bi bi-arrow-left mr-2"></i>@lang('general.back_to_classroom')
+            </a>
+            <h4 class="mb-0 text-primary fs-4">
+                <i class="bi bi-calendar-week mr-2"></i>@lang('general.attendance_history') - {{ $classroom->name }}
+            </h4>
+        </div>
+
+        <!-- Bộ lọc tháng/năm -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0 text-primary">
+                            <i class="bi bi-funnel mr-2"></i>@lang('general.filter_by_month')
+                        </h5>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
+                                @for ($month = 1; $month <= 12; $month++)
+                                    <option value="{{ $month }}">{{ $this->getMonthName($month) }}</option>
+                                @endfor
+                            </select>
+                            <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
+                                @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thống kê tổng quan -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title mb-0">@lang('general.total_students')</h6>
+                                <h3 class="mb-0">{{ $monthlyStats['total_students'] }}</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-people fs-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title mb-0">@lang('general.total_present')</h6>
+                                <h3 class="mb-0">{{ $monthlyStats['total_present'] }}</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-check-circle fs-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title mb-0">@lang('general.total_absent')</h6>
+                                <h3 class="mb-0">{{ $monthlyStats['total_absent'] }}</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-x-circle fs-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title mb-0">@lang('general.average_rate')</h6>
+                                <h3 class="mb-0">{{ $monthlyStats['average_rate'] }}%</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-percent fs-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng thống kê chi tiết -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0 text-primary">
+                    <i class="bi bi-table mr-2"></i>@lang('general.detailed_attendance_statistics') -
+                    {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (empty($attendanceHistory))
+                    <div class="text-center py-5">
+                        <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
+                        <h5 class="text-muted">@lang('general.no_attendance_data')</h5>
+                        <p class="text-muted">@lang('general.no_attendance_data_month', ['month' => $this->getMonthName($selectedMonth), 'year' => $selectedYear])</p>
+                    </div>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>@lang('general.student')</th>
+                                    <th class="text-center">@lang('general.total_count')</th>
+                                    <th class="text-center">@lang('general.present')</th>
+                                    <th class="text-center">@lang('general.absent')</th>
+                                    <th class="text-center">@lang('general.rate')</th>
+                                    <th class="text-center">@lang('general.status')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($attendanceHistory as $data)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm mr-3">
+                                                    <i class="bi bi-person-circle fs-4 text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-medium">{{ $data['student']->name }}</div>
+                                                    <small class="text-muted">{{ $data['student']->email }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-secondary">{{ $data['stats']['total_days'] }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-success">{{ $data['stats']['present_days'] }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-danger">{{ $data['stats']['absent_days'] }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($data['stats']['attendance_rate'] >= 90)
+                                                <span
+                                                    class="badge bg-success">{{ $data['stats']['attendance_rate'] }}%</span>
+                                            @elseif ($data['stats']['attendance_rate'] >= 70)
+                                                <span
+                                                    class="badge bg-warning">{{ $data['stats']['attendance_rate'] }}%</span>
+                                            @else
+                                                <span
+                                                    class="badge bg-danger">{{ $data['stats']['attendance_rate'] }}%</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($data['stats']['attendance_rate'] >= 90)
+                                                <span class="badge bg-success">@lang('general.good')</span>
+                                            @elseif ($data['stats']['attendance_rate'] >= 70)
+                                                <span class="badge bg-warning">@lang('general.fair')</span>
+                                            @else
+                                                <span class="badge bg-danger">@lang('general.needs_improvement')</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</x-layouts.dash-admin>
