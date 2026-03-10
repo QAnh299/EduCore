@@ -33,11 +33,11 @@
                     <div class="card-body p-sm-5">
                         <div class="text-center mb-4">
                             <div class="d-flex justify-content-center">
-                                <img src="/educore-logo.png" alt="Logo" style="width: 60px; height: 60px;">
+                                <img src="{{ asset('smash-logo.png') }}" alt="Logo" style="width: 80px; height: 80px;">
                             </div>
 
                             <h3 class="fw-bold mb-2" style="font-size: 2rem; font-weight: 700;">
-                                <span class="text-primary">Edu</span><span class="text-warning">Core</span>
+                                <span class="text-primary">Sma</span><span class="text-warning">sh</span>
                             </h3>
                             <p class="text-muted mb-4">{{ __('auth.login_subtitle') }}</p>
                         </div>

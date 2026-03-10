@@ -97,6 +97,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/grading', GradingList::class)->name('grading.list');
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
 
+     //Grade routes
+    Route::get('/admin/grade-entry', \App\Livewire\Admin\GradeEntry\Index::class)->name('grade-entry.index');
+    Route::get('/admin/grade-entry/{student}', \App\Livewire\Admin\GradeEntry\Show::class)->name('grade-entry.show');
+    Route::get('/admin/grade-entry/create/{student}',\App\Livewire\Admin\GradeEntry\Create::class)->name('grade-entry.create');
+    Route::get('/admin/grade-entry/edit/{grade}', \App\Livewire\Admin\GradeEntry\Edit::class)
+    ->name('grade-entry.edit');
+
+
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
     Route::get('/admin/chat/download/{messageId}', [\App\Livewire\Admin\Chat\Index::class, 'downloadAttachment'])->name('chat.download');
@@ -150,9 +158,22 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/assignments/{assignment}/edit', \App\Livewire\Teacher\Assignments\Edit::class)->name('assignments.edit');
     Route::get('/teacher/assignments/{assignment}', \App\Livewire\Teacher\Assignments\Show::class)->name('assignments.show');
 
-    // Grading routes
+    // Grading routes (bỏ)
     Route::get('/teacher/grading', \App\Livewire\Teacher\Grading\GradingList::class)->name('grading.index');
     Route::get('/teacher/grading/{assignment}', \App\Livewire\Teacher\Grading\GradeAssignment::class)->name('grading.grade-assignment');
+
+     //Grade entry routes
+    Route::get('/teacher/grade-entry', \App\Livewire\Teacher\GradeEntry\Index::class)
+    ->name('grade-entry-teacher.index');
+
+Route::get('/teacher/grade-entry/create/{student}', \App\Livewire\Teacher\GradeEntry\Create::class)
+    ->name('grade-entry-teacher.create');
+
+Route::get('/teacher/grade-entry/edit/{grade}', \App\Livewire\Teacher\GradeEntry\Edit::class)
+    ->name('grade-entry-teacher.edit');
+
+Route::get('/teacher/grade-entry/{student}', \App\Livewire\Teacher\GradeEntry\Show::class)
+    ->name('grade-entry-teacher.show');
 
     // Lessons routes
     Route::get('/teacher/lessons', \App\Livewire\Teacher\Lessons\Index::class)->name('lessons.index');
@@ -213,6 +234,8 @@ Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefi
     Route::get('/notifications', StudentNotificationsIndex::class)->name('notifications.index');
     // Kết quả học tập
     Route::get('/reports', \App\Livewire\Student\Reports\Index::class)->name('reports.index');
+    //điểm
+    Route::get('/grade', \App\Livewire\Student\Grade\Index::class)->name('grade.index');
     // Lịch học
     Route::get('/schedules', \App\Livewire\Student\Schedules\Index::class)->name('schedules');
     Route::get('/chat', App\Livewire\Student\Chat\Index::class)->name('chat.index');

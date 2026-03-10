@@ -41,7 +41,7 @@ class TransactionList extends Component
                 'note' => $e->note,
             ];
         });
-        $this->transactions = $payments->concat($expenses)->sortByDesc('created_at')->values();
+        $this->transactions = $payments->concat($expenses)->sortByDesc('created_at')->values()->toArray();
     }
 
     public function render()

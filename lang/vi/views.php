@@ -2,8 +2,8 @@
 
 return [
     // Common
-    'educore' => 'EduCore',
-    'copyright' => '© 2025 Trung tâm Hanxian Kim Bảng Hà Nam - Powered by EduCore',
+    'educore' => 'Smash',
+    'copyright' => '© 2025 Trung tâm toán học Smash - Powered by Smash',
     'notifications' => 'Thông báo',
     'unread' => 'chưa đọc',
     'no_notifications' => 'Không có thông báo mới',

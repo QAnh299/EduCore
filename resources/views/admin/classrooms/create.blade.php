@@ -206,18 +206,14 @@
                                 <select wire:model="level" class="form-control @error('level') is-invalid @enderror"
                                     id="level">
                                     <option value="">{{ __('general.choose_level') }}</option>
-                                    <option value="HSK1">{{ __('general.hsk1') }}</option>
-                                    <option value="HSK2">{{ __('general.hsk2') }}</option>
-                                    <option value="HSK3">{{ __('general.hsk3') }}</option>
-                                    <option value="HSK4">{{ __('general.hsk4') }}</option>
-                                    <option value="HSK5">{{ __('general.hsk5') }}</option>
-                                    <option value="HSK6">{{ __('general.hsk6') }}</option>
-                                    <option value="Sơ cấp 1">{{ __('general.basic1') }}</option>
-                                    <option value="Sơ cấp 2">{{ __('general.basic2') }}</option>
-                                    <option value="Trung cấp 1">{{ __('general.intermediate1') }}</option>
-                                    <option value="Trung cấp 2">{{ __('general.intermediate2') }}</option>
-                                    <option value="Cao cấp 1">{{ __('general.advanced1') }}</option>
-                                    <option value="Cao cấp 2">{{ __('general.advanced2') }}</option>
+                                    <option value="Toán lớp 6">Lớp 6A</option>
+                                    <option value="Toán lớp 6">Lớp 6B</option>
+                                    <option value="Toán lớp 7">Lớp 7A</option>
+                                    <option value="Toán lớp 7">Lớp 7B</option>
+                                    <option value="Toán lớp 8">Lớp 8A</option>
+                                    <option value="Toán lớp 8">Lớp 8B</option>
+                                    <option value="Toán lớp 9">Lớp 9A</option>
+                                    <option value="Toán lớp 9">Lớp 9B</option>
                                 </select>
                                 @error('level')
                                     <div class="invalid-feedback">{{ $message }}</div>

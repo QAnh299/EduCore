@@ -37,12 +37,13 @@
             'visible' => true,
         ],
         [
-            'key' => 'grading',
-            'label' => __('general.grading'),
-            'route' => route('grading.list'),
-            'icon' => 'fas fa-check-circle',
+            'key' => 'grade-entry',
+            'label' => 'Nhập điểm',
+            'route' => route('grade-entry.index'),
+            'icon' => 'fas fa-pen',
             'visible' => true,
         ],
+
         [
             'key' => 'quizzes',
             'label' => __('general.quizzes'),

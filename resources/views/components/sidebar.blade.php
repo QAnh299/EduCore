@@ -1,6 +1,6 @@
 @props([
     'active' => null,
-    'brandLogo' => asset('educore-logo.png'),
+    'brandLogo' => asset('smash-logo.png'),
     'brandText' => __('general.app_name'),
     'brandUrl' => '/',
     'menuItems' => [],
@@ -11,7 +11,7 @@
 <aside class="main-sidebar {{ $darkMode ? 'sidebar-dark-primary' : 'sidebar-light-primary' }} elevation-4">
     <!-- Brand Logo -->
     <a href="{{ $brandUrl }}" class="brand-link d-flex align-items-center">
-        <img src="{{ $brandLogo }}" alt="Brand Logo" class="brand-image mr-2" style="max-height: 33px;">
+        <img src="{{ $brandLogo }}" alt="Brand Logo" class="brand-image mr-2" style="width: 40px; max-height: 60px;">
         <span class="brand-text font-weight-light">{{ $brandText }}</span>
     </a>
 

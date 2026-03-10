@@ -30,6 +30,13 @@
             'visible' => true,
         ],
         [
+            'key' => 'grade',
+            'label' => 'Điểm',
+            'route' => route('student.grade.index'),
+            'icon' => 'bi bi-pen',
+            'visible' => true,
+        ],
+        [
             'key' => 'schedules',
             'label' => __('general.schedules'),
             'route' => route('student.schedules'),

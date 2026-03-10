@@ -51,10 +51,10 @@
             'visible' => true,
         ],
         [
-            'key' => 'grading',
-            'label' => __('general.grading'),
-            'route' => route('teacher.grading.index'),
-            'icon' => 'bi bi-journal-check',
+            'key' => 'grade-entry',
+            'label' => 'Nhập điểm',
+            'route' => route('teacher.grade-entry-teacher.index'),
+            'icon' => 'fas fa-pen',
             'visible' => true,
         ],
         [
