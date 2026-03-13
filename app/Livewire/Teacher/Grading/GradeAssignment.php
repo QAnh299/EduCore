@@ -3,7 +3,7 @@
 namespace App\Livewire\Teacher\Grading;
 
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
+//use App\Models\AssignmentSubmission;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -105,7 +105,7 @@ class GradeAssignment extends Component
             $submission->save();
 
             // Lưu thành công: quay về trang danh sách chấm điểm
-            return redirect()->route('teacher.grading.index')
+            return redirect()->route('#')
                 ->with('success', 'Đã lưu điểm và nhận xét!');
         } else {
             return redirect()->route('teacher.grading.grade-assignment', $this->assignmentId)

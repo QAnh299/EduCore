@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Grading;
 
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use Livewire\Component;
 
 class GradeAssignment extends Component
@@ -24,7 +24,8 @@ class GradeAssignment extends Component
     {
         $this->assignmentId = $assignment;
         $this->assignment = Assignment::with('classroom')->findOrFail($assignment);
-        $this->submissions = AssignmentSubmission::where('assignment_id', $assignment)
+        $this->submissions = Grade::where('assignment_id', $assignment)
+            ->where('grade_type', 'homework')
             ->with(['student.user'])
             ->get();
         foreach ($this->submissions as $submission) {
@@ -37,7 +38,7 @@ class GradeAssignment extends Component
 
     public function viewSubmission($submissionId)
     {
-        $this->selectedSubmission = AssignmentSubmission::with(['student.user', 'assignment'])
+        $this->selectedSubmission = Grade::with(['student.user', 'assignment'])
             ->find($submissionId);
         $this->showModal = true;
     }
@@ -93,7 +94,7 @@ class GradeAssignment extends Component
             $score = null;
         }
 
-        $submission = AssignmentSubmission::find($submissionId);
+        $submission = Grade::find($submissionId);
         if ($submission) {
             $submission->score = $score;
             $submission->feedback = $feedback;
@@ -102,7 +103,8 @@ class GradeAssignment extends Component
         }
 
         // Làm mới submissions để cập nhật giao diện
-        $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)
+        $this->submissions = Grade::where('assignment_id', $this->assignmentId)
+            ->where('grade_type', 'homework')
             ->with(['student.user'])
             ->get();
     }

@@ -100,13 +100,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($assignmentSubmissionsPaginated as $submission)
+                                        @forelse($homeworkGradesPaginated as $grade)
                                             <tr>
-                                                <td>{{ $submission->assignment->title ?? '-' }}</td>
-                                                <td>{{ $submission->assignment->classroom->name ?? '-' }}</td>
-                                                <td>{{ $submission->score ?? '-' }}</td>
-                                                <td>{{ $submission->feedback ?? '-' }}</td>
-                                                <td>{{ $submission->submitted_at ? $submission->submitted_at->format('d/m/Y H:i') : '-' }}
+                                                <td>{{ $grade->assignment->title ?? '-' }}</td>
+                                                <td>{{ $grade->assignment->title ?? '-' }}</td>
+                                                <td>{{ $grade->score ?? '-' }}</td>
+                                                <td>{{ $grade->feedback ?? '-' }}</td>
+                                                <td>{{ $grade->created_at ? $grade->created_at->format('d/m/Y H:i') : '-' }}
                                                 </td>
                                             </tr>
                                         @empty
@@ -119,7 +119,7 @@
                                 </table>
                             </div>
                             <div class="p-3">
-                                {{ $assignmentSubmissionsPaginated->links() }}
+                                {{ $homeworkGradesPaginated->links() }}
                             </div>
                         @elseif ($activeTab === 'quizzes')
                             <div class="table-responsive">

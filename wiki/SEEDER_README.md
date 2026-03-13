@@ -60,13 +60,13 @@ Dự án EduCore đã được tích hợp đầy đủ các seeder để tạo 
     -   Nội dung tiếng Việt và tiếng Trung
     -   Độ khó: easy, medium, hard
 
-### 7. AssignmentSubmissionSeeder
+### 7. GradeSeeder
 
--   **Chức năng**: Tạo bài nộp của học viên
+-   **Chức năng**: Tạo điểm cho học viên
 -   **Dữ liệu tạo**:
-    -   Bài nộp cho 70-90% học viên
+    -   Tạo điểm bài tập (homework) cho học viên cho 70-90% học viên
     -   Điểm số và ghi chú của giáo viên
-    -   File đính kèm (có thể null)
+    -   liên kết với assignment
 
 ### 8. QuizResultSeeder
 

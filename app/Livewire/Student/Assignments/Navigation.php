@@ -3,7 +3,7 @@
 namespace App\Livewire\Student\Assignments;
 
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -83,15 +83,21 @@ class Navigation extends Component
         }
 
         // Đã nộp của lớp chưa kết thúc
-        $active = AssignmentSubmission::where('student_id', $student->id)
-            ->whereHas('assignment.classroom', function ($q) {
+        $active = Grade::where('student_id', $student->id)
+            ->where('grade_type', 'homework')
+            ->whereHas('classroom', function ($q) {
                 $q->where('status', '!=', 'completed');
-            })->count();
+            })
+        ->distinct('assignment_id')
+        ->count('assignment_id');
         // Đã nộp của lớp đã kết thúc
-        $completed = AssignmentSubmission::where('student_id', $student->id)
-            ->whereHas('assignment.classroom', function ($q) {
+        $completed = Grade::where('student_id', $student->id)
+            ->where('grade_type', 'homework')
+            ->whereHas('classroom', function ($q) {
                 $q->where('status', 'completed');
-            })->count();
+            })
+        ->distinct('assignment_id')
+        ->count('assignment_id');
 
         return $active + $completed;
     }

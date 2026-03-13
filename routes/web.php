@@ -94,8 +94,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/assignments/create', \App\Livewire\Admin\Assignments\Create::class)->name('assignments.create');
     Route::get('/admin/assignments/{assignmentId}', \App\Livewire\Admin\Assignments\Show::class)->name('assignments.show');
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
-    Route::get('/admin/grading', GradingList::class)->name('grading.list');
-    Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
+    //Route::get('/admin/grading', GradingList::class)->name('grading.list');
+    //Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
 
      //Grade routes
     Route::get('/admin/grade-entry', \App\Livewire\Admin\GradeEntry\Index::class)->name('grade-entry.index');
@@ -134,10 +134,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement\Index::class)->name('evaluation-management');
 
     // AI routes
-    Route::get('/admin/ai', \App\Livewire\Admin\AI\Index::class)->name('ai.index');
-    Route::get('/admin/ai/grading/{submissionId}', \App\Livewire\Admin\AI\AIGrading::class)->name('ai.grading');
-    Route::get('/admin/ai/quiz-generator', \App\Livewire\Admin\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
-    Route::get('/admin/ai/question-bank-generator', \App\Livewire\Admin\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
+    //Route::get('/admin/ai', \App\Livewire\Admin\AI\Index::class)->name('ai.index');
+    //Route::get('/admin/ai/grading/{submissionId}', \App\Livewire\Admin\AI\AIGrading::class)->name('ai.grading');
+    //Route::get('/admin/ai/quiz-generator', \App\Livewire\Admin\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    //Route::get('/admin/ai/question-bank-generator', \App\Livewire\Admin\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Teacher routes
@@ -159,8 +159,8 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/assignments/{assignment}', \App\Livewire\Teacher\Assignments\Show::class)->name('assignments.show');
 
     // Grading routes (bỏ)
-    Route::get('/teacher/grading', \App\Livewire\Teacher\Grading\GradingList::class)->name('grading.index');
-    Route::get('/teacher/grading/{assignment}', \App\Livewire\Teacher\Grading\GradeAssignment::class)->name('grading.grade-assignment');
+    //Route::get('/teacher/grading', \App\Livewire\Teacher\Grading\GradingList::class)->name('grading.index');
+    //Route::get('/teacher/grading/{assignment}', \App\Livewire\Teacher\Grading\GradeAssignment::class)->name('grading.grade-assignment');
 
      //Grade entry routes
     Route::get('/teacher/grade-entry', \App\Livewire\Teacher\GradeEntry\Index::class)
@@ -199,10 +199,10 @@ Route::get('/teacher/grade-entry/{student}', \App\Livewire\Teacher\GradeEntry\Sh
     Route::get('/teacher/chat/test', \App\Livewire\Teacher\Chat\Test::class)->name('chat.test');
 
     // AI routes
-    Route::get('/teacher/ai', \App\Livewire\Teacher\AI\Index::class)->name('ai.index');
-    Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
-    Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
-    Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
+    //Route::get('/teacher/ai', \App\Livewire\Teacher\AI\Index::class)->name('ai.index');
+    //Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
+    //Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    //Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 
     // Báo cáo - Reports cho giáo viên
     Route::get('/teacher/reports', \App\Livewire\Teacher\Reports\Index::class)->name('reports.index');
@@ -211,10 +211,10 @@ Route::get('/teacher/grade-entry/{student}', \App\Livewire\Teacher\GradeEntry\Sh
     Route::get('/teacher/evaluations', \App\Livewire\Teacher\EvaluationReport::class)->name('evaluations.report');
 
     // AI routes
-    Route::get('/teacher/ai', \App\Livewire\Teacher\AI\Index::class)->name('ai.index');
-    Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
-    Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
-    Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
+    //Route::get('/teacher/ai', \App\Livewire\Teacher\AI\Index::class)->name('ai.index');
+    //Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
+    //Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    //Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Student routes

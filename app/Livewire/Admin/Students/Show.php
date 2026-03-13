@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Students;
 
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use App\Models\Attendance;
 use App\Models\QuizResult;
 use App\Models\User;
@@ -55,12 +55,11 @@ class Show extends Component
             ? round($quizResults->avg('score'), 2)
             : 0;
 
-        // Tính số bài tập đã hoàn thành
-        $this->completedAssignments = AssignmentSubmission::where('student_id', $studentId)
-            ->whereHas('assignment', function ($query) use ($classIds) {
-                $query->whereIn('class_id', $classIds);
-            })
-            ->whereNotNull('score')
+        // Tính số bài tập đã hoàn thành thông qua điểm
+        $this->completedAssignments = Grade::where('student_id', $studentId)
+            ->whereIn('class_id', $classIds)
+            ->where('grade_type', 'homework')
+            -whereNotNull('score')
             ->count();
 
         // Tính tỷ lệ điểm danh

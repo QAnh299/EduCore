@@ -54,7 +54,8 @@ class DatabaseSeeder extends Seeder
             QuestionBankSeeder::class,
 
             // 10. Tạo assignment submissions
-            AssignmentSubmissionSeeder::class,
+            //AssignmentSubmissionSeeder::class,
+            GradeSeeder::class,
 
             // 11. Tạo quiz results
             QuizResultSeeder::class,

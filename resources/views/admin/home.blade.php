@@ -136,7 +136,7 @@
                         </div>
                         <!-- Chấm bài -->
                         <div class="col-6 col-md-3 text-center mb-4">
-                            <a href="{{ route('grading.list') }}" class="text-decoration-none text-dark">
+                            <a href="#" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-check-circle" style="font-size:2.5rem; color:#6f42c1;"></i>
                                 </div>
@@ -206,15 +206,15 @@
                                 <div>@lang('general.chat')</div>
                             </a>
                         </div>
-                        <!-- AI -->
+                        <!-- AI
                         <div class="col-6 col-md-3 text-center mb-4">
-                            <a href="{{ route('ai.index') }}" class="text-decoration-none text-dark">
+                            
                                 <div class="mb-2">
                                     <i class="fas fa-robot" style="font-size:2.5rem; color:#0d6efd;"></i>
                                 </div>
                                 <div>@lang('general.ai_assistant')</div>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -297,9 +297,20 @@
                     if (!el) return;
                     const ctx = el.getContext('2d');
 
-                    const present = {{ (int) ($attendanceStatusCounts['present'] ?? 0) }};
-                    const absent = {{ (int) ($attendanceStatusCounts['absent'] ?? 0) }};
-                    const late = {{ (int) ($attendanceStatusCounts['late'] ?? 0) }};
+                    //tạm bỏ 3 dòng dưới
+                    //const present = {{ (int) ($attendanceStatusCounts['present'] ?? 0) }};
+                    //const absent = {{ (int) ($attendanceStatusCounts['absent'] ?? 0) }};
+                    //const late = {{ (int) ($attendanceStatusCounts['late'] ?? 0) }};
+
+                    //thay 3 dòng trên bằng
+                    const dataFromBlade = @js([
+                        'present' => (int) ($attendanceStatusCounts['present'] ?? 0),
+                        'absent' => (int) ($attendanceStatusCounts['absent'] ?? 0),
+                        'late' => (int) ($attendanceStatusCounts['late'] ?? 0),
+                    ]);
+                    const present = dataFromBlade.present;
+                    const absent  = dataFromBlade.absent;
+                    const late    = dataFromBlade.late;
 
                     // Tháng/Năm đang chọn (nếu có) hoặc mặc định tháng/năm hiện tại
                     const selectedMonth = {{ (int) ($selectedMonth ?? now()->month) }};
@@ -315,7 +326,16 @@
 
                     // Nếu không có dữ liệu, hiển thị lát cắt xám "Chưa có dữ liệu MM/YYYY"
                     const total = present + absent + late;
-                    let labels = ['{{ __('general.present') }}', '{{ __('general.absent') }}'];
+                    //thay dòng let labels bên dưới bằng
+                    //let labels = ['{{ __('general.present') }}', '{{ __('general.absent') }}'];
+                    'presentLabel' => __('general.present'),
+                    'absentLabel'  => __('general.absent'),
+                    'lateLabel'    => __('general.late'),
+                    labels = [
+                        dataFromBlade.presentLabel,
+                        dataFromBlade.absentLabel,
+                        dataFromBlade.lateLabel
+                    ];
                     let data = [present, absent];
                     let backgroundColor = ['#28a745', '#dc3545', '#ffc107'];
 
@@ -359,10 +379,14 @@
 
                 // Re-render after Livewire updates the DOM
                 document.addEventListener('livewire:load', function() {
-                    if (window.Livewire) {
+                    /*if (window.Livewire) {
                         window.Livewire.hook('message.processed', function() {
                             init();
                         });
+                    }*/
+                   if (window.Livewire) {
+                        window.Livewire.hook('message.processed', init);
+                        window.Livewire.hook('morph.updated', init);
                     }
                 });
                 if (window.Livewire && window.Livewire.hook) {

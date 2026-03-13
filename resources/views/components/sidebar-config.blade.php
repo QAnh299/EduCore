@@ -87,13 +87,6 @@
             'visible' => true,
         ],
         [
-            'key' => 'ai',
-            'label' => __('general.ai_assistant'),
-            'route' => route('ai.index'),
-            'icon' => 'fas fa-robot',
-            'visible' => true,
-        ],
-        [
             'key' => 'notifications',
             'label' => __('general.notifications'),
             'route' => route('notifications.index'),

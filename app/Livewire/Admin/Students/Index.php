@@ -163,12 +163,11 @@ class Index extends Component
             : 0;
 
         // Tính số bài tập đã hoàn thành
-        $completedAssignments = \App\Models\AssignmentSubmission::where('student_id', $studentId)
-            ->whereHas('assignment', function ($query) use ($classIds) {
-                $query->whereIn('class_id', $classIds);
-            })
-            ->whereNotNull('score')
-            ->count();
+        $completedAssignments = \App\Models\Grade::where('student_id', $studentId)
+    ->whereIn('class_id', $classIds)
+    ->where('grade_type', 'homework')
+    ->whereNotNull('score')
+    ->count();
 
         // Tính tỷ lệ điểm danh
         $totalAttendanceDays = \App\Models\Attendance::where('student_id', $studentId)

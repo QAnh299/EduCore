@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Student\Reports;
 
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use App\Models\Attendance;
 use App\Models\QuizResult;
 use Illuminate\Support\Facades\Auth;
@@ -48,10 +48,11 @@ class Index extends Component
         $student = $user->studentProfile;
 
         if ($student) {
-            $this->assignmentSubmissions = AssignmentSubmission::with(['assignment.classroom'])
-                ->where('student_id', $student->id)
-                ->orderByDesc('submitted_at')
-                ->get();
+            $this->assignmentSubmissions = Grade::with(['assignment.classroom'])
+    ->where('student_id', $student->id)
+    ->where('grade_type', 'homework')
+    ->orderByDesc('created_at')
+    ->get();
             $this->quizResults = QuizResult::with(['quiz.classroom'])
                 ->where('student_id', $student->id)
                 ->orderByDesc('submitted_at')
@@ -105,10 +106,11 @@ class Index extends Component
         }
 
         if ($student) {
-            $assignmentSubmissionsPaginated = AssignmentSubmission::with(['assignment.classroom'])
-                ->where('student_id', $student->id)
-                ->orderByDesc('submitted_at')
-                ->paginate($this->perPageAssignments, ['*'], 'asPage');
+            $assignmentSubmissionsPaginated = Grade::with(['assignment.classroom'])
+    ->where('student_id', $student->id)
+    ->where('grade_type', 'homework')
+    ->orderByDesc('created_at')
+    ->paginate($this->perPageAssignments, ['*'], 'asPage');
 
             $quizResultsPaginated = QuizResult::with(['quiz.classroom'])
                 ->where('student_id', $student->id)
@@ -121,15 +123,19 @@ class Index extends Component
                 ->paginate($this->perPageAttendances, ['*'], 'atPage');
         } else {
             // Nếu không có student record, tạo empty paginator với 0 items
-            $assignmentSubmissionsPaginated = AssignmentSubmission::query()->whereRaw('1 = 0')->paginate(1, ['*'], 'asPage');
+            $assignmentSubmissionsPaginated = Grade::query()->whereRaw('1 = 0')->paginate(1, ['*'], 'asPage');
             $quizResultsPaginated = QuizResult::query()->whereRaw('1 = 0')->paginate(1, ['*'], 'qrPage');
             $attendancesPaginated = Attendance::query()->whereRaw('1 = 0')->paginate(1, ['*'], 'atPage');
         }
-
+        $homeworkGradesPaginated = Grade::with('assignment')
+        ->where('student_id', Auth::id())
+        ->latest()
+        ->paginate(10);
         return view('student.reports.index', [
             'assignmentSubmissionsPaginated' => $assignmentSubmissionsPaginated,
             'quizResultsPaginated' => $quizResultsPaginated,
             'attendancesPaginated' => $attendancesPaginated,
+            'homeworkGradesPaginated' => $homeworkGradesPaginated,
         ]);
     }
 }

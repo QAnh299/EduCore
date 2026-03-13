@@ -58,13 +58,6 @@
             'visible' => true,
         ],
         [
-            'key' => 'ai',
-            'label' => __('general.ai_assistant'),
-            'route' => route('teacher.ai.index'),
-            'icon' => 'bi bi-robot',
-            'visible' => true,
-        ],
-        [
             'key' => 'notifications',
             'label' => __('general.notifications'),
             'route' => route('teacher.notifications.index'),

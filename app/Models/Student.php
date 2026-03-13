@@ -49,10 +49,11 @@ class Student extends Model
         return $this->user->enrolledClassrooms;
     }
 
-    public function assignmentSubmissions(): HasMany
-    {
-        return $this->hasMany(AssignmentSubmission::class, 'student_id');
-    }
+    public function homeworkGrades(): HasMany
+{
+    return $this->hasMany(Grade::class, 'student_id')
+        ->where('grade_type', 'homework');
+}
 
     public function evaluations(): HasMany
     {

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Student\Assignments;
 
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -54,10 +54,14 @@ class MySubmissions extends Component
         if (! $student) {
             return collect();
         }
+        //bỏ
 
-        $query = AssignmentSubmission::where('student_id', $student->id)
-            ->with(['assignment.classroom.teachers', 'assignment']);
-
+        //$query = AssignmentSubmission::where('student_id', $student->id)
+           // ->with(['assignment.classroom.teachers', 'assignment']); 
+        $query = Grade::where('student_id', $student->id)
+            ->where('grade_type', 'homework')
+            ->whereNotNull('score')
+            ->with(['classroom.teachers', 'assignment']);
         // Filter by status
         if ($this->filterGraded === 'graded') {
             $query->whereNotNull('score');
@@ -97,36 +101,55 @@ class MySubmissions extends Component
     }
 
     public function getTotalSubmissionsProperty()
-    {
-        $student = Auth::user()->student;
-        if (! $student) {
-            return 0;
-        }
+{
+    $student = Auth::user()->student;
 
-        return AssignmentSubmission::where('student_id', $student->id)->count();
+    if (!$student) {
+        return 0;
     }
+
+    return Grade::where('student_id', $student->id)
+        ->where('grade_type', 'homework')
+        ->distinct('assignment_id')
+        ->count('assignment_id');
+}
 
     public function getGradedSubmissionsProperty()
-    {
-        $student = Auth::user()->student;
-        if (! $student) {
-            return 0;
-        }
+{
+    $student = Auth::user()->student;
 
-        return AssignmentSubmission::where('student_id', $student->id)
-            ->whereNotNull('score')->count();
+    if (!$student) {
+        return 0;
     }
+
+    return Grade::where('student_id', $student->id)
+        ->where('grade_type', 'homework')
+        ->distinct('assignment_id')
+        ->count('assignment_id');
+}
 
     public function getUngradedSubmissionsProperty()
-    {
-        $student = Auth::user()->student;
-        if (! $student) {
-            return 0;
-        }
+{
+    $student = Auth::user()->student;
 
-        return AssignmentSubmission::where('student_id', $student->id)
-            ->whereNull('score')->count();
+    if (!$student) {
+        return 0;
     }
+
+    // tổng bài tập được giao trong lớp
+    $totalAssignments = Assignment::whereIn(
+        'class_id',
+        $student->classes->pluck('id')
+    )->count();
+
+    // số bài đã chấm
+    $graded = Grade::where('student_id', $student->id)
+        ->where('grade_type', 'homework')
+        ->distinct('assignment_id')
+        ->count('assignment_id');
+
+    return $totalAssignments - $graded;
+}
 
     public function getAverageScoreProperty()
     {

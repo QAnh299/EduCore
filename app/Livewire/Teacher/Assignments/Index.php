@@ -3,7 +3,8 @@
 namespace App\Livewire\Teacher\Assignments;
 
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
+//use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use App\Models\Classroom;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
@@ -55,58 +56,90 @@ class Index extends Component
     }
 
     public function loadStats()
-    {
-        $month = $this->selectedMonth;
-        $year = $this->selectedYear;
-        $user = Auth::user();
-        $query = Assignment::query();
-        if ($user->role === 'teacher') {
-            $classIds = collect($this->classrooms)->pluck('id');
-            $query->whereIn('class_id', $classIds);
-        }
-        $assignments = $query->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
-        $assignmentIds = $assignments->pluck('id');
-        $submissions = AssignmentSubmission::whereIn('assignment_id', $assignmentIds)->get();
-        $totalAssignments = $assignments->count();
-        $totalClasses = $assignments->pluck('class_id')->unique()->count();
-        $totalSubmissions = $submissions->count();
-        $onTimeSubmissions = $submissions->filter(function ($s) {
-            return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
-        })->count();
-        $submissionRate = $totalAssignments > 0 ? round($totalSubmissions / $totalAssignments * 100, 1) : 0;
-        $onTimeRate = $totalSubmissions > 0 ? round($onTimeSubmissions / $totalSubmissions * 100, 1) : 0;
-        $this->overviewStats = [
-            'total_assignments' => $totalAssignments,
-            'total_classes' => $totalClasses,
-            'total_submissions' => $totalSubmissions,
-            'submission_rate' => $submissionRate,
-            'on_time_rate' => $onTimeRate,
-        ];
-        // Top lớp nhiều bài tập nhất
-        $this->topClasses = $assignments->groupBy('class_id')->map(function ($items, $classId) {
-            return [
-                'classroom' => Classroom::find($classId),
-                'total_assignments' => $items->count(),
-            ];
-        })->sortByDesc('total_assignments')->take(5);
-        // Bài tập gần đây
-        $this->recentAssignments = $assignments->sortByDesc('created_at')->take(10);
-        // Top học viên nộp bài đúng hạn
-        $studentStats = $submissions->groupBy('student_id')->map(function ($subs, $studentId) {
-            $onTime = $subs->filter(function ($s) {
-                return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
-            })->count();
+{
+    $month = $this->selectedMonth;
+    $year = $this->selectedYear;
+    $user = Auth::user();
 
-            return [
-                'student' => Student::find($studentId)->user,
-                'total_submissions' => $subs->count(),
-                'on_time' => $onTime,
-                'on_time_rate' => $subs->count() > 0 ? round($onTime / $subs->count() * 100, 1) : 0,
-            ];
-        })->sortByDesc('on_time_rate')->take(5);
-        $this->topStudents = $studentStats;
+    $query = Assignment::query();
+
+    if ($user->role === 'teacher') {
+        $classIds = collect($this->classrooms)->pluck('id');
+        $query->whereIn('class_id', $classIds);
     }
 
+    $assignments = $query->whereYear('created_at', $year)
+        ->whereMonth('created_at', $month)
+        ->get();
+
+    $assignmentIds = $assignments->pluck('id');
+
+    // Lấy dữ liệu từ bảng grades
+    $grades = Grade::whereIn('assignment_id', $assignmentIds)
+        ->where('grade_type', 'homework')
+        ->get();
+
+    $totalAssignments = $assignments->count();
+    $totalClasses = $assignments->pluck('class_id')->unique()->count();
+
+    $totalSubmissions = $grades->count();
+
+    // Vì bảng grades không có submitted_at nên coi có grade = đã nộp
+    $onTimeSubmissions = $grades->filter(function ($g) {
+        return $g->assignment && $g->assignment->deadline &&
+               $g->created_at <= $g->assignment->deadline;
+    })->count();
+
+    $submissionRate = $totalAssignments > 0
+        ? round($totalSubmissions / $totalAssignments * 100, 1)
+        : 0;
+
+    $onTimeRate = $totalSubmissions > 0
+        ? round($onTimeSubmissions / $totalSubmissions * 100, 1)
+        : 0;
+
+    $this->overviewStats = [
+        'total_assignments' => $totalAssignments,
+        'total_classes' => $totalClasses,
+        'total_submissions' => $totalSubmissions,
+        'submission_rate' => $submissionRate,
+        'on_time_rate' => $onTimeRate,
+    ];
+
+    // Top lớp nhiều bài tập
+    $this->topClasses = $assignments->groupBy('class_id')->map(function ($items, $classId) {
+        return [
+            'classroom' => Classroom::find($classId),
+            'total_assignments' => $items->count(),
+        ];
+    })->sortByDesc('total_assignments')->take(5);
+
+    // Bài tập gần đây
+    $this->recentAssignments = $assignments->sortByDesc('created_at')->take(10);
+
+    // Top học viên nộp bài đúng hạn
+    $studentStats = $grades->groupBy('student_id')->map(function ($items, $studentId) {
+
+        $onTime = $items->filter(function ($g) {
+            return $g->assignment && $g->assignment->deadline &&
+                   $g->created_at <= $g->assignment->deadline;
+        })->count();
+
+        $student = Student::find($studentId);
+
+        return [
+            'student' => $student ? $student->user : null,
+            'total_submissions' => $items->count(),
+            'on_time' => $onTime,
+            'on_time_rate' => $items->count() > 0
+                ? round($onTime / $items->count() * 100, 1)
+                : 0,
+        ];
+
+    })->sortByDesc('on_time_rate')->take(5);
+
+    $this->topStudents = $studentStats;
+}
     public function clearFilters()
     {
         $this->search = '';

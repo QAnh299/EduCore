@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Models\Grade;
 
 class Index extends Component
 {
@@ -59,9 +60,12 @@ class Index extends Component
                     continue;
                 }
                 $assignments = Assignment::where('class_id', $class->id)->get();
-                $submissions = $student->assignmentSubmissions->filter(function ($sub) use ($class) {
-                    return $sub->assignment && $sub->assignment->class_id == $class->id;
-                });
+                $submissions = Grade::where('student_id', $student->id)
+            ->whereIn('class_id', $classIds)
+            ->where('grade_type', 'homework')
+            ->whereNotNull('assignment_id')
+            ->distinct()
+            ->count('assignment_id');
                 $attendanceCount = Attendance::where('student_id', $student->id)
                     ->where('class_id', $class->id)
                     ->where('present', true)->count();
@@ -78,9 +82,12 @@ class Index extends Component
                     continue;
                 }
                 $assignments = Assignment::whereIn('class_id', $studentClassIds)->get();
-                $submissions = $student->assignmentSubmissions->filter(function ($sub) use ($studentClassIds) {
-                    return $sub->assignment && in_array($sub->assignment->class_id, $studentClassIds->toArray());
-                });
+                $submissions = Grade::where('student_id', $student->id)
+            ->whereIn('class_id', $classIds)
+            ->where('grade_type', 'homework')
+            ->whereNotNull('assignment_id')
+            ->distinct()
+            ->count('assignment_id');
                 $attendanceCount = Attendance::where('student_id', $student->id)
                     ->whereIn('class_id', $studentClassIds)
                     ->where('present', true)->count();
@@ -94,7 +101,7 @@ class Index extends Component
                 $progress = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
             }
             $avgScore = $quizResults->avg('score') ?? 0;
-            $submitRate = $assignments->count() > 0
+            $submitRate = $assignments > 0
                 ? round($submissions->count() / $assignments->count() * 100)
                 : 0;
             $needSupport = $avgScore < 5 || $submitRate < 60 || $progress < 60;

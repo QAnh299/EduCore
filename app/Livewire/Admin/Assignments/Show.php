@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Assignments;
 
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use Livewire\Component;
 
 class Show extends Component
@@ -25,7 +25,10 @@ class Show extends Component
         $this->assignmentId = $assignmentId;
         $this->assignment = Assignment::with('classroom')->findOrFail($assignmentId);
         $this->classroom = $this->assignment->classroom;
-        $this->submissions = AssignmentSubmission::where('assignment_id', $assignmentId)->with(['student.user'])->get();
+        $this->submissions = Grade::where('assignment_id', $assignmentId)
+            ->where('grade_type', 'homework')
+            ->with(['student.user'])
+            ->get();
         $this->students = $this->classroom ? $this->classroom->students : collect();
     }
 
@@ -80,7 +83,7 @@ class Show extends Component
         }
 
         try {
-            $submission = AssignmentSubmission::find($submissionId);
+            $submission = Grade::find($submissionId);
             if ($submission) {
                 $submission->score = $score;
                 $submission->feedback = $feedback;
@@ -88,7 +91,10 @@ class Show extends Component
                 session()->flash('success', 'Đã lưu điểm và nhận xét!');
             }
             // Làm mới submissions để cập nhật giao diện
-            $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)->with(['student'])->get();
+            $this->submissions = Grade::where('assignment_id', $this->assignmentId)
+           ->where('grade_type', 'homework')
+           ->with(['student'])
+           ->get();
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra khi lưu điểm: '.$e->getMessage());
         }

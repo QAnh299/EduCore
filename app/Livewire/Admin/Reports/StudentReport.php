@@ -28,12 +28,21 @@ class StudentReport extends Component
 
     public function mount($student)
     {
-        $this->student = Student::with(['user', 'classrooms', 'assignmentSubmissions', 'quizResults'])->findOrFail($student);
-        $this->classNames = $this->student->classrooms->pluck('name')->toArray();
-        $assignments = \App\Models\Assignment::whereIn('class_id', $this->student->classrooms->pluck('id'))->get();
-        $submissions = $this->student->assignmentSubmissions->filter(function ($sub) {
-            return $sub->assignment && in_array($sub->assignment->class_id, $this->student->classrooms->pluck('id')->toArray());
-        });
+        $this->student = Student::with(['user', 'classrooms', 'quizResults'])
+    ->findOrFail($student);
+
+$this->classNames = $this->student->classrooms->pluck('name')->toArray();
+
+$classIds = $this->student->classrooms->pluck('id');
+
+// Lấy assignments của các lớp
+$assignments = \App\Models\Assignment::whereIn('class_id', $classIds)->get();
+
+// Thay assignmentSubmissions bằng grades
+$submissions = \App\Models\Grade::where('student_id', $this->student->id)
+    ->whereIn('class_id', $classIds)
+    ->where('grade_type', 'homework')
+    ->get();
         $this->attendanceCount = Attendance::where('student_id', $this->student->id)
             ->whereIn('class_id', $this->student->classrooms->pluck('id'))
             ->where('present', true)->count();

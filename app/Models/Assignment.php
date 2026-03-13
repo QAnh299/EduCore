@@ -42,7 +42,7 @@ class Assignment extends Model
 
     public function submissions(): HasMany
     {
-        return $this->hasMany(AssignmentSubmission::class);
+        return $this->hasMany(Grade::class);
     }
 
     public function isOverdue(): bool

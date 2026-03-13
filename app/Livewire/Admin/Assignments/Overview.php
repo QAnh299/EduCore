@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Assignments;
 
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
+use App\Models\Grade;
 use App\Models\Classroom;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
@@ -55,13 +55,20 @@ class Overview extends Component
         }
         $assignments = $query->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
         $assignmentIds = $assignments->pluck('id');
-        $submissions = AssignmentSubmission::whereIn('assignment_id', $assignmentIds)->get();
+        $submissions = Grade::whereIn('assignment_id', $assignmentIds)
+    ->where('grade_type', 'homework')
+    ->with('assignment')
+    ->get();
         $totalAssignments = $assignments->count();
         $totalClasses = $assignments->pluck('class_id')->unique()->count();
         $totalSubmissions = $submissions->count();
         $onTimeSubmissions = $submissions->filter(function ($s) {
-            return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
-        })->count();
+    if (!$s->submitted_at || !$s->assignment) {
+        return false;
+    }
+
+    return $s->submitted_at <= $s->assignment->deadline;
+})->count();
         $submissionRate = $totalAssignments > 0 ? round($totalSubmissions / $totalAssignments * 100, 1) : 0;
         $onTimeRate = $totalSubmissions > 0 ? round($onTimeSubmissions / $totalSubmissions * 100, 1) : 0;
         $this->overviewStats = [
@@ -86,12 +93,14 @@ class Overview extends Component
                 return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
             })->count();
 
-            return [
-                'student' => Student::find($studentId)->user,
-                'total_submissions' => $subs->count(),
-                'on_time' => $onTime,
-                'on_time_rate' => $subs->count() > 0 ? round($onTime / $subs->count() * 100, 1) : 0,
-            ];
+            $student = Student::find($studentId);
+
+    return [
+        'student' => $student ? $student->user : null,
+        'total_submissions' => $subs->count(),
+        'on_time' => $onTime,
+        'on_time_rate' => $subs->count() > 0 ? round($onTime / $subs->count() * 100, 1) : 0,
+    ];
         })->sortByDesc('on_time_rate')->take(5);
         $this->topStudents = $studentStats;
 
@@ -101,9 +110,9 @@ class Overview extends Component
                 ->whereMonth('created_at', $month)
                 ->count();
 
-            $monthSubmissions = AssignmentSubmission::whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->count();
+            $monthSubmissions = Grade::whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->count();
 
             return [
                 'month' => $month,
