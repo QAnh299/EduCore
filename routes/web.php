@@ -24,7 +24,7 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Student\Notifications\Index as StudentNotificationsIndex;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route; 
 
 Route::get('/', function () {
     if (Auth::check()) {

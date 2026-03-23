@@ -21,7 +21,7 @@ composer install
 ### 2. Cấu hình API Gemini
 
 Thêm vào file `.env`:
-
+ 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
