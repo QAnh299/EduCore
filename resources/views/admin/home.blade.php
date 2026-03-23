@@ -134,7 +134,7 @@
                                 <div>@lang('general.assign_homework')</div>
                             </a>
                         </div>
-                        <!-- Chấm bài -->
+                        <!-- Chấm bài 
                         <div class="col-6 col-md-3 text-center mb-4">
                             <a href="#" class="text-decoration-none text-dark">
                                 <div class="mb-2">
@@ -142,7 +142,7 @@
                                 </div>
                                 <div>@lang('general.grading')</div>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- Kiểm tra & Quiz -->
                         <div class="col-6 col-md-3 text-center mb-4">
                             <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-dark">

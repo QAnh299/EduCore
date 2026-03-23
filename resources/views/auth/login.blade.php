@@ -100,7 +100,7 @@
                         <!-- Footer -->
                         <div class="text-center mt-4 pt-3" style="border-top: 1px solid #e9ecef;">
                             <small class="text-muted">
-                                {{ __('general.copyright') }}<br>{{ __('general.footer_description') }}
+                                
                             </small>
                         </div>
                     </div>
