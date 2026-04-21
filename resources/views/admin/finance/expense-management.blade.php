@@ -32,7 +32,8 @@
                         <label class="form-label fw-semibold">
                             <i class="bi bi-tag-fill mr-1"></i>{{ __('general.expense_type') }}
                         </label>
-                        <select wire:model="filterType" class="form-control">
+                        <select wire:model.defer="filterType" class="form-control"
+                         wire:key="filterType-{{ $filterType }}">
                             <option value="">{{ __('views.all_types') }}</option>
                             <option value="salary">{{ __('views.expense_type_salary') }}</option>
                             <option value="utilities">{{ __('views.expense_type_utilities') }}</option>
@@ -47,24 +48,35 @@
                         <label class="form-label fw-semibold">
                             <i class="bi bi-calendar-month text-primary mr-1"></i>{{ __('views.month') }}
                         </label>
-                        <input type="month" wire:model="filterMonth" class="form-control">
+                        <input type="month" wire:model="filterMonth" class="form-control"
+                         wire:key="filterMonth-{{ $filterMonth }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-semibold">
                             <i class="bi bi-person-fill text-success mr-1"></i>{{ __('general.employee') }}
                         </label>
-                        <select wire:model="filterStaff" class="form-control">
+                        <select wire:model="filterStaff" class="form-control"
+                        wire:key="filterStaff-{{ $filterStaff }}">
                             <option value="">{{ __('views.all_staff') }}</option>
                             @foreach ($this->staffs as $staff)
                                 <option value="{{ $staff->id }}">{{ $staff->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 d-flex align-items-end">
+                    <!--<div class="col-md-3 d-flex align-items-end">
                         <div class="text-muted small">
                             <i class="bi bi-info-circle mr-1"></i>
                             {{ __('views.total_prefix') }} {{ number_format($expenses->sum('amount')) }}₫
                         </div>
+                    </div>-->
+                    <div class="col-md-3 d-flex align-items-end gap-2">
+                        <button class="btn btn-primary w-50" wire:click="search">
+                            <i class="bi bi-search mr-1"></i> {{ __('general.search') }}
+                         </button>
+
+                        <button type="button" class="btn btn-outline-secondary w-50" wire:click="resetFilters">
+                            <i class="bi bi-arrow-clockwise mr-1"></i> {{ __('general.reset') }}
+                        </button>
                     </div>
                 </div>
             </div>

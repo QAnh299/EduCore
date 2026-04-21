@@ -127,7 +127,9 @@
     @endif
             </tbody>
         </table>
-
+    <div class="p-3">
+    {{ $this->grades->links() }}
+</div>
     </div>
 </div>
 </div>

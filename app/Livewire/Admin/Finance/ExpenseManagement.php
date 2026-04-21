@@ -52,7 +52,7 @@ class ExpenseManagement extends Component
         $this->loadExpenses();
     }
 
-    public function updatedFilterType()
+   /* public function updatedFilterType()
     {
         $this->loadExpenses();
     }
@@ -61,13 +61,32 @@ class ExpenseManagement extends Component
     {
         $this->loadExpenses();
     }
-
-    public function updatedFilterStaff()
+     public function updatedFilterStaff()
     {
         $this->loadExpenses();
-    }
+    }   */
+    public function search()
+    {
+        $this->loadExpenses();
+        //dd($this->filterType, $this->filterStaff); 
+        /*dump(
+            'UI value:', $this->filterType,
+            'DB count:', \App\Models\Expense::where('type', $this->filterType)->count()
+        );*/
+    }   
 
-    public function loadExpenses()
+    public function resetFilters()
+{
+    $this->reset(['filterType', 'filterStaff', 'filterMonth']);
+
+    // set lại sau khi reset để force change
+    $this->filterMonth = now()->format('Y-m');
+
+    $this->loadExpenses();
+}
+    
+
+    /*public function loadExpenses()
     {
         $query = Expense::with(['staff', 'classroom']);
 
@@ -85,8 +104,28 @@ class ExpenseManagement extends Component
         }
 
         $this->expenses = $query->orderBy('spent_at', 'desc')->get();
+    }*/
+        public function loadExpenses()
+{
+    $query = Expense::with(['staff', 'classroom']);
+
+    if (!empty($this->filterType)) {
+        $query->where('type', trim($this->filterType));
     }
 
+    if ($this->filterMonth) {
+        $date = Carbon::createFromFormat('Y-m', $this->filterMonth);
+
+        $query->whereYear('spent_at', $date->year)
+              ->whereMonth('spent_at', $date->month);
+    }
+
+    if (!empty($this->filterStaff)) {
+        $query->where('staff_id', (int) $this->filterStaff);
+    }
+
+    $this->expenses = $query->orderBy('spent_at', 'desc')->get();
+}
     public function openCreateModal()
     {
         $this->resetForm();

@@ -40,6 +40,7 @@ class Edit extends Component
         'endTime.date_format' => 'Giờ kết thúc không đúng định dạng.',
         'endTime.after' => 'Giờ kết thúc phải sau giờ bắt đầu.',
         'notes.max' => 'Ghi chú không được vượt quá 500 ký tự.',
+        'endTime.after' => 'Giờ kết thúc phải lớn hơn giờ bắt đầu',
     ];
 
     public function mount(Classroom $classroom)
@@ -73,6 +74,7 @@ class Edit extends Component
                 'time' => $this->startTime.' - '.$this->endTime,
             ],
         ]);
+       
         // Gán id lớp hiện tại để helper loại trừ chính lớp này
         $tempClassroom->id = $this->classroom->id;
 
@@ -128,7 +130,10 @@ class Edit extends Component
     {
         // Validate field thay đổi
         $this->validateOnly($propertyName);
-
+         // 👉 nếu đổi startTime thì phải validate lại endTime
+        if ($propertyName === 'startTime') {
+            $this->validateOnly('endTime');
+    }
         // Chạy kiểm tra real-time khi thay đổi ngày/giờ
         if (in_array($propertyName, ['selectedDays', 'startTime', 'endTime'])) {
             $this->checkRealTimeConflicts();

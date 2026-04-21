@@ -34,12 +34,12 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="search" class="form-label">{{ __('general.search_classroom') }}</label>
-                        <input type="text" wire:model.live="search" class="form-control" id="search"
+                        <input type="text" wire:model.live="search" wire:key="search-{{ $search }}" class="form-control" id="search"
                             placeholder="{{ __('general.enter_classroom_name') }}">
                     </div>
                     <div class="col-md-3">
                         <label for="filterLevel" class="form-label">{{ __('general.level') }}</label>
-                        <select wire:model.live="filterLevel" class="form-control" id="filterLevel">
+                        <select wire:model.live="filterLevel" wire:key="filterLevel-{{ $filterLevel }}"  class="form-control" id="filterLevel">
                             <option value="">{{ __('general.all_levels') }}</option>
                             @foreach ($levels as $level)
                                 <option value="{{ $level }}">{{ $level }}</option>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="filterTeacher" class="form-label">{{ __('general.teacher') }}</label>
-                        <select wire:model.live="filterTeacher" class="form-control" id="filterTeacher">
+                        <select wire:model.live="filterTeacher" wire:key="filterTeacher-{{ $filterTeacher }}" class="form-control" id="filterTeacher">
                             <option value="">{{ __('general.all_teachers') }}</option>
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->name }}">{{ $teacher->name }}</option>
@@ -165,5 +165,14 @@
                 alert.style.display = 'none';
             }
         }
+        document.addEventListener('livewire:init', () => {
+        Livewire.on('clearFilters', () => {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('search');
+            url.searchParams.delete('filterLevel');
+            url.searchParams.delete('filterTeacher');
+            window.history.replaceState({}, '', url);
+        });
+    });
     </script>
 </x-layouts.dash-admin>

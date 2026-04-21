@@ -18,12 +18,14 @@
                     <div class="col-md-4">
                         <label for="search" class="form-label">Tìm kiếm học viên</label>
                         <input type="text" class="form-control" id="search" wire:model.live="search"
+                            wire:key="search-{{ $search }}"
                             placeholder="Nhập tên học viên...">
                     </div>
                     <!--Lọc theo lớp-->
                     <div class="col-md-3">
                         <label for="classroomFilter" class="form-label">{{ __('general.classroom') }}</label>
-                        <select class="form-control" id="classroomFilter" wire:model.live="classroomFilter">
+                        <select class="form-control" id="classroomFilter" wire:model.live="classroomFilter"
+                        wire:key="classroom-{{ $classroomFilter }}">
                             <option value="">{{ __('general.all_classes') }}</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -80,6 +82,7 @@
                             </tbody>
                         </table>
                 </div>
+                <div class="p-3">{{ $students->links() }}</div>
             </div>
 
         </div>

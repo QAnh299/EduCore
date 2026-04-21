@@ -74,7 +74,7 @@
                                 <div class="col-md-6">
                                     <label for="endTime" class="form-label fw-bold">{{ __('general.end_time') }} <span
                                             class="text-danger">*</span></label>
-                                    <input type="time" wire:model="endTime"
+                                    <input type="time" wire:model="endTime" wire:key="endTime-{{ $endTime }}"
                                         class="form-control @error('endTime') is-invalid @enderror" id="endTime">
                                     @error('endTime')
                                         <div class="invalid-feedback">{{ $message }}</div>

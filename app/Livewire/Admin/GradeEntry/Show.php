@@ -1,34 +1,47 @@
 <?php
 
 namespace App\Livewire\Admin\GradeEntry;
-
+use Livewire\WithPagination;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Grade;
 
 class Show extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $student;
     public $filter = 'all';
 
     public function mount(User $student)
     {
         $this->student = $student;
-    }
 
+    }
+    public function updatedFilter()
+{
+    $this->resetPage();
+}
     public function getGradesProperty()
 {
-    return Grade::where('student_id', $this->student->id)
-        ->when($this->filter !== 'all', function ($query) {
-            $query->where('grade_type', $this->filter);
+    return Grade::query()
+        ->where('student_id', $this->student->id)
+        ->when($this->filter !== 'all', function ($q) {
+            $q->where('grade_type', $this->filter);
         })
         ->with(['teacher', 'assignment'])
         ->orderByDesc('graded_at')
-        ->get();
+        ->paginate(10);
 }
     public function getGradesCountProperty()
     {
-        return $this->grades->count();
+        //return $this->grades->count();
+         return Grade::query()
+        ->where('student_id', $this->student->id)
+        ->when($this->filter !== 'all', function ($q) {
+            $q->where('grade_type', $this->filter);
+        })
+        ->count();
     }
     public function render()
     {

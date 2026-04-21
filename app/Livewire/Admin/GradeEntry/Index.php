@@ -6,12 +6,10 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Classroom;
 use App\Models\User;
+use App\Models\Grade;
 class Index extends Component
 {
-    //public function render()
-    //{
-        //return view('admin.grade-entry.index');
-    //}
+    
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
@@ -38,7 +36,30 @@ class Index extends Component
         $this->reset(['search', 'classroomFilter']);
         $this->resetPage();
     }
-
+    public function updatedFilter()
+    {
+    $this->resetPage();
+    }
+    public function getGradesProperty()
+    {
+     return Grade::query()
+        ->where('student_id', $this->student->id)
+        ->when($this->filter !== 'all', function ($q) {
+            $q->where('grade_type', $this->filter);
+        })
+        ->orderByDesc('graded_at')
+        ->paginate(10);
+    }
+    public function getGradesCountProperty()
+    {
+        
+        return Grade::query()
+        ->where('student_id', $this->student->id)
+        ->when($this->filter !== 'all', function ($q) {
+            $q->where('grade_type', $this->filter);
+        })
+        ->count();
+    }
 
     public function render()
     {

@@ -100,8 +100,22 @@ class Index extends Component
 
     public function resetFilters()
     {
-        $this->search = '';
-        $this->filterLevel = '';
-        $this->filterTeacher = '';
+        //$this->search = '';
+        //$this->filterLevel = '';
+        //$this->filterTeacher = '';
+            // Reset state
+    $this->search = '';
+    $this->filterLevel = '';
+    $this->filterTeacher = '';
+
+    // Reset pagination
+    $this->resetPage();
+
+    // Xóa query string trên URL
+    $this->dispatch('clearFilters');
+
+    // Force re-render
+    $this->dispatch('$refresh');
+
     }
 }
