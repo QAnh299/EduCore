@@ -51,11 +51,11 @@
                         <tr>
                             <th>{{ __('views.student') }}</th>
                             <th>{{ __('views.class') }}</th>
-                            <th>{{ __('views.learning_progress') }}</th>
+                        
                             <th>{{ __('views.average_score') }}</th>
                             <th>{{ __('views.submission_rate') }}</th>
                             <th>{{ __('views.attendance_count') }}</th>
-                            <th>{{ __('views.support_suggestions') }}</th>
+                        
                             <th>{{ __('views.details') }}</th>
                         </tr>
                     </thead>
@@ -72,22 +72,11 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <div class="progress" style="height: 18px;">
-                                        <div class="progress-bar bg-success" role="progressbar"
-                                            style="width: {{ $row['progress'] }}%">{{ $row['progress'] }}%</div>
-                                    </div>
-                                </td>
+
                                 <td><span class="fw-bold">{{ $row['avg_score'] }}</span></td>
                                 <td>{{ $row['submit_rate'] }}%</td>
                                 <td>{{ $row['attendance_count'] }}</td>
-                                <td>
-                                    @if ($row['need_support'])
-                                        <span class="badge bg-danger">{{ __('views.needs_support') }}</span>
-                                    @else
-                                        <span class="badge bg-success">{{ __('views.stable') }}</span>
-                                    @endif
-                                </td>
+
                                 <td>
                                     <a href="{{ route('reports.student', $row['student_id']) }}"
                                         class="btn btn-sm btn-outline-primary">{{ __('views.view') }}</a>

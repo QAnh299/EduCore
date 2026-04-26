@@ -64,21 +64,21 @@ class ClassReport extends Component
 
         $totalLessons = $lessonIds->count();
 
-        $progress = $totalLessons > 0
-            ? round($completedLessons / $totalLessons * 100)
-            : 0;
+       // $progress = $totalLessons > 0
+         //   ? round($completedLessons / $totalLessons * 100)
+           // : 0;
 
         // Cần hỗ trợ
-        $needSupport = $avgScore < 5 || $submitRate < 60 || $progress < 60;
+       // $needSupport = $avgScore < 5 || $submitRate < 60 || $progress < 60;
 
         $reportData[] = [
             'student_id' => $student->id,
             'student_name' => $user->name,
-            'progress' => $progress,
+            //'progress' => $progress,
             'avg_score' => round($avgScore, 2),
             'submit_rate' => $submitRate,
             'attendance_count' => $attendanceCount,
-            'need_support' => $needSupport,
+            //'need_support' => $needSupport,
         ];
     }
 
