@@ -13,11 +13,13 @@
             <div class="col-md-6 text-end">
                 <div class="d-flex justify-content-end gap-2">
                     <div class="input-group" style="max-width: 300px;">
+                        <!--
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
                         </span>
                         <input type="text" wire:model.live="search" class="form-control"
                             placeholder="{{ __('general.search_classes_placeholder') }}">
+-->
                     </div>
                 </div>
             </div>
