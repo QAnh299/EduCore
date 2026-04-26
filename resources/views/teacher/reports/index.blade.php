@@ -22,15 +22,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">{{ __('views.filter_by_student') }}</label>
-                    <select wire:model.live="selectedStudent" class="form-control">
-                        <option value="">{{ __('views.all_students_filter') }}</option>
-                        @foreach ($students as $student)
-                            <option value="{{ $student->id }}">{{ $student->user->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+
                 <div class="col-md-4 d-flex align-items-end">
                     <a href="{{ route('teacher.reports.index') }}" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
@@ -47,11 +39,11 @@
                         <tr>
                             <th>{{ __('views.student') }}</th>
                             <th>{{ __('views.class') }}</th>
-                            <th>{{ __('views.learning_progress') }}</th>
+
                             <th>{{ __('views.average_score') }}</th>
                             <th>{{ __('views.submission_rate') }}</th>
                             <th>{{ __('views.attendance_count') }}</th>
-                            <th>{{ __('views.support_suggestions') }}</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -67,22 +59,11 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <div class="progress" style="height: 18px;">
-                                        <div class="progress-bar bg-success" role="progressbar"
-                                            style="width: {{ $row['progress'] }}%">{{ $row['progress'] }}%</div>
-                                    </div>
-                                </td>
+
                                 <td><span class="fw-bold">{{ $row['avg_score'] }}</span></td>
                                 <td>{{ $row['submit_rate'] }}%</td>
                                 <td>{{ $row['attendance_count'] }}</td>
-                                <td>
-                                    @if ($row['need_support'])
-                                        <span class="badge bg-danger">{{ __('views.needs_support') }}</span>
-                                    @else
-                                        <span class="badge bg-success">{{ __('views.stable') }}</span>
-                                    @endif
-                                </td>
+
                             </tr>
                         @empty
                             <tr>

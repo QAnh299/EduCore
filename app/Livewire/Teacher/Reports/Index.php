@@ -76,7 +76,7 @@ class Index extends Component
                 $lessonIds = \App\Models\Lesson::where('classroom_id', $class->id)->pluck('id');
                 $completedLessons = $userModel->lessons()->whereIn('lesson_id', $lessonIds)->whereNotNull('lesson_user.completed_at')->count();
                 $totalLessons = $lessonIds->count();
-                $progress = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
+                //$progress = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
             } else {
                 if ($studentClassIds->count() == 0) {
                     continue;
@@ -98,22 +98,24 @@ class Index extends Component
                 $lessonIds = \App\Models\Lesson::whereIn('classroom_id', $studentClassIds)->pluck('id');
                 $completedLessons = $userModel->lessons()->whereIn('lesson_id', $lessonIds)->whereNotNull('lesson_user.completed_at')->count();
                 $totalLessons = $lessonIds->count();
-                $progress = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
+                //$progress = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
             }
             $avgScore = $quizResults->avg('score') ?? 0;
-            $submitRate = $assignments > 0
-                ? round($submissions->count() / $assignments->count() * 100)
-                : 0;
-            $needSupport = $avgScore < 5 || $submitRate < 60 || $progress < 60;
+           // $submitRate = $assignments > 0
+ $submitRate = $assignments->count() > 0 
+    ? round($submissions / $assignments->count() * 100) 
+    : 0;
+       //? round($submissions->count() / $assignments->count() * 100): 0;
+            //$needSupport = $avgScore < 5 || $submitRate < 60 || $progress < 60;
             $reportData[] = [
                 'student_id' => $student->id,
                 'student_name' => $student->user->name,
                 'class_names' => $classNames,
-                'progress' => $progress,
+                //'progress' => $progress,
                 'avg_score' => round($avgScore, 2),
                 'submit_rate' => $submitRate,
                 'attendance_count' => $attendanceCount,
-                'need_support' => $needSupport,
+                //'need_support' => $needSupport,
             ];
         }
         $this->reportData = $reportData;
