@@ -364,7 +364,7 @@
                 </div>
                 <div
                     class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
-                    <img src="/educore-logo.png" alt="@lang('general.edit_classroom')" class="mb-3" style="max-width: 90px;">
+                    <img src="/smash-logo.png" alt="@lang('general.edit_classroom')" class="mb-3" style="max-width: 90px;">
                     <div class="text-center">
                         <h6 class="text-primary fw-bold mb-2">@lang('general.edit_classroom')</h6>
                         <p class="text-muted small mb-0">@lang('general.edit_classroom_description')</p>

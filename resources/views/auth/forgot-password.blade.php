@@ -136,7 +136,7 @@
                         <!-- Header -->
                         <div class="text-center mb-4">
                             <div class="d-flex justify-content-center">
-                                <img src="/educore-logo.png" alt="Logo" style="width: 60px; height: 60px;">
+                                <img src="/smash-logo.png" alt="Logo" style="width: 60px; height: 60px;">
                             </div>
                             <h3 class="fw-bold mb-2" style="font-size: 2rem; font-weight: 700;">
                                 <span class="text-primary">Edu</span><span class="text-warning">Core</span>

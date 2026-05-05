@@ -157,7 +157,7 @@
                 </div>
                 <div
                     class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
-                    <img src="/educore-logo.png" alt="{{ __('general.add_new_student') }}" class="mb-3"
+                    <img src="/smash-logo.png" alt="{{ __('general.add_new_student') }}" class="mb-3"
                         style="max-width: 90px;">
                     <div class="text-center">
                         <h6 class="text-primary fw-bold mb-2">{{ __('general.add_new_student') }}</h6>
