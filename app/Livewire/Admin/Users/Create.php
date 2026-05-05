@@ -40,7 +40,7 @@ class Create extends Component
                 'unique:users,phone',
             ],
             'password' => 'required|min:6|confirmed',
-            'role' => 'required|in:admin,teacher,student',
+            'role' => 'required|in:admin,teacher,student,boss,assistant',
             'is_active' => 'boolean',
         ];
     }

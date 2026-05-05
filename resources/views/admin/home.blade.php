@@ -13,9 +13,11 @@
                 <div class="icon">
                     <i class="fas fa-envelope"></i>
                 </div>
+                @if(auth()->user()->role === 'boss')
                 <a href="{{ route('chat.index') }}" class="small-box-footer">
                     {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
+                @endif
             </div>
         </div>
 
@@ -29,9 +31,11 @@
                 <div class="icon">
                     <i class="fas fa-bell"></i>
                 </div>
+                @if(auth()->user()->role === 'boss')
                 <a href="{{ route('notifications.index') }}" class="small-box-footer">
                     {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
+                @endif
             </div>
         </div>
 
@@ -45,9 +49,11 @@
                 <div class="icon">
                     <i class="fas fa-users"></i>
                 </div>
+                @if(auth()->user()->role === 'boss')
                 <a href="{{ route('students.index') }}" class="small-box-footer">
                     {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
+                @endif
             </div>
         </div>
 
@@ -61,9 +67,11 @@
                 <div class="icon">
                     <i class="fas fa-chalkboard-teacher"></i>
                 </div>
+                @if(auth()->user()->role === 'admin')
                 <a href="{{ route('users.index') }}" class="small-box-footer">
                     {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
+                @endif
             </div>
         </div>
     </div>
@@ -82,57 +90,63 @@
                     <div class="row">
                         <!-- Quản lý người dùng & phân quyền -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'admin')
                             <a href="{{ route('users.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-users" style="font-size:2.5rem; color:#0d6efd;"></i>
                                 </div>
                                 <div>@lang('general.manage_users')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Quản lý lớp học -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-graduation-cap" style="font-size:2.5rem; color:#fd7e14;"></i>
                                 </div>
                                 <div>@lang('general.manage_classrooms')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Lịch học -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('schedules.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-calendar-alt" style="font-size:2.5rem; color:#6f42c1;"></i>
                                 </div>
                                 <div>@lang('general.schedules')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Quản lý học viên -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('students.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-user-graduate" style="font-size:2.5rem; color:#20c997;"></i>
                                 </div>
                                 <div>@lang('general.manage_students')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Điểm danh -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('attendances.overview') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-clipboard-check" style="font-size:2.5rem; color:#ffc107;"></i>
                                 </div>
                                 <div>@lang('general.attendance')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Giao bài tập -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('assignments.overview') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-tasks" style="font-size:2.5rem; color:#fd5e53;"></i>
                                 </div>
                                 <div>@lang('general.assign_homework')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Chấm bài 
                         <div class="col-6 col-md-3 text-center mb-4">
@@ -145,76 +159,75 @@
                         </div> -->
                         <!-- Kiểm tra & Quiz -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-question-circle" style="font-size:2.5rem; color:#b23cfd;"></i>
                                 </div>
                                 <div>@lang('general.quizzes')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Xem lại bài học & tài nguyên -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('lessons.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-book" style="font-size:2.5rem; color:#28a745;"></i>
                                 </div>
                                 <div>@lang('general.lessons')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Thống kê - báo cáo -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('reports.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-chart-bar" style="font-size:2.5rem; color:#ff9800;"></i>
                                 </div>
                                 <div>@lang('general.statistics_reports')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Thống kê thu chi -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('admin.finance.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-coins" style="font-size:2.5rem; color:#ffc107;"></i>
                                 </div>
                                 <div>{{ __('general.financial_statistics') }}</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Quản lý đánh giá -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('evaluation-management') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
                                 </div>
                                 <div>{{ __('general.evaluation_management') }}</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Thông báo & nhắc lịch -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('notifications.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2 position-relative d-inline-block">
                                     <i class="fas fa-bell" style="font-size:2.5rem; color:#f59e42;"></i>
                                 </div>
                                 <div>@lang('general.notifications_reminders')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         <!-- Chat -->
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('chat.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-comments" style="font-size:2.5rem; color:#17a2b8;"></i>
                                 </div>
                                 <div>@lang('general.chat')</div>
-                            </a>
+                            </a>@endif
                         </div>
-                        <!-- AI
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            
-                                <div class="mb-2">
-                                    <i class="fas fa-robot" style="font-size:2.5rem; color:#0d6efd;"></i>
-                                </div>
-                                <div>@lang('general.ai_assistant')</div>
-                            </a>
-                        </div> -->
+                        
                     </div>
                 </div>
             </div>

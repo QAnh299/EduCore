@@ -11,7 +11,7 @@
 <aside class="main-sidebar {{ $darkMode ? 'sidebar-dark-primary' : 'sidebar-light-primary' }} elevation-4">
     <!-- Brand Logo -->
     <a href="{{ $brandUrl }}" class="brand-link d-flex align-items-center">
-        <img src="{{ asset('smash-logo.png') }}" alt="Logo" style="width: 80px; height: 80px;">
+        <img src="{{ asset('smash-logo.png') }}" alt="Logo" style="width: 60px; height: 60px;">
         <span class="brand-text font-weight-light">{{ $brandText }}</span>
     </a>
 

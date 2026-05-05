@@ -37,7 +37,7 @@ class Index extends Component
     {
         $user = Auth::user();
         // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
-        $this->classrooms = Classroom::whereHas('assistant', function ($query) {
+        $this->classrooms = Classroom::whereHas('assistants', function ($query) {
             $query->where('users.id', Auth::id());
         })->orderBy('name')->get();
         $this->selectedMonth = now()->month;

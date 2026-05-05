@@ -58,6 +58,8 @@
                                     <option value="admin">{{ __('general.administrator') }}</option>
                                     <option value="teacher">{{ __('general.instructor') }}</option>
                                     <option value="student">{{ __('general.learner') }}</option>
+                                    <option value="boss">Quản lý</option>
+                                    <option value="assistant">Trợ giảng</option>
                                 </select>
                                 @error('role')
                                     <div class="invalid-feedback">{{ $message }}</div>

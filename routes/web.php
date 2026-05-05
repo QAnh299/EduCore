@@ -52,8 +52,11 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
+
 Route::middleware(['auth', 'role:admin,teacher,student,assistant,boss'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
+    
+    //Route::get('/dashboard', function () {return 'DASHBOARD OK';});
 });
 
 // Admin routes
@@ -61,7 +64,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users', UsersIndex::class)->name('users.index');
     Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
     Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
-    Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
+});
+Route::middleware(['auth', 'role:boss'])->group(function () {
+    Route::get('/test123', function () {
+    return 'HELLO';
+});
+Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
+    //Route::get('/admin/classrooms', function () {
+    //return 'OK BOSS';
+//});
     Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
     Route::get('/admin/classrooms/{classroom}', \App\Livewire\Admin\Classrooms\Show::class)->name('classrooms.show');
     Route::get('/admin/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
@@ -133,11 +144,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Evaluation Management routes
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement\Index::class)->name('evaluation-management');
 
-    // AI routes
-    //Route::get('/admin/ai', \App\Livewire\Admin\AI\Index::class)->name('ai.index');
-    //Route::get('/admin/ai/grading/{submissionId}', \App\Livewire\Admin\AI\AIGrading::class)->name('ai.grading');
-    //Route::get('/admin/ai/quiz-generator', \App\Livewire\Admin\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
-    //Route::get('/admin/ai/question-bank-generator', \App\Livewire\Admin\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Teacher routes

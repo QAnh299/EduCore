@@ -49,6 +49,9 @@ class Home extends Component
         // if user is teacher then render teacher.home
         // if user is student then render student.home
         $user = Auth::user();
+        if ($user->role == 'boss') {
+        return view('admin.home'); // boss dùng chung giao diện admin
+    }
         if ($user->role == 'admin') {
             return view('admin.home');
         }
