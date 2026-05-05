@@ -52,7 +52,7 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
+Route::middleware(['auth', 'role:admin,teacher,student,assistant,boss'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
 });
 
@@ -216,7 +216,72 @@ Route::get('/teacher/grade-entry/{student}', \App\Livewire\Teacher\GradeEntry\Sh
     //Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
     //Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
+//////////////////////////////
 
+// Assistant routes
+Route::middleware(['auth', 'role:assistant'])->name('assistant.')->group(function () {
+    // My Class routes
+    Route::get('/assistant/my-class', \App\Livewire\Assistant\MyClass\Index::class)->name('my-class.index');
+    Route::get('/assistant/my-class/{classroomId}', \App\Livewire\Assistant\MyClass\Show::class)->name('my-class.show');
+
+    // Other assistant routes...
+    Route::get('/assistant/quizzes', \App\Livewire\Assistant\Quizzes\Index::class)->name('quizzes.index');
+    Route::get('/assistant/quizzes/create', \App\Livewire\Assistant\Quizzes\Create::class)->name('quizzes.create');
+    Route::get('/assistant/quizzes/{quiz}', \App\Livewire\Assistant\Quizzes\Show::class)->name('quizzes.show');
+    Route::get('/assistant/quizzes/{quiz}/edit', \App\Livewire\Assistant\Quizzes\Edit::class)->name('quizzes.edit');
+    Route::get('/assistant/quizzes/{quiz}/results', \App\Livewire\Assistant\Quizzes\Results::class)->name('quizzes.results');
+
+    // Assignments routes
+    Route::get('/assistant/assignments', \App\Livewire\Assistant\Assignments\Index::class)->name('assignments.index');
+    Route::get('/assistant/assignments/create', \App\Livewire\Assistant\Assignments\Create::class)->name('assignments.create');
+    Route::get('/assistant/assignments/{assignment}/edit', \App\Livewire\Assistant\Assignments\Edit::class)->name('assignments.edit');
+    Route::get('/assistant/assignments/{assignment}', \App\Livewire\Assistant\Assignments\Show::class)->name('assignments.show');
+
+     //Grade entry routes
+    Route::get('/assistant/grade-entry', \App\Livewire\Assistant\GradeEntry\Index::class)
+    ->name('grade-entry-assistant.index');
+
+Route::get('/assistant/grade-entry/create/{student}', \App\Livewire\Assistant\GradeEntry\Create::class)
+    ->name('grade-entry-assistant.create');
+
+Route::get('/assistant/grade-entry/edit/{grade}', \App\Livewire\Assistant\GradeEntry\Edit::class)
+    ->name('grade-entry-assistant.edit');
+
+Route::get('/assistant/grade-entry/{student}', \App\Livewire\Assistant\GradeEntry\Show::class)
+    ->name('grade-entry-assistant.show');
+
+    // Lessons routes
+    Route::get('/assistant/lessons', \App\Livewire\Assistant\Lessons\Index::class)->name('lessons.index');
+    Route::get('/assistant/lessons/create', \App\Livewire\Assistant\Lessons\Create::class)->name('lessons.create');
+    Route::get('/assistant/lessons/{lesson}', \App\Livewire\Assistant\Lessons\Show::class)->name('lessons.show');
+    Route::get('/assistant/lessons/{lesson}/edit', \App\Livewire\Assistant\Lessons\Edit::class)->name('lessons.edit');
+
+    // Notifications routes
+    Route::get('/assistant/notifications', \App\Livewire\Assistant\Notifications\Index::class)->name('notifications.index');
+
+    // Attendance routes
+    Route::get('/assistant/attendance', \App\Livewire\Assistant\Attendance\Overview::class)->name('attendance.overview');
+    Route::get('/assistant/attendance/history', \App\Livewire\Assistant\Attendance\History::class)->name('attendance.history');
+    Route::get('/assistant/attendance/{classroom}/take', \App\Livewire\Assistant\Attendance\TakeAttendance::class)->name('attendance.take');
+    Route::get('/assistant/attendance/{classroom}/attendance-history', \App\Livewire\Assistant\Attendance\AttendanceHistory::class)->name('attendance.classroom-history');
+
+    // Schedules routes
+    Route::get('/assistant/schedules', \App\Livewire\Assistant\Schedules\Index::class)->name('schedules.index');
+
+    // Chat routes
+    Route::get('/assistant/chat', \App\Livewire\Assistant\Chat\Index::class)->name('chat.index');
+    Route::get('/assistant/chat/download/{messageId}', [\App\Livewire\Assistant\Chat\Index::class, 'downloadAttachment'])->name('chat.download');
+    Route::get('/assistant/chat/test', \App\Livewire\Assistant\Chat\Test::class)->name('chat.test');
+
+    // Báo cáo - Reports cho giáo viên
+    Route::get('/assistant/reports', \App\Livewire\Assistant\Reports\Index::class)->name('reports.index');
+
+    // Báo cáo đánh giá sinh viên
+    Route::get('/assistant/evaluations', \App\Livewire\Assistant\EvaluationReport::class)->name('evaluations.report');
+});
+
+
+///////////////////////////////////
 // Student routes
 Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefix('student')->group(function () {
     // Other student routes...

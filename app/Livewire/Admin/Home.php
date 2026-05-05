@@ -58,5 +58,8 @@ class Home extends Component
         if ($user->role == 'student') {
             return view('student.home');
         }
+        if ($user->role == 'assistant') {
+            return view('assistant.home');
+        }
     }
 }
