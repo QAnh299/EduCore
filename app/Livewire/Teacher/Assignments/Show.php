@@ -26,10 +26,9 @@ class Show extends Component
         $this->assignmentId = $assignment;
         $this->assignment = Assignment::with('classroom')->findOrFail($assignment);
         $this->classroom = $this->assignment->classroom;
-        $this->submissions = AssignmentSubmission::where('assignment_id', $assignment)
-            ->whereNotNull('submitted_at')
-            ->with(['student.user'])
-            ->get();
+$this->submissions = Grade::where('assignment_id', $this->assignment->id)
+    ->with(['student.user'])
+    ->get();
         $this->students = $this->classroom ? $this->classroom->students : collect();
     }
 

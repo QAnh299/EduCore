@@ -48,7 +48,7 @@ class ClassroomSeeder extends Seeder
                 'name' => $classNames[$i],
                 'level' => $levels[$i % 6],
                 'schedule' => $schedules[$i],
-                'notes' => 'Lớp học tiếng Trung chất lượng cao',
+                'notes' => 'Lớp học toán chất lượng cao',
                 'status' => 'active',
             ]);
 

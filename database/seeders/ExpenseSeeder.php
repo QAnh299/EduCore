@@ -40,18 +40,18 @@ class ExpenseSeeder extends Seeder
         // Danh sách mô tả chi phí
         $expenseDescriptions = [
             'salary' => [
-                'Lương tháng cho giáo viên tiếng Trung',
+                'Lương tháng cho giáo viên ',
                 'Thưởng hiệu suất giảng dạy',
                 'Lương phụ trợ giảng viên',
                 'Phụ cấp chuyên môn cho giáo viên',
                 'Lương tháng cho nhân viên hành chính',
             ],
             'material' => [
-                'Mua sách giáo khoa tiếng Trung',
+                'Mua sách giáo khoa',
                 'In ấn tài liệu học tập',
                 'Mua dụng cụ học tập',
                 'Tài liệu tham khảo cho giáo viên',
-                'Phần mềm học tiếng Trung',
+                
             ],
             'utility' => [
                 'Tiền điện tháng',

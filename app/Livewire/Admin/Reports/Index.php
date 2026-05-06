@@ -124,9 +124,9 @@ class Index extends Component
 
         $totalLessons = $lessonIds->count();
 
-        $progress = $totalLessons > 0
-            ? round($completedLessons / $totalLessons * 100)
-            : 0;
+       // $progress = $totalLessons > 0
+         //   ? round($completedLessons / $totalLessons * 100)
+           // : 0;
 
 
         /* -------- TỶ LỆ NỘP BÀI -------- */
@@ -136,13 +136,13 @@ class Index extends Component
             : 0;
 
 
-        /* -------- CẢNH BÁO -------- */
+        /* -------- CẢNH BÁO -------- 
 
         $needSupport =
             $avgScore < 5 ||
             $submitRate < 60 ||
             $progress < 60;
-
+*/
 
         /* -------- DATA -------- */
 
@@ -150,11 +150,11 @@ class Index extends Component
             'student_id' => $student->id,
             'student_name' => $student->user->name,
             'class_names' => $classNames,
-            'progress' => $progress,
+           // 'progress' => $progress,
             'avg_score' => round($avgScore, 2),
             'submit_rate' => $submitRate,
             'attendance_count' => $attendanceCount,
-            'need_support' => $needSupport,
+           // 'need_support' => $needSupport,
         ];
     }
 
