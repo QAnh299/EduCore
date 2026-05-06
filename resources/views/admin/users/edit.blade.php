@@ -58,6 +58,8 @@
                                     <option value="admin">{{ __('views.admin') }}</option>
                                     <option value="teacher">{{ __('views.teacher') }}</option>
                                     <option value="student">{{ __('views.student') }}</option>
+                                    <option value="boss">Quản lý</option>
+                                    <option value="assistant">Trợ giảng</option>
                                 </select>
                                 @error('role')
                                     <div class="invalid-feedback">{{ $message }}</div>

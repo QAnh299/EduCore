@@ -239,7 +239,7 @@ class Edit extends Component
 
     public function render()
     {
-        $teachers = User::where('role', 'teacher')->get();
+        $teachers = User::whereIn('role', ['teacher', 'assistant'])->get();
 
         return view('admin.classrooms.edit', [
             'teachers' => $teachers,

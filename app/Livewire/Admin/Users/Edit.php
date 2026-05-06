@@ -53,7 +53,7 @@ class Edit extends Component
                 'max:15',
                 Rule::unique('users', 'phone')->ignore($this->user->id),
             ],
-            'role' => 'required|in:admin,teacher,student',
+            'role' => 'required|in:admin,teacher,student,boss,assistant',
             'is_active' => 'boolean',
             'password' => 'nullable|min:6|confirmed',
         ];

@@ -183,7 +183,7 @@ class Overview extends Component
         if ($user->role === 'teacher') {
             return view('teacher.assignments.overview');
         }
-        if ($user->role === 'admin') {
+        if ($user->role === 'boss') {
             return view('admin.assignments.overview');
         }
     }

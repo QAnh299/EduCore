@@ -1211,7 +1211,7 @@ return [
     'is_typing' => 'đang nhập...',
     'members' => 'thành viên',
     'student' => 'Học sinh',
-    'teacher' => 'Giáo viên',
+    'teacher' => 'Giáo viên/Trợ giảng',
 
     // Thêm các key mới cho filter thời gian
     'time_range' => 'Khoảng thời gian',

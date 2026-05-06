@@ -49,15 +49,20 @@ class Index extends Component
                 $query->where('level', $this->filterLevel);
             })
             ->when($this->filterTeacher, function ($query) {
-                $query->whereHas('teachers', function ($q) {
-                    $q->where('name', 'like', '%'.$this->filterTeacher.'%');
-                });
+                $query->where(function ($q) {
+        $q->whereHas('teachers', function ($sub) {
+            $sub->where('name', 'like', '%' . $this->filterTeacher . '%');
+        })
+        ->orWhereHas('assistants', function ($sub) {
+            $sub->where('name', 'like', '%' . $this->filterTeacher . '%');
+        });
+    });
             })
             ->orderBy('name')
             ->paginate(10);
 
         $levels = Classroom::distinct()->pluck('level')->filter();
-        $teachers = \App\Models\User::where('role', 'teacher')->orderBy('name')->get();
+        $teachers = \App\Models\User::whereIn('role', ['teacher', 'assistant'])->orderBy('name')->get();
 
         $user = Auth::user();
 

@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('smash-logo.png') }}">
     <title>Trung tâm SMASH</title>
+
     @livewireStyles
     {{-- Bootstrap Icons \\ DO NOT REMOVE --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">

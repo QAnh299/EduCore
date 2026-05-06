@@ -27,7 +27,8 @@ class Show extends Component
         $this->classroom = $this->assignment->classroom;
         $this->submissions = Grade::where('assignment_id', $assignmentId)
             ->where('grade_type', 'homework')
-            ->with(['student.user'])
+            //->with(['student.user'])
+            ->with(['student'])
             ->get();
         $this->students = $this->classroom ? $this->classroom->students : collect();
     }

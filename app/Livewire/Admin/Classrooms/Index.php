@@ -187,9 +187,10 @@ class Index extends Component
                 });
             })
             ->when($this->filterTeacher, function ($query) {
-                $query->whereHas('teachers', function ($q) {
-                    $q->where('users.id', $this->filterTeacher);
-                });
+                $query->whereHas('users', function ($q) {
+                        $q->where('users.id', $this->filterTeacher)
+                        ->whereIn('class_user.role', ['teacher', 'assistant']);
+                    });
             })
             ->when($this->filterStatus, function ($query) {
                 $query->where('status', $this->filterStatus);
@@ -201,7 +202,7 @@ class Index extends Component
 
         $classrooms = $query->latest()->paginate(10);
 
-        $teachers = User::where('role', 'teacher')
+        $teachers = User::whereIn('role', ['teacher','assistant'])
             ->orderBy('name')
             ->get();
 

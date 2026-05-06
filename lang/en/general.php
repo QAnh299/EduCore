@@ -467,7 +467,7 @@ return [
     'overdue' => 'Overdue',
     'completed' => 'Completed',
     'classroom' => 'Classroom',
-    'teacher' => 'Teacher',
+    'teacher' => 'Teacher/Assistant',
     'assignment_type' => 'Assignment Type',
     'text' => 'Text',
     'essay' => 'Essay',

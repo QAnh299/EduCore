@@ -13,7 +13,8 @@
             'label' => __('general.dashboard'),
             'route' => route('dashboard'),
             'icon' => 'fas fa-home',
-            'visible' => true,
+            //'visible' => true,
+            'visible' => $role === 'boss',
         ],
 
         // ===== ADMIN =====
