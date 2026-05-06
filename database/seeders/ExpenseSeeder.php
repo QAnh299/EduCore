@@ -42,7 +42,7 @@ class ExpenseSeeder extends Seeder
             'salary' => [
                 'Lương tháng cho giáo viên ',
                 'Thưởng hiệu suất giảng dạy',
-                'Lương phụ trợ giảng viên',
+                'Lương phụ trợ giáo viên',
                 'Phụ cấp chuyên môn cho giáo viên',
                 'Lương tháng cho nhân viên hành chính',
             ],

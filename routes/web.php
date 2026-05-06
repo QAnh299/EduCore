@@ -53,7 +53,7 @@ Route::post('/logout', function (Request $request) {
 })->name('logout');
 
 
-Route::middleware(['auth', 'role:teacher,student,assistant,boss'])->group(function () {
+Route::middleware(['auth', 'role:admin,teacher,student,assistant,boss'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
     
     //Route::get('/dashboard', function () {return 'DASHBOARD OK';});
