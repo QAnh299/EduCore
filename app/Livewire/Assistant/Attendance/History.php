@@ -77,8 +77,8 @@ class History extends Component
 
         // Lấy các lớp học mà assistant đang dạy
         $assistantClassrooms = Classroom::whereHas('users', function ($query) use ($assistant) {
-            $query->where('user_id', $assistant->id)
-                ->where('class_user.role', 'assistant');
+            $query->where('user_id', $assistant->id);
+              
         })->pluck('id');
 
         // Lấy lịch sử điểm danh của các lớp của assistant

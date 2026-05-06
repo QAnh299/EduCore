@@ -77,8 +77,11 @@ class Edit extends Component
         $this->status = $classroom->status;
 
         // Lấy danh sách giáo viên hiện tại của lớp
-        $this->teacher_ids = $classroom->teachers()->pluck('users.id')->toArray();
-
+        //$this->teacher_ids = $classroom->teachers()->pluck('users.id')->toArray();
+$this->teacher_ids = $classroom->users()
+    ->whereIn('class_user.role', ['teacher', 'assistant'])
+    ->pluck('users.id')
+    ->toArray();
         // Set schedule data - xử lý cả trường hợp JSON string và array
         $schedule = $classroom->schedule;
 
@@ -212,10 +215,18 @@ class Edit extends Component
         ]);
 
         // Cập nhật lại giáo viên trong class_user
-        $this->classroom->users()->wherePivot('role', 'teacher')->detach();
-        foreach ($this->teacher_ids as $tid) {
-            $this->classroom->users()->attach($tid, ['role' => 'teacher']);
-        }
+        //$this->classroom->users()->wherePivot('role', 'teacher')->detach();
+        $this->classroom->users()
+    ->wherePivotIn('role', ['teacher', 'assistant'])
+    ->detach();
+foreach ($this->teacher_ids as $tid) {
+
+    $role = User::where('id', $tid)->value('role');
+
+    $this->classroom->users()->attach($tid, [
+        'role' => $role
+    ]);
+}
 
         // Debug: Log để kiểm tra
         Log::info('Edit Classroom Save', [

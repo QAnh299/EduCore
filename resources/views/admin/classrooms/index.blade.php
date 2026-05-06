@@ -150,7 +150,7 @@
                                         </td>
                                         <td>
                                             @if ($classroom->teachers->count())
-                                                @foreach ($classroom->teachers as $teacher)
+                                                @foreach($classroom->users->whereIn('pivot.role', ['teacher', 'assistant']) as $teacher)
                                                     <span class="badge badge-secondary">{{ $teacher->name }}</span>
                                                 @endforeach
                                             @else

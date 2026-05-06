@@ -35,8 +35,8 @@ class Overview extends Component
 
         // Lấy các lớp học mà assistant đang dạy
         $assistantClassrooms = Classroom::whereHas('users', function ($query) use ($assistant) {
-            $query->where('user_id', $assistant->id)
-                ->where('class_user.role', 'assistant');
+            $query->where('user_id', $assistant->id);
+                
         })->pluck('id');
 
         // Thống kê tổng quan cho các lớp của assistant

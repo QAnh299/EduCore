@@ -169,7 +169,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = Classroom::query()->with('teachers');
+        $query = Classroom::query()->with('users');
 
         if ($this->showTrashed) {
             $query = $query->withTrashed();
@@ -181,9 +181,10 @@ class Index extends Component
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
                     $query->where('name', 'like', '%'.$this->search.'%')
-                        ->orWhereHas('teachers', function ($query) {
-                            $query->where('name', 'like', '%'.$this->search.'%');
-                        });
+->orWhereHas('users', function ($query) {
+    $query->where('name', 'like', '%'.$this->search.'%')
+        ->whereIn('class_user.role', ['teacher', 'assistant']);
+});
                 });
             })
             ->when($this->filterTeacher, function ($query) {

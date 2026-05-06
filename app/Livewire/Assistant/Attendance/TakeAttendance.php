@@ -45,7 +45,7 @@ class TakeAttendance extends Component
         // Kiểm tra xem assistant có quyền điểm danh lớp này không
         $hasPermission = $classroom->users()
             ->where('user_id', $assistant->id)
-            ->where('class_user.role', 'assistant')
+            
             ->exists();
 
         if (! $hasPermission) {
