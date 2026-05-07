@@ -294,9 +294,7 @@ Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefi
     Route::get('/lessons', \App\Livewire\Student\Lessons\Index::class)->name('lessons.index');
     Route::get('/lessons/{lessonId}', \App\Livewire\Student\Lessons\Show::class)->name('lessons.show');
     Route::get('/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
-    Route::get('/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
     Route::get('/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
-    Route::get('/assignments/{assignmentId}/submit', \App\Livewire\Student\Assignments\Submit::class)->name('assignments.submit');
     Route::get('/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
     Route::get('/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
     Route::get('/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');

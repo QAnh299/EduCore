@@ -3,6 +3,7 @@
 namespace App\Livewire\Student\Assignments;
 
 use App\Models\Assignment;
+use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,18 +12,15 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $filterStatus = 'all'; // all, upcoming, overdue, completed
+    public $filterStatus = 'all'; // all, submitted, unsubmitted
 
     public $filterClassroom = '';
 
     public $filterTeacher = '';
 
-    public $filterType = ''; // text, essay, image, audio, video
-
     public $search = '';
 
-    // Thêm filter thời gian
-    public $filterTimeRange = 'all'; // all, today, week, month, custom
+    public $filterTimeRange = 'all';
 
     public $filterDateFrom = '';
 
@@ -32,61 +30,64 @@ class Index extends Component
         'filterStatus' => ['except' => 'all'],
         'filterClassroom' => ['except' => ''],
         'filterTeacher' => ['except' => ''],
-        'filterType' => ['except' => ''],
         'filterTimeRange' => ['except' => 'all'],
         'filterDateFrom' => ['except' => ''],
         'filterDateTo' => ['except' => ''],
         'search' => ['except' => ''],
     ];
 
-    public function updatedFilterStatus()
+    public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function updatedFilterClassroom()
+    public function updatingFilterStatus()
     {
         $this->resetPage();
     }
 
-    public function updatedFilterTeacher()
+    public function updatingFilterClassroom()
     {
         $this->resetPage();
     }
 
-    public function updatedFilterType()
+    public function updatingFilterTeacher()
     {
         $this->resetPage();
     }
 
-    public function updatedFilterTimeRange()
+    public function updatingFilterTimeRange()
     {
         $this->resetPage();
-        // Reset custom dates khi chọn preset
+
         if ($this->filterTimeRange !== 'custom') {
             $this->filterDateFrom = '';
             $this->filterDateTo = '';
         }
     }
 
-    public function updatedFilterDateFrom()
+    public function updatingFilterDateFrom()
     {
         $this->resetPage();
     }
 
-    public function updatedFilterDateTo()
-    {
-        $this->resetPage();
-    }
-
-    public function updatedSearch()
+    public function updatingFilterDateTo()
     {
         $this->resetPage();
     }
 
     public function resetFilters()
     {
-        $this->reset(['search', 'filterStatus', 'filterClassroom', 'filterTeacher', 'filterType', 'filterTimeRange', 'filterDateFrom', 'filterDateTo']);
+        $this->reset([
+            'search',
+            'filterStatus',
+            'filterClassroom',
+            'filterTeacher',
+            'filterTimeRange',
+            'filterDateFrom',
+            'filterDateTo',
+        ]);
+
         $this->resetPage();
     }
 
@@ -94,129 +95,123 @@ class Index extends Component
     {
         $student = Auth::user()->student;
 
-        if (! $student) {
+        if (!$student) {
             return collect();
         }
 
-        $query = Assignment::whereHas('classroom.students', function ($q) use ($student) {
+        $query = Assignment::with([
+            'classroom',
+            'classroom.teachers',
+            'grades' => function ($q) use ($student) {
+                $q->where('student_id', $student->user_id);
+            },
+        ])
+        ->whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
-        })
-            ->with([
-                'classroom.teachers',
-                'submissions' => function ($q) use ($student) {
-                    $q->where('student_id', $student->id);
-                },
-                'classroom',
-            ]); // Thêm classroom để dùng status
-
-        // Lọc assignment theo trạng thái lớp
-        $query->where(function ($q) use ($student) {
-            $q->whereHas('classroom', function ($c) {
-                $c->where('status', '!=', 'completed');
-            })
-                // Nếu lớp đã completed thì chỉ lấy bài đã hoàn thành
-                ->orWhere(function ($q2) use ($student) {
-                    $q2->whereHas('classroom', function ($c2) {
-                        $c2->where('status', 'completed');
-                    })
-                        ->whereHas('submissions', function ($s) use ($student) {
-                            $s->where('student_id', $student->id);
-                        });
-                });
         });
 
-        // Filter by status
-        if ($this->filterStatus === 'upcoming') {
-            $query->where('deadline', '>', now());
-        } elseif ($this->filterStatus === 'overdue') {
-            $query->where('deadline', '<', now());
-        } elseif ($this->filterStatus === 'completed') {
-            $query->whereHas('submissions', function ($q) use ($student) {
-                $q->where('student_id', $student->id);
+        // Filter trạng thái
+        if ($this->filterStatus === 'submitted') {
+
+            $query->whereHas('grades', function ($q) use ($student) {
+                $q->where('student_id', $student->user_id);
+            });
+
+        } elseif ($this->filterStatus === 'unsubmitted') {
+
+            $query->whereDoesntHave('grades', function ($q) use ($student) {
+                $q->where('student_id', $student->user_id);
             });
         }
 
-        // Filter by classroom
+        // Filter lớp
         if ($this->filterClassroom) {
             $query->where('class_id', $this->filterClassroom);
         }
 
-        // Filter by teacher
+        // Filter giáo viên
         if ($this->filterTeacher) {
-            $query->whereHas('classroom', function ($q) {
-                $q->whereHas('teachers', function ($t) {
-                    $t->where('users.id', $this->filterTeacher);
-                });
+            $query->whereHas('classroom.teachers', function ($q) {
+                $q->where('users.id', $this->filterTeacher);
             });
-        }
-
-        // Filter by assignment type
-        if ($this->filterType) {
-            $query->whereJsonContains('types', $this->filterType);
         }
 
         // Search
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('description', 'like', '%'.$this->search.'%');
+                $q->where('title', 'like', '%' . $this->search . '%')
+                  ->orWhere('description', 'like', '%' . $this->search . '%');
             });
         }
 
-        // Filter by time range
+        // Filter thời gian
         if ($this->filterTimeRange !== 'all') {
+
             $now = now();
 
             switch ($this->filterTimeRange) {
+
                 case 'today':
                     $query->whereDate('deadline', $now->toDateString());
                     break;
+
                 case 'week':
                     $query->whereBetween('deadline', [
-                        $now->startOfWeek()->toDateTimeString(),
-                        $now->endOfWeek()->toDateTimeString(),
+                        $now->copy()->startOfWeek(),
+                        $now->copy()->endOfWeek(),
                     ]);
                     break;
+
                 case 'month':
                     $query->whereBetween('deadline', [
-                        $now->startOfMonth()->toDateTimeString(),
-                        $now->endOfMonth()->toDateTimeString(),
+                        $now->copy()->startOfMonth(),
+                        $now->copy()->endOfMonth(),
                     ]);
                     break;
+
                 case 'custom':
+
                     if ($this->filterDateFrom) {
-                        $query->where('deadline', '>=', $this->filterDateFrom.' 00:00:00');
+                        $query->whereDate('deadline', '>=', $this->filterDateFrom);
                     }
+
                     if ($this->filterDateTo) {
-                        $query->where('deadline', '<=', $this->filterDateTo.' 23:59:59');
+                        $query->whereDate('deadline', '<=', $this->filterDateTo);
                     }
+
                     break;
             }
         }
 
-        return $query->orderBy('deadline', 'asc')->paginate(10);
+        return $query
+            ->orderBy('deadline', 'desc')
+            ->paginate(10);
     }
 
     public function getClassroomsProperty()
     {
         $student = Auth::user()->student;
 
-        if (! $student) {
+        if (!$student) {
             return collect();
         }
 
-        return $student->user->enrolledClassrooms()->with('teachers')->get();
+        return $student->user
+            ->enrolledClassrooms()
+            ->with('teachers')
+            ->get();
     }
 
     public function getTeachersProperty()
     {
         $student = Auth::user()->student;
 
-        if (! $student) {
+        if (!$student) {
             return collect();
         }
 
-        return $student->user->enrolledClassrooms()
+        return $student->user
+            ->enrolledClassrooms()
             ->with('teachers')
             ->get()
             ->pluck('teachers')
@@ -224,19 +219,26 @@ class Index extends Component
             ->unique('id');
     }
 
-    public function isOverdue($assignment)
+    // Đã nộp = đã có điểm/grade
+    public function isSubmitted($assignment)
     {
-        return $assignment->deadline < now();
+        return $assignment->grades->isNotEmpty();
     }
 
-    public function isCompleted($assignment)
+    // Lấy điểm
+    public function getScore($assignment)
     {
-        return $assignment->submissions->isNotEmpty();
+        $grade = $assignment->grades->first();
+
+        return $grade?->score;
     }
 
-    public function canSubmit($assignment)
+    // Lấy nhận xét
+    public function getFeedback($assignment)
     {
-        return ! $this->isOverdue($assignment) && ! $this->isCompleted($assignment);
+        $grade = $assignment->grades->first();
+
+        return $grade?->feedback;
     }
 
     public function render()

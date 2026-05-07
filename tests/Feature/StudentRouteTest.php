@@ -105,7 +105,6 @@ class StudentRouteTest extends TestCase
             ['/student/lessons', 'get'], // 1
             ["/student/lessons/{$lessonId}", 'get'], // 2
             ['/student/assignments', 'get'], // 3
-            ['/student/assignments/submissions', 'get'], // 4
             ["/student/assignments/{$assignmentId}", 'get'], // 5
             ["/student/assignments/{$assignmentId}/submit", 'get'], // 6
             ["/student/quizzes/{$quizId}/do", 'get'], // 7

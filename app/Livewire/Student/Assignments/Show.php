@@ -3,7 +3,7 @@
 namespace App\Livewire\Student\Assignments;
 
 use App\Models\Assignment;
-use Illuminate\Support\Collection;
+use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -13,93 +13,79 @@ class Show extends Component
 
     public $assignmentId;
 
-    public Collection $submissions;
+    public $grade ;
 
     public function mount($assignmentId)
     {
-        $this->assignmentId = $assignmentId;
-        $this->loadAssignment();
+        $this->assignment = Assignment::findOrFail($assignmentId);
+
+        $this->grade = Grade::where('student_id', Auth::id())
+            ->where('assignment_id', $assignmentId)
+            ->first();
     }
 
     public function loadAssignment()
     {
         $student = Auth::user()->student;
 
-        if (! $student) {
+        if (!$student) {
             abort(403, 'Bạn không có quyền truy cập');
         }
 
-        $this->assignment = Assignment::whereHas('classroom.students', function ($q) use ($student) {
+        // Load assignment
+        $this->assignment = Assignment::with([
+            'classroom',
+            'classroom.teachers',
+        ])
+        ->whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
         })
-            ->with([
-                'classroom.teachers',
-                'submissions' => function ($q) use ($student) {
-                    $q->where('student_id', $student->id);
-                },
-            ])
-            ->findOrFail($this->assignmentId);
+        ->findOrFail($this->assignmentId);
 
-        // Lấy tất cả submissions của học viên cho assignment này (collection)
-        $this->submissions = collect($this->assignment->submissions);
+        // Load điểm của học viên
+        $this->grade = Grade::where('assignment_id', $this->assignment->id)
+            ->where('student_id', $student->user_id)
+            ->first();
     }
 
-    public function isOverdue()
+    // Đã nộp = đã có điểm
+    public function isSubmitted()
     {
-        return $this->assignment->deadline < now();
+        return $this->grade !== null;
     }
 
-    public function isCompleted()
+    // Chưa nộp
+    public function isUnsubmitted()
     {
-        return ! empty($this->submissions) && $this->submissions->count() > 0;
+        return $this->grade === null;
     }
 
-    public function canSubmit()
-    {
-        return ! $this->isOverdue() && ! $this->isCompleted();
-    }
-
-    public function canRedo()
-    {
-        // Cho phép làm lại nếu chưa quá hạn
-        return ! $this->isOverdue();
-    }
-
-    public function redoSubmission()
-    {
-        // Không xóa submission cũ, chỉ chuyển hướng sang trang nộp bài
-        return $this->redirect(route('student.assignments.submit', $this->assignment->id));
-    }
-
+    // Trạng thái badge
     public function getStatusBadge()
     {
-        if ($this->isCompleted()) {
+        if ($this->isSubmitted()) {
             return [
-                'text' => 'Đã hoàn thành',
-                'class' => 'bg-green-100 text-green-800',
-            ];
-        }
-
-        if ($this->isOverdue()) {
-            return [
-                'text' => 'Quá hạn',
-                'class' => 'bg-red-100 text-red-800',
+                'text' => 'Đã nộp',
+                'class' => 'badge-success',
             ];
         }
 
         return [
-            'text' => 'Cần làm',
-            'class' => 'bg-yellow-100 text-yellow-800',
+            'text' => 'Chưa nộp',
+            'class' => 'badge-warning',
         ];
     }
 
-    public function getTimeRemaining()
+    // Điểm
+    public function getScore()
     {
-        if ($this->isOverdue()) {
-            return 'Đã quá hạn '.$this->assignment->deadline->diffForHumans();
-        }
+        return $this->grade?->score;
+    }
 
-        return 'Còn lại '.$this->assignment->deadline->diffForHumans(now(), ['parts' => 2]);
+    // Nhận xét
+    public function getFeedback()
+    {
+        return $this->grade?->feedback;
     }
 
     public function render()
