@@ -1,335 +1,478 @@
+
 <x-layouts.dash-assistant active="assignments">
     @include('components.language')
+
     <div class="container-fluid">
+
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-journal-text mr-2"></i>{{ __('general.assignments_overview') }}
+                    <i class="bi bi-journal-text mr-2"></i>
+                    <strong>Bài tập về nhà</strong>
                 </h4>
-                <p class="text-muted mb-0">{{ __('general.manage_track_assignments') }}</p>
+
+                <p class="text-muted mb-0">
+                    Quản lý và chấm điểm bài tập cho học viên
+                </p>
             </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('assistant.assignments.create') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_new_assignment') }}
+
+            <div>
+                <a href="{{ route('assistant.assignments.create') }}"
+                    class="btn btn-primary">
+                    <i class="bi bi-plus-circle mr-2"></i>
+                    Tạo bài tập
                 </a>
             </div>
         </div>
 
-        <!-- Flash Messages -->
+        <!-- Flash -->
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ session('success') }}
+
+                <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
             </div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-danger alert-dismissible fade show">
+                {{ session('error') }}
+
+                <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
             </div>
         @endif
 
-        <!-- Bộ lọc tháng/năm (nếu cần) -->
+        <!-- Filter -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel mr-2"></i>{{ __('general.filter_by_month') }}
-                        </h5>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="d-flex gap-2 justify-content-end">
-                            <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
-                                @for ($month = 1; $month <= 12; $month++)
-                                    <option value="{{ $month }}">{{ __('general.month') }} {{ $month }}</option>
-                                @endfor
-                            </select>
-                            <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
-                                @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Thống kê tổng quan -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_assignments') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_assignments'] ?? 0 }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-journal-text fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.classes_with_assignments') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_classes'] ?? 0 }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-mortarboard fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_submissions') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_submissions'] ?? 0 }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-upload fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.submission_rate') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['submission_rate'] ?? 0 }}%</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-percent fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <div class="row">
 
-        <div class="row">
-            <div class="col-lg-8">
-                <!-- Top lớp nhiều bài tập nhất -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy mr-2"></i>{{ __('general.top_5_classes_most_assignments') }}
-                        </h5>
+                    <div class="col-md-4">
+                        <input type="text"
+                            wire:model.live="search"
+                            class="form-control"
+                            placeholder="Tìm bài tập...">
                     </div>
-                    <div class="card-body">
-                        @if ($topClasses->count() > 0)
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>{{ __('general.classroom') }}</th>
-                                            <th class="text-center">{{ __('general.total_assignments') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($topClasses as $classData)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm mr-3">
-                                                            <i class="bi bi-mortarboard fs-4 text-primary"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="fw-medium">
-                                                                {{ $classData['classroom']->name ?? '-' }}</div>
-                                                            <small
-                                                                class="text-muted">{{ $classData['classroom']->level ?? '' }}</small>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span
-                                                        class="badge bg-secondary">{{ $classData['total_assignments'] }}</span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @else
-                            <div class="text-center py-4">
-                                <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('general.no_assignment_data_yet') }}</h5>
-                            </div>
-                        @endif
-                    </div>
-                </div>
 
-                <!-- Bài tập gần đây -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-primary">
-                                <i class="bi bi-clock-history mr-2"></i>{{ __('general.recent_assignments') }}
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        @if ($recentAssignments->count() > 0)
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>{{ __('general.title') }}</th>
-                                            <th>{{ __('general.classroom') }}</th>
-                                            <th>{{ __('general.deadline') }}</th>
-                                            <th>{{ __('general.assigned_at') }}</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($recentAssignments as $assignment)
-                                            <tr>
-                                                <td>{{ $assignment->title }}</td>
-                                                <td>{{ $assignment->classroom->name ?? '-' }}</td>
-                                                <td>{{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}
-                                                </td>
-                                                <td>{{ $assignment->created_at->format('d/m/Y H:i') }}</td>
-                                                <td>
-                                                    <a href="{{ route('assistant.assignments.show', $assignment->id) }}"
-                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-eye"></i>
-                                                    </a>
-                                                    <a href="{{ route('assistant.assignments.edit', $assignment->id) }}"
-                                                        class="btn btn-sm btn-outline-warning">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <button type="button" data-toggle="modal"
-                                                        data-target="#deleteAssignmentModal{{ $assignment->id }}"
-                                                        class="btn btn-sm btn-outline-danger">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                    <div class="col-md-3">
+                        <select wire:model.live="classroomFilter"
+                            class="form-control">
 
-                                            <!-- Delete Confirmation Modal -->
-                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}" wire:ignore.self
-                                                tabindex="-1"
-                                                aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}"
-                                                aria-hidden="true">
-                                                <div
-                                                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"
-                                                                id="deleteAssignmentModalLabel{{ $assignment->id }}">
-                                                                Xác nhận xóa bài tập</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Bạn có chắc chắn muốn xóa bài tập
-                                                            "{{ $assignment->title }}"? Hành động này không thể hoàn
-                                                            tác.
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-danger"
-                                                                wire:click.prevent="deleteAssignment({{ $assignment->id }})"
-                                                                wire:loading.attr="disabled"
-                                                                wire:target="deleteAssignment">
-                                                                <span wire:loading.remove wire:target="deleteAssignment">Xóa</span>
-                                                                
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @else
-                            <div class="text-center py-4">
-                                <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('general.no_assignments_yet') }}</h5>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
+                            <option value="">
+                                Tất cả lớp
+                            </option>
 
-            <div class="col-lg-4">
-                <!-- Top học viên nộp bài đúng hạn -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star mr-2"></i>{{ __('general.top_5_on_time_students') }}
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        @if ($topStudents->count() > 0)
-                            @foreach ($topStudents as $index => $studentData)
-                                <div
-                                    class="d-flex align-items-center mb-3 {{ $index < 3 ? 'p-2 bg-light rounded' : '' }}">
-                                    <div class="mr-3">
-                                        @if ($index < 3)
-                                            <span class="badge bg-warning">{{ $index + 1 }}</span>
-                                        @else
-                                            <span class="badge bg-secondary">{{ $index + 1 }}</span>
-                                        @endif
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <div class="fw-medium">{{ $studentData['student']->name ?? '-' }}</div>
-                                        <small class="text-muted">{{ $studentData['student']->email ?? '' }}</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold text-success">{{ $studentData['on_time_rate'] }}%</div>
-                                        <small
-                                            class="text-muted">{{ $studentData['on_time'] }}/{{ $studentData['total_submissions'] }}</small>
-                                    </div>
-                                </div>
+                            @foreach ($classrooms as $classroom)
+                                <option value="{{ $classroom->id }}">
+                                    {{ $classroom->name }}
+                                </option>
                             @endforeach
-                        @else
-                            <div class="text-center py-3">
-                                <i class="bi bi-people fs-1 text-muted mb-2"></i>
-                                <p class="text-muted mb-0">{{ __('general.no_student_data') }}</p>
-                            </div>
-                        @endif
+
+                        </select>
                     </div>
+
+                    <div class="col-md-2">
+                        <select wire:model.live="selectedMonth"
+                            class="form-control">
+
+                            @for ($month = 1; $month <= 12; $month++)
+                                <option value="{{ $month }}">
+                                    Tháng {{ $month }}
+                                </option>
+                            @endfor
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select wire:model.live="selectedYear"
+                            class="form-control">
+
+                            @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
+                                <option value="{{ $year }}">
+                                    {{ $year }}
+                                </option>
+                            @endfor
+
+                        </select>
+                    </div>
+
                 </div>
             </div>
         </div>
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+
+            <!-- Tổng bài tập -->
+            <div class="col-md-4">
+                <div class="card bg-primary text-white shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <h6 class="mb-1">
+                                    Tổng bài tập
+                                </h6>
+
+                                <h2 class="mb-0">
+                                    {{ $overviewStats['total_assignments'] ?? 0 }}
+                                </h2>
+                            </div>
+
+                            <i class="bi bi-journal-text fs-1"></i>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chưa chấm -->
+            <div class="col-md-4">
+                <div class="card bg-warning text-white shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <h6 class="mb-1">
+                                    Bài tập chưa chấm
+                                </h6>
+
+                                <h2 class="mb-0">
+                                    {{ $overviewStats['ungraded_assignments'] ?? 0 }}
+                                </h2>
+                            </div>
+
+                            <i class="bi bi-clipboard-x fs-1"></i>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tỷ lệ -->
+            <div class="col-md-4">
+                <div class="card bg-success text-white shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <h6 class="mb-1">
+                                    Tỷ lệ hoàn thành
+                                </h6>
+
+                                <h2 class="mb-0">
+                                    {{ $overviewStats['completion_rate'] ?? 0 }}%
+                                </h2>
+                            </div>
+
+                            <i class="bi bi-check-circle fs-1"></i>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Assignment Table -->
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-light">
+                <h5 class="mb-0 text-primary">
+                    <i class="bi bi-clock-history mr-2"></i>
+                    Danh sách bài tập
+                </h5>
+            </div>
+
+            <div class="card-body">
+
+                @if ($recentAssignments->count() > 0)
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead class="table-light">
+
+                                <tr>
+                                    <th>Tiêu đề</th>
+                                    <th>Lớp học</th>
+                                    <th>Hạn nộp</th>
+                                    <th>Ngày giao</th>
+                                    <th>Trạng thái</th>
+                                    <th>Đã nộp</th>
+                                    <th width="220">Hành động</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @foreach ($recentAssignments as $assignment)
+
+                                    @php
+
+                                        $studentCount =
+                                            \App\Models\Student::whereHas(
+                                                'classrooms',
+                                                function ($q) use ($assignment) {
+                                                    $q->where(
+                                                        'classrooms.id',
+                                                        $assignment->class_id,
+                                                    );
+                                                },
+                                            )->count();
+
+                                        $gradedCount =
+                                            \App\Models\Grade::where(
+                                                'assignment_id',
+                                                $assignment->id,
+                                            )
+                                                ->whereNotNull('score')
+                                                ->count();
+
+                                        $isCompleted = $gradedCount > 0;
+                                        
+                                    @endphp
+
+                                    <tr>
+
+                                        <!-- Title -->
+                                        <td>
+                                            <div class="fw-semibold">
+                                                {{ $assignment->title }}
+                                            </div>
+                                        </td>
+
+                                        <!-- Classroom -->
+                                        <td>
+                                            {{ $assignment->classroom->name ?? '-' }}
+                                        </td>
+
+                                        <!-- Deadline -->
+                                        <td>
+                                            @if ($assignment->deadline)
+                                                {{ $assignment->deadline->format('d/m/Y H:i') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+                                        <!-- Created -->
+                                        <td>
+                                            {{ $assignment->created_at->format('d/m/Y H:i') }}
+                                        </td>
+
+                                        <!-- Status -->
+                                        <td>
+
+                                            @if ($isCompleted)
+
+                                                <span class="badge bg-success">
+                                                    Đã nộp
+                                                </span>
+
+                                            @else
+
+                                                <span class="badge bg-warning text-dark">
+                                                    Chưa chấm
+                                                </span>
+
+                                            @endif
+
+                                        </td>
+
+                                        <!-- Submission -->
+                                        <td>
+
+                                            @if ($isCompleted)
+
+                                                <span class="fw-bold text-success">
+                                                    {{ $gradedCount }}/{{ $studentCount }}
+                                                </span>
+
+                                            @else
+
+                                                <span class="text-muted">
+                                                    -
+                                                </span>
+
+                                            @endif
+
+                                        </td>
+
+                                        <!-- Actions -->
+                                        <td>
+
+                                            <!-- Chấm điểm -->
+                                            <a href="{{ route('assistant.assignments.show', $assignment->id) }}"
+                                                class="btn btn-sm btn-success"
+                                                title="Chấm điểm">
+
+                                                <i class="bi bi-clipboard-check"></i>
+
+                                            </a>
+
+                                            <!-- Xem -->
+                                            <a href="{{ route('assistant.assignments.show', $assignment->id) }}"
+                                                class="btn btn-sm btn-outline-primary"
+                                                title="Xem">
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </a>
+
+                                            <!-- Sửa -->
+                                            <a href="{{ route('assistant.assignments.edit', $assignment->id) }}"
+                                                class="btn btn-sm btn-outline-warning"
+                                                title="Sửa">
+
+                                                <i class="bi bi-pencil-square"></i>
+
+                                            </a>
+
+                                            <!-- Xóa -->
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-danger"
+                                                data-toggle="modal"
+                                                data-target="#deleteAssignmentModal{{ $assignment->id }}"
+                                                title="Xóa">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade"
+                                        id="deleteAssignmentModal{{ $assignment->id }}"
+                                        wire:ignore.self
+                                        tabindex="-1">
+
+                                        <div class="modal-dialog modal-dialog-centered">
+
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+
+                                                    <h5 class="modal-title">
+                                                        Xác nhận xóa
+                                                    </h5>
+
+                                                    <button type="button"
+                                                        class="close"
+                                                        data-dismiss="modal">
+
+                                                        <span>&times;</span>
+
+                                                    </button>
+
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    Bạn có chắc muốn xóa bài tập:
+
+                                                    <strong>
+                                                        {{ $assignment->title }}
+                                                    </strong>
+
+                                                    ?
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button type="button"
+                                                        class="btn btn-secondary"
+                                                        data-dismiss="modal">
+
+                                                        Hủy
+
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-danger"
+                                                        wire:click.prevent="deleteAssignment({{ $assignment->id }})">
+
+                                                        Xóa
+
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                @endforeach
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                @else
+
+                    <div class="text-center py-5">
+
+                        <i class="bi bi-journal-x fs-1 text-muted"></i>
+
+                        <h5 class="text-muted mt-3">
+                            Chưa có bài tập nào
+                        </h5>
+
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
     </div>
 
     <script>
-        // Đóng modal theo browser event (tương thích Bootstrap 4)
         window.addEventListener('closeModal', (event) => {
-            const detail = event && event.detail;
-            const modalId = Array.isArray(detail) ? detail[0] : (detail && (detail.modalId || detail));
+
+            const detail = event.detail;
+
+            const modalId = Array.isArray(detail)
+                ? detail[0]
+                : (detail.modalId || detail);
+
             if (!modalId) return;
+
             const selector = `#${modalId}`;
+
             if (window.$) {
+
                 $(selector).modal('hide');
-            } else {
-                const modal = document.getElementById(modalId);
-                if (!modal) return;
-                // Fallback: trigger click on close button
-                const btn = modal.querySelector('[data-dismiss="modal"], .close');
-                if (btn) btn.click();
+
             }
+
         });
     </script>
+
 </x-layouts.dash-assistant>

@@ -11,81 +11,44 @@ class Show extends Component
 {
     public Assignment $assignment;
 
-    public $assignmentId;
-
-    public $grade ;
+    public $grade;
 
     public function mount($assignmentId)
     {
-        $this->assignment = Assignment::findOrFail($assignmentId);
-
-        $this->grade = Grade::where('student_id', Auth::id())
-            ->where('assignment_id', $assignmentId)
-            ->first();
-    }
-
-    public function loadAssignment()
-    {
-        $student = Auth::user()->student;
-
-        if (!$student) {
-            abort(403, 'Bạn không có quyền truy cập');
-        }
+        $student = Auth::user();
 
         // Load assignment
         $this->assignment = Assignment::with([
             'classroom',
             'classroom.teachers',
-        ])
-        ->whereHas('classroom.students', function ($q) use ($student) {
-            $q->where('users.id', $student->user_id);
-        })
-        ->findOrFail($this->assignmentId);
+        ])->findOrFail($assignmentId);
 
         // Load điểm của học viên
-        $this->grade = Grade::where('assignment_id', $this->assignment->id)
-            ->where('student_id', $student->user_id)
+        $this->grade = Grade::where('assignment_id', $assignmentId)
+            ->where('student_id', $student->id)
             ->first();
     }
 
-    // Đã nộp = đã có điểm
+    // Đã có điểm
     public function isSubmitted()
     {
         return $this->grade !== null;
     }
 
-    // Chưa nộp
-    public function isUnsubmitted()
-    {
-        return $this->grade === null;
-    }
-
-    // Trạng thái badge
+    // Badge trạng thái
     public function getStatusBadge()
     {
         if ($this->isSubmitted()) {
             return [
                 'text' => 'Đã nộp',
-                'class' => 'badge-success',
+                'class' => 'bg-success',
             ];
         }
 
         return [
             'text' => 'Chưa nộp',
-            'class' => 'badge-warning',
+            'class' => 'bg-warning text-dark',
         ];
-    }
-
-    // Điểm
-    public function getScore()
-    {
-        return $this->grade?->score;
-    }
-
-    // Nhận xét
-    public function getFeedback()
-    {
-        return $this->grade?->feedback;
     }
 
     public function render()

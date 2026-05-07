@@ -46,8 +46,8 @@ class Create extends Component
         if ($user->role === 'admin') {
             $this->classrooms = Classroom::all();
         } else {
-            // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
-            $this->classrooms = Classroom::whereHas('assistant', function ($query) {
+            // Chỉ lấy các lớp học mà trợ giảng hiện tại đã tham gia
+            $this->classrooms = Classroom::whereHas('assistants', function ($query) {
                 $query->where('users.id', Auth::id());
             })->orderBy('name')->get();
         }
