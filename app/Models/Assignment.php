@@ -57,4 +57,8 @@ class Assignment extends Model
     {
         $this->attributes['max_score'] = $value === '' || $value === null ? null : $value;
     }
+     public function grades()
+    {
+        return $this->hasMany(\App\Models\Grade::class, 'assignment_id');
+    }
 }
