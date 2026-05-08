@@ -18,6 +18,7 @@
                                 <span class="input-group-text">
                                     <i class="bi bi-search"></i>
                                 </span>
+                                
                                 <input type="text" wire:model.live="searchTerm" class="form-control"
                                     placeholder="{{ __('general.search') }}...">
                             </div>
@@ -180,16 +181,21 @@
                                                         </div>
                                                         <div class="message-content">
                                                             <div class="message-text">{{ $message->message }}</div>
-                                                            @if ($message->attachment)
+                                                           @if ($message->attachment)
                                                                 <div class="attachment mt-2">
-                                                                    <i class="bi bi-paperclip"></i>
+                                                                    <i class="bi bi-paperclip text-white"></i>
+
                                                                     <a href="{{ Storage::url($message->attachment) }}"
-                                                                        target="_blank" class="text-decoration-none">
+                                                                       target="_blank"
+                                                                       class="text-white text-decoration-none">
+
                                                                         {{ basename($message->attachment) }}
                                                                     </a>
-                                                                    <small
-                                                                        class="text-muted d-block">{{ number_format(Storage::size($message->attachment) / 1024, 1) }}
-                                                                        KB</small>
+
+                                                                    <small class="text-light d-block">
+                                                                        {{ number_format(Storage::disk('public')->size($message->attachment) / 1024, 1) }}
+                                                                        KB
+                                                                    </small>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -217,15 +223,18 @@
                                     <div class="row g-2">
                                         <div class="col">
                                             <div class="input-group">
-                                                <input type="text" id="messageText" class="form-control"
+                                                <!--sửa-->
+                                                <input type="text" id="messageText" wire:model="messageText" class="form-control"
                                                     placeholder="{{ __('general.enter_message') }}" maxlength="1000">
-                                                <input type="file" id="attachment" class="d-none"
+                                                <!--sửa-->
+                                                <input type="file" id="attachment"   wire:model="attachment" class="d-none"
                                                     accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm"
                                                     onclick="document.getElementById('attachment').click()">
                                                     <i class="fas fa-paperclip"></i>
                                                 </button>
-                                                <button type="button" onclick="sendMessage()"
+                                                <!--sửa-->
+                                                <button type="button" onclick="sendMessage()" wire:click="sendMessage"
                                                     class="btn btn-primary">
                                                     <i class="bi bi-send"></i>
                                                 </button>
@@ -264,7 +273,7 @@
     </div>
 
     @script
-        <script>
+        <!--<script>
             // Request notification permission
             if (Notification.permission === 'default') {
                 Notification.requestPermission();
@@ -524,7 +533,7 @@
                     });
                 });
             });
-        </script>
+        </script>-->
     @endpush
 
 </x-layouts.dash-admin>

@@ -10,10 +10,10 @@
                     </h4>
                     <p class="text-muted mb-0">{{ __('general.manage_store_search_lessons') }}</p>
                 </div>
-                <div>
+                <!--<div>
                     <a href="{{ route('lessons.create') }}" class="btn btn-success"><i class="bi bi-plus-circle mr-1"></i>
                         {{ __('general.add_lesson') }}</a>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -117,11 +117,11 @@
                                         <td>
                                             <a href="{{ route('lessons.show', $lesson->id) }}"
                                                 class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
-                                            <a href="{{ route('lessons.edit', $lesson->id) }}"
+                                            <!--<a href="{{ route('lessons.edit', $lesson->id) }}"
                                                 class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
                                             <button type="button" class="btn btn-sm btn-outline-danger"
                                                 wire:click="confirmDelete({{ $lesson->id }}, '{{ addslashes($lesson->title) }}')"><i
-                                                    class="bi bi-trash"></i></button>
+                                                    class="bi bi-trash"></i></button>-->
                                         </td>
                                     </tr>
                                 @endforeach

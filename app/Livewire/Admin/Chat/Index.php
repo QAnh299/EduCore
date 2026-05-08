@@ -51,6 +51,7 @@ class Index extends Component
     public function selectUser($userId)
     {
         $this->selectedUser = User::find($userId);
+        //$this->selectedUser = $userId;
         $this->selectedClass = null;
         $this->messageType = 'user';
         $this->activeTab = 'users';
@@ -102,8 +103,8 @@ class Index extends Component
                     return;
                 }
 
-                // Kiểm tra kích thước
-                if ($this->attachment->getSize() > 102400 * 1024) { // 100MB
+                // Kiểm tra kích thước, tối đa là 100MB
+                if ($this->attachment->getSize() > 102400 * 1024) { 
                     $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
 
                     return;
@@ -138,11 +139,15 @@ class Index extends Component
             'sender_id' => Auth::id(),
             'message' => $this->messageText,
         ];
-
+        
         if ($this->messageType === 'user' && $this->selectedUser) {
             $messageData['receiver_id'] = $this->selectedUser->id;
         } elseif ($this->messageType === 'class' && $this->selectedClass) {
             $messageData['class_id'] = $this->selectedClass->id;
+        }
+        if (!isset($messageData['receiver_id']) && !isset($messageData['class_id'])) {
+            $this->addError('messageText', 'Chưa chọn người nhận hoặc lớp.');
+            return;
         }
 
         if ($this->attachment) {
@@ -152,8 +157,9 @@ class Index extends Component
                     'size' => $this->attachment->getSize(),
                     'mime_type' => $this->attachment->getMimeType(),
                 ]);
-
-                $path = $this->attachment->store('chat-attachments', 'public');
+                $filename = $this->attachment->getClientOriginalName();//thêm mới
+                //$path = $this->attachment->store('chat-attachments', 'public');
+                $path = $this->attachment->storeAs('chat-attachments', $filename, 'public');
                 $messageData['attachment'] = $path;
 
                 Log::info('Attachment uploaded successfully', ['path' => $path]);
@@ -168,15 +174,36 @@ class Index extends Component
             }
         }
 
-        $message = Message::create($messageData);
+        //$message = Message::create($messageData);
+        try {
+    $message = Message::create($messageData);
+
+    // Dispatch event để broadcast tin nhắn
+    Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+    // \App\Events\MessageSent::dispatch($message);
+
+    $this->messageText = '';
+    $this->attachment = null;
+    $this->dispatch('messageSent');
+
+} catch (\Exception $e) {
+    Log::error('Send message failed', [
+        'error' => $e->getMessage(),
+        'data' => $messageData
+    ]);
+
+    $this->addError('messageText', 'Gửi tin nhắn thất bại');
+    return;
+}
+
 
         // Dispatch event để broadcast tin nhắn
-        Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
-        \App\Events\MessageSent::dispatch($message);
+        //Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+       // \App\Events\MessageSent::dispatch($message);
 
-        $this->messageText = '';
-        $this->attachment = null;
-        $this->dispatch('messageSent');
+        //$this->messageText = '';
+        //$this->attachment = null;
+        //$this->dispatch('messageSent');
     }
 
     public function testUpload()
