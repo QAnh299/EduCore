@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Teacher\GradeEntry;
+namespace App\Livewire\Assistant\GradeEntry;
 
 use Livewire\WithPagination;
 use Livewire\Component;
@@ -77,7 +77,7 @@ class Show extends Component
 
     public function render()
     {
-        return view('teacher.grade-entry.show');
+        return view('assistant.grade-entry.show');
     }
 
     public function delete($id)

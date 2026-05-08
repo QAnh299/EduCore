@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Teacher\GradeEntry;
+namespace App\Livewire\Assistant\GradeEntry;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -104,7 +104,7 @@ class Index extends Component
             ->orderBy('name')
             ->paginate(10);
 
-        return view('teacher.grade-entry.index', [
+        return view('assistant.grade-entry.index', [
             'students' => $students,
             'classrooms' => $classrooms,
         ]);
