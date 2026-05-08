@@ -18,12 +18,30 @@
         ],
 
         // ===== ADMIN =====
+<<<<<<< Updated upstream
         [
             'key' => 'users',
             'label' => __('general.manage_users'),
             'route' => safeRoute($role === 'admin', 'users.index'),
             'icon' => 'fas fa-users-cog',
             'visible' => $role === 'admin',
+=======
+        [
+            'key' => 'users',
+            'label' => __('general.manage_users'),
+            'route' => safeRoute($role === 'admin', 'users.index'),
+            'icon' => 'fas fa-users-cog',
+            'visible' => $role === 'admin',
+        ],
+
+        // ===== BOSS =====
+        [
+            'key' => 'attendances',
+            'label' => __('general.attendance'),
+            'route' => safeRoute($role === 'boss', 'attendances.overview'),
+            'icon' => 'fas fa-calendar-check',
+            'visible' => $role === 'boss',
+>>>>>>> Stashed changes
         ],
 
         // ===== BOSS =====
@@ -47,6 +65,37 @@
             'route' => safeRoute($role === 'boss', 'schedules.index'),
             'icon' => 'fas fa-calendar-alt',
             'visible' => $role === 'boss',
+<<<<<<< Updated upstream
+=======
+        ],
+        [
+            'key' => 'assignments',
+            'label' => __('general.assignments'),
+            'route' => safeRoute($role === 'boss', 'assignments.overview'),
+            'icon' => 'fas fa-tasks',
+            'visible' => $role === 'boss',
+        ],
+        [
+            'key' => 'grade-entry',
+            'label' => 'Nhập điểm',
+            'route' => safeRoute($role === 'boss', 'grade-entry.index'),
+            'icon' => 'fas fa-pen',
+            'visible' => $role === 'boss',
+        ],
+        [
+            'key' => 'quizzes',
+            'label' => __('general.quizzes'),
+            'route' => safeRoute($role === 'boss', 'quizzes.index'),
+            'icon' => 'fas fa-question-circle',
+            'visible' => $role === 'boss',
+        ],
+        [
+            'key' => 'lessons',
+            'label' => __('general.lessons'),
+            'route' => safeRoute($role === 'boss', 'lessons.index'),
+            'icon' => 'fas fa-book',
+            'visible' => $role === 'boss',
+>>>>>>> Stashed changes
         ],
         //[
             //'key' => 'assignments',
@@ -79,7 +128,11 @@
         ],
         [
             'key' => 'reports',
+<<<<<<< Updated upstream
             'label' => 'Báo cáo học tập',
+=======
+            'label' => __('general.reports'),
+>>>>>>> Stashed changes
             'route' => safeRoute($role === 'boss', 'reports.index'),
             'icon' => 'fas fa-chart-bar',
             'visible' => $role === 'boss',

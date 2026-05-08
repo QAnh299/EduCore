@@ -52,9 +52,13 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
+<<<<<<< Updated upstream
 
 Route::middleware(['auth', 'role:admin,teacher,student,assistant,boss'])->group(function () {
 //Route::middleware(['auth', 'role:admin,teacher,student,boss'])->group(function () {
+=======
+Route::middleware(['auth', 'role:admin,teacher,student,boss'])->group(function () {
+>>>>>>> Stashed changes
     Route::get('/dashboard', Home::class)->name('dashboard');
     
     //Route::get('/dashboard', function () {return 'DASHBOARD OK';});
@@ -66,13 +70,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
     Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
 });
+<<<<<<< Updated upstream
 // Boss routes
+=======
+>>>>>>> Stashed changes
 Route::middleware(['auth', 'role:boss'])->group(function () {
     Route::get('/test123', function () {
     return 'HELLO';
 });
 Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
+<<<<<<< Updated upstream
    
+=======
+    //Route::get('/admin/classrooms', function () {
+    //return 'OK BOSS';
+>>>>>>> Stashed changes
 //});
     Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
     Route::get('/admin/classrooms/{classroom}', \App\Livewire\Admin\Classrooms\Show::class)->name('classrooms.show');
