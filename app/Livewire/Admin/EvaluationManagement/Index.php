@@ -71,7 +71,7 @@ class Index extends Component
         'roundForm.end_date' => 'required|date|after:roundForm.start_date',
         'roundForm.is_active' => 'boolean',
     ];
-
+ 
     protected $messages = [
         'questionForm.category.required' => 'Vui lòng chọn danh mục câu hỏi.',
         'questionForm.category.in' => 'Danh mục không hợp lệ.',
@@ -195,7 +195,7 @@ class Index extends Component
                 'limit' => $this->categoryLimits[$category],
             ]);
 
-            if ($activeCount >= $this->categoryLimits[$category]) {
+           if (! $excludeId && $activeCount >= $this->categoryLimits[$category]) {
                 session()->flash('error', __('views.validation_question_limit_reached'));
                 Log::warning('Question limit reached for category:', ['category' => $category]);
 
@@ -215,7 +215,7 @@ class Index extends Component
                 'hasDuplicate' => $dupOrder,
             ]);
 
-            if ($dupOrder) {
+            if (! $excludeId && $dupOrder) {
                 session()->flash('error', __('views.validation_order_duplicate'));
                 Log::warning('Duplicate order found for category:', ['category' => $category, 'order' => $order]);
 
@@ -323,10 +323,10 @@ class Index extends Component
                 'Thời gian học tập có hợp lý và hiệu quả không?',
                 'Cơ sở vật chất và trang thiết bị có đáp ứng nhu cầu học tập không?',
                 'Bạn có hài lòng với chất lượng học tập tại trung tâm không?',
-                'Giáo viên có nhiệt tình và tạo không khí học tập tích cực không?',
-                'Giáo viên có sẵn sàng giải đáp thắc mắc và hỗ trợ học viên không?',
-                'Giáo viên có sử dụng phương pháp giảng dạy hiệu quả và phù hợp không?',
-                'Giáo viên có đánh giá công bằng và khách quan không?',
+                'Giáo viên/Trợ giảng có nhiệt tình và tạo không khí học tập tích cực không?',
+                'Giáo viên/Trợ giảng có sẵn sàng giải đáp thắc mắc và hỗ trợ học viên không?',
+                'Giáo viên/Trợ giảng có sử dụng phương pháp giảng dạy hiệu quả và phù hợp không?',
+                'Giáo viên/Trợ giảng có đánh giá công bằng và khách quan không?',
             ];
 
             $existingDefaultCount = 0;
@@ -400,25 +400,25 @@ class Index extends Component
                 // Câu hỏi đánh giá Giáo viên - Hoạt động
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên có nhiệt tình và tạo không khí học tập tích cực không?',
+                    'question' => 'Giáo viên/Trợ giảng có nhiệt tình và tạo không khí học tập tích cực không?',
                     'order' => 1,
                     'is_active' => true,
                 ],
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên có sẵn sàng giải đáp thắc mắc và hỗ trợ học viên không?',
+                    'question' => 'Giáo viên/Trợ giảng có sẵn sàng giải đáp thắc mắc và hỗ trợ học viên không?',
                     'order' => 2,
                     'is_active' => true,
                 ],
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên có sử dụng phương pháp giảng dạy hiệu quả và phù hợp không?',
+                    'question' => 'Giáo viên/Trợ giảng có sử dụng phương pháp giảng dạy hiệu quả và phù hợp không?',
                     'order' => 3,
                     'is_active' => true,
                 ],
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên có đánh giá công bằng và khách quan không?',
+                    'question' => 'Giáo viên/Trợ giảng có đánh giá công bằng và khách quan không?',
                     'order' => 4,
                     'is_active' => true,
                 ],
@@ -426,25 +426,25 @@ class Index extends Component
                 // Câu hỏi đánh giá Giáo viên - Không hoạt động
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên có nhiệt tình và tạo môi trường học tích cực không?',
+                    'question' => 'Giáo viên/Trợ giảng có nhiệt tình và tạo môi trường học tích cực không?',
                     'order' => 5,
                     'is_active' => false,
                 ],
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên có giải đáp thắc mắc kịp thời và đầy đủ không?',
+                    'question' => 'Giáo viên/Trợ giảng có giải đáp thắc mắc kịp thời và đầy đủ không?',
                     'order' => 6,
                     'is_active' => false,
                 ],
                 [
                     'category' => 'teacher',
-                    'question' => 'Phương pháp giảng dạy của giáo viên có phù hợp và hiệu quả không?',
+                    'question' => 'Phương pháp giảng dạy của Giáo viên/Trợ giảng có phù hợp và hiệu quả không?',
                     'order' => 7,
                     'is_active' => false,
                 ],
                 [
                     'category' => 'teacher',
-                    'question' => 'Giáo viên đánh giá kết quả học tập công bằng và khách quan chứ?',
+                    'question' => 'Giáo viên/Trợ giảng đánh giá kết quả học tập công bằng và khách quan chứ?',
                     'order' => 8,
                     'is_active' => false,
                 ],

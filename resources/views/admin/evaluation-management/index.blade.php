@@ -325,12 +325,12 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-success" wire:click="loadDefaultQuestions"
+                               <!-- <button class="btn btn-success" wire:click="loadDefaultQuestions"
                                     wire:confirm="Bạn có chắc chắn muốn tải các câu hỏi mặc định? Hành động này sẽ thêm các câu hỏi mới vào hệ thống."
                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Tải các câu hỏi mặc định từ hệ thống (17 câu hỏi)">
                                     <i class="bi bi-download mr-2"></i>Tải câu hỏi mặc định
-                                </button>
+                                </button> !-->
                                 <button class="btn btn-danger" wire:click="clearAllQuestions"
                                     wire:confirm="Bạn có chắc chắn muốn xóa TẤT CẢ câu hỏi? Hành động này không thể hoàn tác và sẽ xóa tất cả câu hỏi trong hệ thống!"
                                     data-bs-toggle="tooltip" data-bs-placement="top"
@@ -426,7 +426,8 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $questions->links('vendor.pagination.bootstrap-5') }}
+                              
+                                {{ $questions->links() }}
                             </div>
                         @else
                             <div class="text-center py-4">
