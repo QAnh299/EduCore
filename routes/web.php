@@ -64,6 +64,36 @@ Route::middleware(['auth', 'role:admin,teacher,student,boss'])->group(function (
     //Route::get('/dashboard', function () {return 'DASHBOARD OK';});
 });
 
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/profile', \App\Livewire\Profile::class)
+        ->name('profile');
+
+});
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/profile', function () {
+        return view('student.profile', [
+            'user' => Auth::user()
+        ]);
+    })->name('profile');
+
+    Route::post('/profile/update', function (Request $request) {
+
+        $user = Auth::user();
+
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+       
+
+        $user->save();
+
+        return back()->with('success','Cập nhật thành công');
+        
+    })->name('profile.update');
+
+});
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users', UsersIndex::class)->name('users.index');

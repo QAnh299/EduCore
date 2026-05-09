@@ -10,6 +10,10 @@
         x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95">
+        <a href="{{ route('profile') }}" class="dropdown-item">
+    <i class="fas fa-user mr-2"></i>{{ __('Thông tin tài khoản') }}
+</a>
+<div class="dropdown-divider"></div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="dropdown-item text-danger">

@@ -1,6 +1,7 @@
 @php
     $student = Auth::user()->student;
     $needEvaluation = false;
+$currentRounds = collect(); // ← Add this line
 
     if ($student) {
         $currentRounds = \App\Models\EvaluationRound::current()->get();
