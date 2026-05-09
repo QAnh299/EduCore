@@ -52,17 +52,16 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-<<<<<<< Updated upstream
-
 Route::middleware(['auth', 'role:admin,teacher,student,assistant,boss'])->group(function () {
-//Route::middleware(['auth', 'role:admin,teacher,student,boss'])->group(function () {
-=======
-Route::middleware(['auth', 'role:admin,teacher,student,boss'])->group(function () {
->>>>>>> Stashed changes
+
     Route::get('/dashboard', Home::class)->name('dashboard');
+
+});
+
+
     
     //Route::get('/dashboard', function () {return 'DASHBOARD OK';});
-});
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -71,50 +70,27 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile');
 
 });
-Route::middleware(['auth'])->group(function () {
 
-    Route::get('/profile', function () {
-        return view('student.profile', [
-            'user' => Auth::user()
-        ]);
-    })->name('profile');
-
-    Route::post('/profile/update', function (Request $request) {
-
-        $user = Auth::user();
-
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-       
-
-        $user->save();
-
-        return back()->with('success','Cập nhật thành công');
-        
-    })->name('profile.update');
-
-});
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users', UsersIndex::class)->name('users.index');
     Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
     Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
 });
-<<<<<<< Updated upstream
+
 // Boss routes
-=======
->>>>>>> Stashed changes
+
+
 Route::middleware(['auth', 'role:boss'])->group(function () {
     Route::get('/test123', function () {
     return 'HELLO';
 });
 Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
-<<<<<<< Updated upstream
-   
-=======
+
+
     //Route::get('/admin/classrooms', function () {
     //return 'OK BOSS';
->>>>>>> Stashed changes
+
 //});
     Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
     Route::get('/admin/classrooms/{classroom}', \App\Livewire\Admin\Classrooms\Show::class)->name('classrooms.show');
