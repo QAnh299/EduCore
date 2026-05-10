@@ -1,6 +1,15 @@
-<x-layouts.dash-teacher active="grade-entry" title="Nhập điểm mới">
+<?php if (isset($component)) { $__componentOriginal185e6e7d8721a01a42e994a332e9d66f = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal185e6e7d8721a01a42e994a332e9d66f = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.dash-assistant','data' => ['active' => 'grade-entry','title' => 'Nhập điểm mới']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.dash-assistant'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['active' => 'grade-entry','title' => 'Nhập điểm mới']); ?>
 
-    @include('components.language')
+    <?php echo $__env->make('components.language', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <div class="row">
         <div class="col-12">
@@ -43,7 +52,8 @@
                         <div class="col-md-3">
 
                             <label for="classroomFilter" class="form-label">
-                                {{ __('general.classroom') }}
+                                <?php echo e(__('general.classroom')); ?>
+
                             </label>
 
                             <select
@@ -53,16 +63,18 @@
                             >
 
                                 <option value="">
-                                    {{ __('general.all_classes') }}
+                                    <?php echo e(__('general.all_classes')); ?>
+
                                 </option>
 
-                                @foreach ($classrooms as $classroom)
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $classrooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $classroom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                                    <option value="{{ $classroom->id }}">
-                                        {{ $classroom->name }}
+                                    <option value="<?php echo e($classroom->id); ?>">
+                                        <?php echo e($classroom->name); ?>
+
                                     </option>
 
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                             </select>
 
@@ -82,7 +94,8 @@
 
                                 <i class="bi bi-x-circle mr-2"></i>
 
-                                {{ __('general.clear_filters') }}
+                                <?php echo e(__('general.clear_filters')); ?>
+
 
                             </button>
 
@@ -115,75 +128,79 @@
 
                                 <tbody>
 
-                                    @forelse ($students as $student)
+                                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $students; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $student): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 
-                                        @php
+                                        <?php
                                             $studentRank = $this->getStudentRank(
-                                                $student->id, $students
+                                                $student->id,
                                             );
-                                        @endphp
+                                        ?>
 
                                         <tr>
 
                                             <!-- TÊN -->
                                             <td class="fw-semibold">
-                                                {{ $student->name }}
+                                                <?php echo e($student->name); ?>
+
                                             </td>
 
                                             <!-- LỚP -->
                                             <td>
 
-                                                @forelse ($student->classrooms as $classroom)
+                                                <!--[if BLOCK]><![endif]--><?php $__empty_2 = true; $__currentLoopData = $student->classrooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $classroom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
 
                                                     <span class="badge bg-primary me-1">
-                                                        {{ $classroom->name }}
+                                                        <?php echo e($classroom->name); ?>
+
                                                     </span>
 
-                                                @empty
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
 
                                                     <span class="text-muted">
                                                         Chưa có lớp
                                                     </span>
 
-                                                @endforelse
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                             </td>
 
                                             <!-- ĐIỂM TB -->
                                             <td>
 
-                                                @if($student->average_score !== null)
+                                                <!--[if BLOCK]><![endif]--><?php if($student->average_score !== null): ?>
 
                                                     <span class="fw-bold text-primary">
-                                                        {{ number_format($student->average_score, 1) }}
+                                                        <?php echo e(number_format($student->average_score, 1)); ?>
+
                                                     </span>
 
-                                                @else
+                                                <?php else: ?>
 
                                                     <span class="text-muted">
                                                         Chưa có điểm
                                                     </span>
 
-                                                @endif
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                             </td>
 
                                             <!-- XẾP HẠNG -->
                                             <td>
 
-                                                @if($studentRank)
+                                                <!--[if BLOCK]><![endif]--><?php if($studentRank): ?>
 
                                                     <span class="badge bg-warning text-dark">
-                                                        #{{ $studentRank }}
+                                                        #<?php echo e($studentRank); ?>
+
                                                     </span>
 
-                                                @else
+                                                <?php else: ?>
 
                                                     <span class="text-muted">
                                                         Chưa có xếp hạng
                                                     </span>
 
-                                                @endif
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                             </td>
 
@@ -191,7 +208,7 @@
                                             <td>
 
                                                 <a
-                                                    href="{{ route('teacher.grade-entry-teacher.show', $student->id) }}"
+                                                    href="<?php echo e(route('assistant.grade-entry-assistant.show', $student->id)); ?>"
                                                     class="btn btn-sm btn-info"
                                                 >
                                                     Xem chi tiết
@@ -201,7 +218,7 @@
 
                                         </tr>
 
-                                    @empty
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
 
                                         <tr>
 
@@ -215,7 +232,7 @@
 
                                         </tr>
 
-                                    @endforelse
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 </tbody>
 
@@ -225,7 +242,8 @@
 
                         <!-- PAGINATION -->
                         <div class="mt-3">
-                            {{ $students->links() }}
+                            <?php echo e($students->links()); ?>
+
                         </div>
 
                     </div>
@@ -237,4 +255,13 @@
         </div>
     </div>
 
-</x-layouts.dash-teacher>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal185e6e7d8721a01a42e994a332e9d66f)): ?>
+<?php $attributes = $__attributesOriginal185e6e7d8721a01a42e994a332e9d66f; ?>
+<?php unset($__attributesOriginal185e6e7d8721a01a42e994a332e9d66f); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal185e6e7d8721a01a42e994a332e9d66f)): ?>
+<?php $component = $__componentOriginal185e6e7d8721a01a42e994a332e9d66f; ?>
+<?php unset($__componentOriginal185e6e7d8721a01a42e994a332e9d66f); ?>
+<?php endif; ?><?php /**PATH C:\xampp\htdocs\educore\resources\views/assistant/grade-entry/index.blade.php ENDPATH**/ ?>

@@ -2,17 +2,16 @@
 
 namespace App\Livewire\Assistant\GradeEntry;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Classroom;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use Livewire\WithPagination;
+
 class Index extends Component
 {
-    //public function render()
-    //{
-        //return view('admin.grade-entry.index');
-    //}
     use WithPagination;
+
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
@@ -22,7 +21,7 @@ class Index extends Component
         'search' => ['except' => ''],
         'classroomFilter' => ['except' => ''],
     ];
-// Reset về page 1 khi filter thay đổi
+
     public function updatedSearch()
     {
         $this->resetPage();
@@ -35,29 +34,101 @@ class Index extends Component
 
     public function clearFilters()
     {
-        $this->reset(['search', 'classroomFilter']);
+        $this->reset([
+            'search',
+            'classroomFilter',
+        ]);
+
         $this->resetPage();
     }
 
+    /**
+     * Lấy xếp hạng toàn bộ học viên
+     */
+    public function getStudentRank($studentId)
+    {
+        $allStudents = User::query()
+            ->where('role', 'student')
+
+            ->leftJoin(
+                'grades','grades.student_id','=','users.id'
+            )
+
+            ->select(
+                'users.id','users.name',
+                DB::raw('ROUND(AVG(grades.score), 1) as average_score')
+            )
+
+            ->groupBy('users.id','users.name')
+        ->havingRaw('average_score IS NOT NULL')
+            ->orderByDesc('average_score')
+            ->orderBy('users.name')
+
+            ->get();
+
+        foreach ($allStudents as $index => $student) {
+
+            if ($student->id == $studentId) {
+                return $index + 1;
+            }
+        }
+
+        return null;
+    }
 
     public function render()
     {
         $classrooms = Classroom::orderBy('name')->get();
+
         $students = User::query()
-            ->where('role', 'student')   // chỉ lấy student
-            ->with('classrooms') // eager loading
-            
+
+            ->where('role', 'student')
+
+            ->leftJoin(
+                'grades',
+                'grades.student_id',
+                '=',
+                'users.id'
+            )
+
+            ->select(
+                'users.id',
+                'users.name',
+                'users.email',
+                DB::raw('ROUND(AVG(grades.score), 1) as average_score')
+            )
+
+            ->with('classrooms')
+
             ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
-            })->with('classrooms') // eager loading
+
+                $query->where(
+                    'users.name',
+                    'like',
+                    '%' . $this->search . '%'
+                );
+            })
 
             ->when($this->classroomFilter, function ($query) {
+
                 $query->whereHas('classrooms', function ($q) {
-                    $q->where('classrooms.id', $this->classroomFilter);
+
+                    $q->where(
+                        'classrooms.id',
+                        $this->classroomFilter
+                    );
                 });
             })
 
-            ->orderBy('name')
+            ->groupBy(
+                'users.id',
+                'users.name',
+                'users.email'
+            )
+
+            ->orderByDesc('average_score')
+            ->orderBy('users.name')
+
             ->paginate(10);
 
         return view('assistant.grade-entry.index', [
