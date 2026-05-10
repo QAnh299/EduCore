@@ -44,7 +44,7 @@ class Index extends Component
     }
 
     /**
-     * Tính điểm trung bình theo công thức:
+     * Tính điểm trung bình:
      * homework 10%
      * minitest 30%
      * monthly_exam 60%
@@ -76,46 +76,132 @@ class Index extends Component
     }
 
     /**
-     * Lấy xếp hạng toàn bộ học viên
+     * Lấy rank theo khối
+     * Đồng điểm => cùng rank
      */
-    public function getStudentRank($studentId, $students = null)
-    {
-        $allStudents = User::where('role', 'student')->get();
+    public function getStudentRank($studentId)
+{
+    $currentStudent = User::with('classrooms')
+        ->find($studentId);
 
-        $scores = [];
-
-        foreach ($allStudents as $student) {
-
-            $average = $this->calculateAverage($student->id);
-
-            if ($average > 0) {
-
-                $scores[] = [
-                    'id' => $student->id,
-                    'average_score' => $average,
-                    'name' => $student->name,
-                ];
-            }
-        }
-
-        usort($scores, function ($a, $b) {
-
-            if ($a['average_score'] == $b['average_score']) {
-                return strcmp($a['name'], $b['name']);
-            }
-
-            return $b['average_score'] <=> $a['average_score'];
-        });
-
-        foreach ($scores as $index => $student) {
-
-            if ($student['id'] == $studentId) {
-                return $index + 1;
-            }
-        }
-
+    if (
+        !$currentStudent ||
+        $currentStudent->classrooms->isEmpty()
+    ) {
         return null;
     }
+
+    /**
+     * Lấy khối hiện tại từ tên lớp
+     * Ví dụ:
+     * Lớp 6A -> 6
+     * Lớp 7B -> 7
+     */
+    $currentClassroom = $currentStudent
+        ->classrooms
+        ->first();
+
+    preg_match('/\d+/', $currentClassroom->name, $matches);
+
+    $currentGrade = $matches[0] ?? null;
+
+    if (!$currentGrade) {
+        return null;
+    }
+
+    /**
+     * Lấy học viên cùng khối
+     */
+    $students = User::where('role', 'student')
+        ->with('classrooms')
+        ->get()
+        ->filter(function ($student) use ($currentGrade) {
+
+            if ($student->classrooms->isEmpty()) {
+                return false;
+            }
+
+            $classroomName = $student
+                ->classrooms
+                ->first()
+                ->name;
+
+            preg_match('/\d+/', $classroomName, $matches);
+
+            $studentGrade = $matches[0] ?? null;
+
+            return $studentGrade == $currentGrade;
+        });
+
+    $scores = [];
+
+    foreach ($students as $student) {
+
+        $average = $this->calculateAverage(
+            $student->id
+        );
+
+        if ($average > 0) {
+
+            $scores[] = [
+                'id' => $student->id,
+                'name' => $student->name,
+                'average_score' => $average,
+            ];
+        }
+    }
+
+    /**
+     * Sort:
+     * Điểm giảm dần
+     * Nếu bằng điểm -> sort tên
+     */
+    usort($scores, function ($a, $b) {
+
+        if (
+            $a['average_score']
+            ==
+            $b['average_score']
+        ) {
+            return strcmp(
+                $a['name'],
+                $b['name']
+            );
+        }
+
+        return $b['average_score']
+            <=>
+            $a['average_score'];
+    });
+
+    /**
+     * Đồng điểm => cùng rank
+     * Ví dụ:
+     * 1,1,3,4
+     */
+    $rank = 1;
+
+    $previousScore = null;
+
+    foreach ($scores as $index => $student) {
+
+        if (
+            $previousScore !== null &&
+            $student['average_score'] < $previousScore
+        ) {
+            $rank = $index + 1;
+        }
+
+        if ($student['id'] == $studentId) {
+
+            return $rank;
+        }
+
+        $previousScore = $student['average_score'];
+    }
+
+    return null;
+}
 
     public function render()
 {
@@ -150,19 +236,42 @@ class Index extends Component
         ->get();
 
     /**
-     * Gắn average_score cho từng học viên
+     * Gắn average_score + grade_level
      */
     $students->transform(function ($student) {
 
-        $student->average_score = $this->calculateAverage(
-            $student->id
-        );
+        $student->average_score =
+            $this->calculateAverage(
+                $student->id
+            );
+
+        /**
+         * Lấy khối từ tên lớp
+         * Ví dụ:
+         * Lớp 6A -> 6
+         */
+        if ($student->classrooms->isNotEmpty()) {
+
+            $classroomName = $student
+                ->classrooms
+                ->first()
+                ->name;
+
+            preg_match('/\d+/', $classroomName, $matches);
+
+            $student->grade_level =
+                $matches[0] ?? 0;
+
+        } else {
+
+            $student->grade_level = 0;
+        }
 
         return $student;
     });
 
     /**
-     * Có điểm -> lên đầu
+     * Chỉ lấy học viên có điểm
      */
     $rankedStudents = $students
 
@@ -171,17 +280,53 @@ class Index extends Component
             return $student->average_score > 0;
         })
 
+        /**
+         * Sort theo:
+         * 1. Khối tăng dần
+         * 2. Điểm giảm dần
+         * 3. Tên tăng dần
+         */
         ->sort(function ($a, $b) {
 
-            if ($a->average_score == $b->average_score) {
-                return strcmp($a->name, $b->name);
+            /**
+             * Sort theo khối
+             */
+            if (
+                $a->grade_level
+                !=
+                $b->grade_level
+            ) {
+
+                return $a->grade_level
+                    <=>
+                    $b->grade_level;
             }
 
-            return $b->average_score <=> $a->average_score;
+            /**
+             * Sort theo điểm
+             */
+            if (
+                $a->average_score
+                !=
+                $b->average_score
+            ) {
+
+                return $b->average_score
+                    <=>
+                    $a->average_score;
+            }
+
+            /**
+             * Sort theo tên
+             */
+            return strcmp(
+                $a->name,
+                $b->name
+            );
         });
 
     /**
-     * Chưa có điểm -> xuống cuối
+     * Học viên chưa có điểm
      */
     $unrankedStudents = $students
 
