@@ -1,6 +1,15 @@
-<x-layouts.dash-student active="grade" title="Quản lý điểm">
+<?php if (isset($component)) { $__componentOriginal269d5864c76e2ab5ce407a5373eff4ab = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal269d5864c76e2ab5ce407a5373eff4ab = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.dash-student','data' => ['active' => 'grade','title' => 'Quản lý điểm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.dash-student'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['active' => 'grade','title' => 'Quản lý điểm']); ?>
 
-    @include('components.language')
+    <?php echo $__env->make('components.language', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <div class="row">
 
@@ -37,15 +46,16 @@
 
                                     <h2 class="fw-bold mb-0">
 
-                                        @if($average > 0)
+                                        <!--[if BLOCK]><![endif]--><?php if($average > 0): ?>
 
-                                            {{ number_format($average, 1) }}
+                                            <?php echo e(number_format($average, 1)); ?>
 
-                                        @else
+
+                                        <?php else: ?>
 
                                             0
 
-                                        @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                     </h2>
 
@@ -68,15 +78,16 @@
 
                                     <h2 class="fw-bold mb-0">
 
-                                        @if($rank)
+                                        <!--[if BLOCK]><![endif]--><?php if($rank): ?>
 
-                                            {{ $rank }}/{{ $totalStudents }}
+                                            <?php echo e($rank); ?>/<?php echo e($totalStudents); ?>
 
-                                        @else
+
+                                        <?php else: ?>
 
                                             Chưa có
 
-                                        @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                     </h2>
 
@@ -108,52 +119,54 @@
 
                             <tbody>
 
-                                @forelse($grades as $grade)
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $grades; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grade): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 
                                     <tr>
 
                                         <!-- LOẠI ĐIỂM -->
                                         <td>
 
-                                            @switch($grade->grade_type)
+                                            <!--[if BLOCK]><![endif]--><?php switch($grade->grade_type):
 
-                                                @case('homework')
+                                                case ('homework'): ?>
 
                                                     <span class="badge bg-primary">
                                                         Homework
                                                     </span>
 
-                                                    @break
+                                                    <?php break; ?>
 
-                                                @case('minitest')
+                                                <?php case ('minitest'): ?>
 
                                                     <span class="badge bg-warning text-dark">
                                                         Minitest
                                                     </span>
 
-                                                    @break
+                                                    <?php break; ?>
 
-                                                @case('monthly_exam')
+                                                <?php case ('monthly_exam'): ?>
 
                                                     <span class="badge bg-success">
                                                         Monthly Exam
                                                     </span>
 
-                                                    @break
+                                                    <?php break; ?>
 
-                                                @default
+                                                <?php default: ?>
 
                                                     <span class="badge bg-secondary">
-                                                        {{ ucfirst($grade->grade_type) }}
+                                                        <?php echo e(ucfirst($grade->grade_type)); ?>
+
                                                     </span>
 
-                                            @endswitch
+                                            <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
 
                                         </td>
 
                                         <!-- BÀI TẬP -->
                                         <td>
-                                            {{ $grade->assignment->title ?? '-' }}
+                                            <?php echo e($grade->assignment->title ?? '-'); ?>
+
                                         </td>
 
                                         <!-- ĐIỂM -->
@@ -161,7 +174,8 @@
 
                                             <span class="badge bg-success">
 
-                                                {{ number_format($grade->score, 1) }}
+                                                <?php echo e(number_format($grade->score, 1)); ?>
+
 
                                             </span>
 
@@ -169,26 +183,29 @@
 
                                         <!-- NGƯỜI CHẤM -->
                                         <td>
-                                            {{ $grade->teacher->name ?? '-' }}
+                                            <?php echo e($grade->teacher->name ?? '-'); ?>
+
                                         </td>
 
                                         <!-- NGÀY -->
                                         <td>
 
-                                            {{ \Carbon\Carbon::parse($grade->graded_at)->format('d/m/Y') }}
+                                            <?php echo e(\Carbon\Carbon::parse($grade->graded_at)->format('d/m/Y')); ?>
+
 
                                         </td>
 
                                         <!-- NHẬN XÉT -->
                                         <td>
 
-                                            {{ $grade->feedback ?? '-' }}
+                                            <?php echo e($grade->feedback ?? '-'); ?>
+
 
                                         </td>
 
                                     </tr>
 
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
 
                                     <tr>
 
@@ -202,7 +219,7 @@
 
                                     </tr>
 
-                                @endforelse
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                             </tbody>
 
@@ -218,4 +235,13 @@
 
     </div>
 
-</x-layouts.dash-student>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal269d5864c76e2ab5ce407a5373eff4ab)): ?>
+<?php $attributes = $__attributesOriginal269d5864c76e2ab5ce407a5373eff4ab; ?>
+<?php unset($__attributesOriginal269d5864c76e2ab5ce407a5373eff4ab); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal269d5864c76e2ab5ce407a5373eff4ab)): ?>
+<?php $component = $__componentOriginal269d5864c76e2ab5ce407a5373eff4ab; ?>
+<?php unset($__componentOriginal269d5864c76e2ab5ce407a5373eff4ab); ?>
+<?php endif; ?><?php /**PATH C:\xampp\htdocs\educore\resources\views/student/grade/index.blade.php ENDPATH**/ ?>

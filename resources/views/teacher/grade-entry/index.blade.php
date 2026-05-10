@@ -119,7 +119,7 @@
 
                                         @php
                                             $studentRank = $this->getStudentRank(
-                                                $student->id, $students
+                                                $student->id
                                             );
                                         @endphp
 
@@ -222,12 +222,6 @@
                             </table>
 
                         </div>
-
-                        <!-- PAGINATION -->
-                        <div class="mt-3">
-                            {{ $students->links() }}
-                        </div>
-
                     </div>
 
                 </div>

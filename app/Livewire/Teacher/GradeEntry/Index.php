@@ -4,7 +4,7 @@ namespace App\Livewire\Teacher\GradeEntry;
 
 use App\Models\Classroom;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Models\Grade;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,6 +15,7 @@ class Index extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
+
     public $classroomFilter = '';
 
     protected $queryString = [
@@ -43,32 +44,72 @@ class Index extends Component
     }
 
     /**
+     * Tính điểm trung bình theo công thức:
+     * homework 10%
+     * minitest 30%
+     * monthly_exam 60%
+     */
+    private function calculateAverage($studentId)
+    {
+        $homework = Grade::where('student_id', $studentId)
+            ->where('grade_type', 'homework')
+            ->avg('score');
+
+        $minitest = Grade::where('student_id', $studentId)
+            ->where('grade_type', 'minitest')
+            ->avg('score');
+
+        $exam = Grade::where('student_id', $studentId)
+            ->where('grade_type', 'monthly_exam')
+            ->avg('score');
+
+        $homework = $homework ?? 0;
+        $minitest = $minitest ?? 0;
+        $exam = $exam ?? 0;
+
+        $average =
+            ($homework * 0.1) +
+            ($minitest * 0.3) +
+            ($exam * 0.6);
+
+        return round($average, 1);
+    }
+
+    /**
      * Lấy xếp hạng toàn bộ học viên
      */
-    public function getStudentRank($studentId)
+    public function getStudentRank($studentId, $students = null)
     {
-        $allStudents = User::query()
-            ->where('role', 'student')
+        $allStudents = User::where('role', 'student')->get();
 
-            ->leftJoin(
-                'grades','grades.student_id','=','users.id'
-            )
+        $scores = [];
 
-            ->select(
-                'users.id','users.name',
-                DB::raw('ROUND(AVG(grades.score), 1) as average_score')
-            )
+        foreach ($allStudents as $student) {
 
-            ->groupBy('users.id','users.name')
-        ->havingRaw('average_score IS NOT NULL')
-            ->orderByDesc('average_score')
-            ->orderBy('users.name')
+            $average = $this->calculateAverage($student->id);
 
-            ->get();
+            if ($average > 0) {
 
-        foreach ($allStudents as $index => $student) {
+                $scores[] = [
+                    'id' => $student->id,
+                    'average_score' => $average,
+                    'name' => $student->name,
+                ];
+            }
+        }
 
-            if ($student->id == $studentId) {
+        usort($scores, function ($a, $b) {
+
+            if ($a['average_score'] == $b['average_score']) {
+                return strcmp($a['name'], $b['name']);
+            }
+
+            return $b['average_score'] <=> $a['average_score'];
+        });
+
+        foreach ($scores as $index => $student) {
+
+            if ($student['id'] == $studentId) {
                 return $index + 1;
             }
         }
@@ -77,63 +118,88 @@ class Index extends Component
     }
 
     public function render()
-    {
-        $classrooms = Classroom::orderBy('name')->get();
+{
+    $classrooms = Classroom::orderBy('name')->get();
 
-        $students = User::query()
+    $students = User::query()
 
-            ->where('role', 'student')
+        ->where('role', 'student')
 
-            ->leftJoin(
-                'grades',
-                'grades.student_id',
-                '=',
-                'users.id'
-            )
+        ->with('classrooms')
 
-            ->select(
-                'users.id',
+        ->when($this->search, function ($query) {
+
+            $query->where(
                 'users.name',
-                'users.email',
-                DB::raw('ROUND(AVG(grades.score), 1) as average_score')
-            )
+                'like',
+                '%' . $this->search . '%'
+            );
+        })
 
-            ->with('classrooms')
+        ->when($this->classroomFilter, function ($query) {
 
-            ->when($this->search, function ($query) {
+            $query->whereHas('classrooms', function ($q) {
 
-                $query->where(
-                    'users.name',
-                    'like',
-                    '%' . $this->search . '%'
+                $q->where(
+                    'classrooms.id',
+                    $this->classroomFilter
                 );
-            })
+            });
+        })
 
-            ->when($this->classroomFilter, function ($query) {
+        ->get();
 
-                $query->whereHas('classrooms', function ($q) {
+    /**
+     * Gắn average_score cho từng học viên
+     */
+    $students->transform(function ($student) {
 
-                    $q->where(
-                        'classrooms.id',
-                        $this->classroomFilter
-                    );
-                });
-            })
+        $student->average_score = $this->calculateAverage(
+            $student->id
+        );
 
-            ->groupBy(
-                'users.id',
-                'users.name',
-                'users.email'
-            )
+        return $student;
+    });
 
-            ->orderByDesc('average_score')
-            ->orderBy('users.name')
+    /**
+     * Có điểm -> lên đầu
+     */
+    $rankedStudents = $students
 
-            ->paginate(10);
+        ->filter(function ($student) {
 
-        return view('teacher.grade-entry.index', [
-            'students' => $students,
-            'classrooms' => $classrooms,
-        ]);
-    }
+            return $student->average_score > 0;
+        })
+
+        ->sort(function ($a, $b) {
+
+            if ($a->average_score == $b->average_score) {
+                return strcmp($a->name, $b->name);
+            }
+
+            return $b->average_score <=> $a->average_score;
+        });
+
+    /**
+     * Chưa có điểm -> xuống cuối
+     */
+    $unrankedStudents = $students
+
+        ->filter(function ($student) {
+
+            return $student->average_score <= 0;
+        });
+
+    /**
+     * Gộp lại
+     */
+    $students = $rankedStudents
+        ->concat($unrankedStudents)
+        ->values();
+
+    return view('teacher.grade-entry.index', [
+        'students' => $students,
+        'classrooms' => $classrooms,
+    ]);
+}
 }
