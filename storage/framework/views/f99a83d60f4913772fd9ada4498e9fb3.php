@@ -73,19 +73,21 @@
                                 <div class="card-body text-center">
 
                                     <h6 class="mb-2">
-                                        Xếp hạng
+                                        Xếp hạng theo khối
                                     </h6>
 
                                     <h2 class="fw-bold mb-0">
 
                                         <!--[if BLOCK]><![endif]--><?php if($rank): ?>
 
-                                            <?php echo e($rank); ?>/<?php echo e($totalStudents); ?>
+                                            <?php echo e($rank); ?>
+
+                                            / <?php echo e($totalStudents); ?>
 
 
                                         <?php else: ?>
 
-                                            Chưa có
+                                            Chưa có xếp hạng
 
                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
@@ -131,7 +133,7 @@
                                                 case ('homework'): ?>
 
                                                     <span class="badge bg-primary">
-                                                        Homework
+                                                        BTVN
                                                     </span>
 
                                                     <?php break; ?>
@@ -139,7 +141,7 @@
                                                 <?php case ('minitest'): ?>
 
                                                     <span class="badge bg-warning text-dark">
-                                                        Minitest
+                                                        Mini Test
                                                     </span>
 
                                                     <?php break; ?>
@@ -147,7 +149,7 @@
                                                 <?php case ('monthly_exam'): ?>
 
                                                     <span class="badge bg-success">
-                                                        Monthly Exam
+                                                        Kiểm tra cuối tháng
                                                     </span>
 
                                                     <?php break; ?>
@@ -155,7 +157,7 @@
                                                 <?php default: ?>
 
                                                     <span class="badge bg-secondary">
-                                                        <?php echo e(ucfirst($grade->grade_type)); ?>
+                                                        <?php echo e($grade->grade_type); ?>
 
                                                     </span>
 

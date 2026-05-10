@@ -63,18 +63,19 @@
                                 <div class="card-body text-center">
 
                                     <h6 class="mb-2">
-                                        Xếp hạng
+                                        Xếp hạng theo khối
                                     </h6>
 
                                     <h2 class="fw-bold mb-0">
 
                                         @if($rank)
 
-                                            {{ $rank }}/{{ $totalStudents }}
+                                            {{ $rank }}
+                                            / {{ $totalStudents }}
 
                                         @else
 
-                                            Chưa có
+                                            Chưa có xếp hạng
 
                                         @endif
 
@@ -120,7 +121,7 @@
                                                 @case('homework')
 
                                                     <span class="badge bg-primary">
-                                                        Homework
+                                                        BTVN
                                                     </span>
 
                                                     @break
@@ -128,7 +129,7 @@
                                                 @case('minitest')
 
                                                     <span class="badge bg-warning text-dark">
-                                                        Minitest
+                                                        Mini Test
                                                     </span>
 
                                                     @break
@@ -136,7 +137,7 @@
                                                 @case('monthly_exam')
 
                                                     <span class="badge bg-success">
-                                                        Monthly Exam
+                                                        Kiểm tra cuối tháng
                                                     </span>
 
                                                     @break
@@ -144,7 +145,7 @@
                                                 @default
 
                                                     <span class="badge bg-secondary">
-                                                        {{ ucfirst($grade->grade_type) }}
+                                                        {{ $grade->grade_type }}
                                                     </span>
 
                                             @endswitch

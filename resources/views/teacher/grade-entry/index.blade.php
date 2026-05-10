@@ -115,110 +115,168 @@
 
                                 <tbody>
 
-                                    @forelse ($students as $student)
+    @php
+        $currentGrade = null;
 
-                                        @php
-                                            $studentRank = $this->getStudentRank(
-                                                $student->id
-                                            );
-                                        @endphp
+        $currentRank = 0;
 
-                                        <tr>
+        $displayRank = 0;
 
-                                            <!-- TÊN -->
-                                            <td class="fw-semibold">
-                                                {{ $student->name }}
-                                            </td>
+        $lastScore = null;
+    @endphp
 
-                                            <!-- LỚP -->
-                                            <td>
+    @forelse ($students as $student)
 
-                                                @forelse ($student->classrooms as $classroom)
+        @php
 
-                                                    <span class="badge bg-primary me-1">
-                                                        {{ $classroom->name }}
-                                                    </span>
+            /**
+             * Lấy khối từ tên lớp
+             * Ví dụ:
+             * Lớp 6A -> 6
+             */
 
-                                                @empty
+            $classroomName =
+                $student->classrooms->first()?->name ?? '';
 
-                                                    <span class="text-muted">
-                                                        Chưa có lớp
-                                                    </span>
+            preg_match('/\d+/', $classroomName, $matches);
 
-                                                @endforelse
+            $studentGrade = $matches[0] ?? null;
 
-                                            </td>
+            /**
+             * Nếu sang khối mới
+             * -> reset rank
+             */
 
-                                            <!-- ĐIỂM TB -->
-                                            <td>
+            if ($currentGrade != $studentGrade) {
 
-                                                @if($student->average_score !== null)
+                $currentGrade = $studentGrade;
 
-                                                    <span class="fw-bold text-primary">
-                                                        {{ number_format($student->average_score, 1) }}
-                                                    </span>
+                $currentRank = 0;
 
-                                                @else
+                $displayRank = 0;
 
-                                                    <span class="text-muted">
-                                                        Chưa có điểm
-                                                    </span>
+                $lastScore = null;
+            }
 
-                                                @endif
+            /**
+             * Xử lý rank
+             */
 
-                                            </td>
+            if ($student->average_score > 0) {
 
-                                            <!-- XẾP HẠNG -->
-                                            <td>
+                $currentRank++;
 
-                                                @if($studentRank)
+                if (
+                    $lastScore !== $student->average_score
+                ) {
 
-                                                    <span class="badge bg-warning text-dark">
-                                                        #{{ $studentRank }}
-                                                    </span>
+                    $displayRank = $currentRank;
 
-                                                @else
+                    $lastScore = $student->average_score;
+                }
 
-                                                    <span class="text-muted">
-                                                        Chưa có xếp hạng
-                                                    </span>
+            } else {
 
-                                                @endif
+                $displayRank = null;
+            }
 
-                                            </td>
+        @endphp
 
-                                            <!-- ACTION -->
-                                            <td>
+        <tr>
 
-                                                <a
-                                                    href="{{ route('teacher.grade-entry-teacher.show', $student->id) }}"
-                                                    class="btn btn-sm btn-info"
-                                                >
-                                                    Xem chi tiết
-                                                </a>
+            <!-- TÊN -->
+            <td class="fw-semibold">
+                {{ $student->name }}
+            </td>
 
-                                            </td>
+            <!-- LỚP -->
+            <td>
 
-                                        </tr>
+                @forelse ($student->classrooms as $classroom)
 
-                                    @empty
+                    <span class="badge bg-primary me-1">
+                        {{ $classroom->name }}
+                    </span>
 
-                                        <tr>
+                @empty
 
-                                            <td colspan="5" class="text-center py-4">
+                    <span class="text-muted">
+                        Chưa có lớp
+                    </span>
 
-                                                <div class="text-muted">
-                                                    Không có dữ liệu
-                                                </div>
+                @endforelse
 
-                                            </td>
+            </td>
 
-                                        </tr>
+            <!-- ĐIỂM TB -->
+            <td>
 
-                                    @endforelse
+                @if($student->average_score > 0)
 
-                                </tbody>
+                    <span class="fw-bold text-primary">
+                        {{ number_format($student->average_score, 1) }}
+                    </span>
 
+                @else
+
+                    <span class="text-muted">
+                        Chưa có điểm
+                    </span>
+
+                @endif
+
+            </td>
+
+            <!-- XẾP HẠNG -->
+            <td>
+
+                @if($displayRank)
+
+                    <span class="badge bg-warning text-dark">
+                        #{{ $displayRank }}
+                    </span>
+
+                @else
+
+                    <span class="text-muted">
+                        Chưa có xếp hạng
+                    </span>
+
+                @endif
+
+            </td>
+
+            <!-- ACTION -->
+            <td>
+
+                <a
+                    href="{{ route('teacher.grade-entry-teacher.show', $student->id) }}"
+                    class="btn btn-sm btn-info"
+                >
+                    Xem chi tiết
+                </a>
+
+            </td>
+
+        </tr>
+
+    @empty
+
+        <tr>
+
+            <td colspan="5" class="text-center py-4">
+
+                <div class="text-muted">
+                    Không có dữ liệu
+                </div>
+
+            </td>
+
+        </tr>
+
+    @endforelse
+
+</tbody>
                             </table>
 
                         </div>

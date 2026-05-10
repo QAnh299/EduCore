@@ -128,114 +128,172 @@
 
                                 <tbody>
 
-                                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $students; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $student): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+    <?php
+        $currentGrade = null;
 
-                                        <?php
-                                            $studentRank = $this->getStudentRank(
-                                                $student->id
-                                            );
-                                        ?>
+        $currentRank = 0;
 
-                                        <tr>
+        $displayRank = 0;
 
-                                            <!-- TÊN -->
-                                            <td class="fw-semibold">
-                                                <?php echo e($student->name); ?>
+        $lastScore = null;
+    ?>
 
-                                            </td>
+    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $students; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $student): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 
-                                            <!-- LỚP -->
-                                            <td>
+        <?php
 
-                                                <!--[if BLOCK]><![endif]--><?php $__empty_2 = true; $__currentLoopData = $student->classrooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $classroom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+            /**
+             * Lấy khối từ tên lớp
+             * Ví dụ:
+             * Lớp 6A -> 6
+             */
 
-                                                    <span class="badge bg-primary me-1">
-                                                        <?php echo e($classroom->name); ?>
+            $classroomName =
+                $student->classrooms->first()?->name ?? '';
 
-                                                    </span>
+            preg_match('/\d+/', $classroomName, $matches);
 
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+            $studentGrade = $matches[0] ?? null;
 
-                                                    <span class="text-muted">
-                                                        Chưa có lớp
-                                                    </span>
+            /**
+             * Nếu sang khối mới
+             * -> reset rank
+             */
 
-                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            if ($currentGrade != $studentGrade) {
 
-                                            </td>
+                $currentGrade = $studentGrade;
 
-                                            <!-- ĐIỂM TB -->
-                                            <td>
+                $currentRank = 0;
 
-                                                <!--[if BLOCK]><![endif]--><?php if($student->average_score !== null): ?>
+                $displayRank = 0;
 
-                                                    <span class="fw-bold text-primary">
-                                                        <?php echo e(number_format($student->average_score, 1)); ?>
+                $lastScore = null;
+            }
 
-                                                    </span>
+            /**
+             * Xử lý rank
+             */
 
-                                                <?php else: ?>
+            if ($student->average_score > 0) {
 
-                                                    <span class="text-muted">
-                                                        Chưa có điểm
-                                                    </span>
+                $currentRank++;
 
-                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                if (
+                    $lastScore !== $student->average_score
+                ) {
 
-                                            </td>
+                    $displayRank = $currentRank;
 
-                                            <!-- XẾP HẠNG -->
-                                            <td>
+                    $lastScore = $student->average_score;
+                }
 
-                                                <!--[if BLOCK]><![endif]--><?php if($studentRank): ?>
+            } else {
 
-                                                    <span class="badge bg-warning text-dark">
-                                                        #<?php echo e($studentRank); ?>
+                $displayRank = null;
+            }
 
-                                                    </span>
+        ?>
 
-                                                <?php else: ?>
+        <tr>
 
-                                                    <span class="text-muted">
-                                                        Chưa có xếp hạng
-                                                    </span>
+            <!-- TÊN -->
+            <td class="fw-semibold">
+                <?php echo e($student->name); ?>
 
-                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            </td>
 
-                                            </td>
+            <!-- LỚP -->
+            <td>
 
-                                            <!-- ACTION -->
-                                            <td>
+                <!--[if BLOCK]><![endif]--><?php $__empty_2 = true; $__currentLoopData = $student->classrooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $classroom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
 
-                                                <a
-                                                    href="<?php echo e(route('teacher.grade-entry-teacher.show', $student->id)); ?>"
-                                                    class="btn btn-sm btn-info"
-                                                >
-                                                    Xem chi tiết
-                                                </a>
+                    <span class="badge bg-primary me-1">
+                        <?php echo e($classroom->name); ?>
 
-                                            </td>
+                    </span>
 
-                                        </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
 
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <span class="text-muted">
+                        Chưa có lớp
+                    </span>
 
-                                        <tr>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                                            <td colspan="5" class="text-center py-4">
+            </td>
 
-                                                <div class="text-muted">
-                                                    Không có dữ liệu
-                                                </div>
+            <!-- ĐIỂM TB -->
+            <td>
 
-                                            </td>
+                <!--[if BLOCK]><![endif]--><?php if($student->average_score > 0): ?>
 
-                                        </tr>
+                    <span class="fw-bold text-primary">
+                        <?php echo e(number_format($student->average_score, 1)); ?>
 
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    </span>
 
-                                </tbody>
+                <?php else: ?>
 
+                    <span class="text-muted">
+                        Chưa có điểm
+                    </span>
+
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+            </td>
+
+            <!-- XẾP HẠNG -->
+            <td>
+
+                <!--[if BLOCK]><![endif]--><?php if($displayRank): ?>
+
+                    <span class="badge bg-warning text-dark">
+                        #<?php echo e($displayRank); ?>
+
+                    </span>
+
+                <?php else: ?>
+
+                    <span class="text-muted">
+                        Chưa có xếp hạng
+                    </span>
+
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+            </td>
+
+            <!-- ACTION -->
+            <td>
+
+                <a
+                    href="<?php echo e(route('teacher.grade-entry-teacher.show', $student->id)); ?>"
+                    class="btn btn-sm btn-info"
+                >
+                    Xem chi tiết
+                </a>
+
+            </td>
+
+        </tr>
+
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+
+        <tr>
+
+            <td colspan="5" class="text-center py-4">
+
+                <div class="text-muted">
+                    Không có dữ liệu
+                </div>
+
+            </td>
+
+        </tr>
+
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+</tbody>
                             </table>
 
                         </div>
