@@ -105,7 +105,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-success fs-4">
-                        <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_lesson') }}
+                        <i class="bi bi-plus-circle mr-2"></i>{{ __('general.Bài học mới') }}
                     </h4>
                     <p class="text-muted mb-0">{{ __('general.create_lesson_and_resources_desc') }}</p>
                 </div>
@@ -134,7 +134,7 @@
                 <form wire:submit="save">
                     <div class="row g-3">
                         <div class="col-md-8">
-                            <label for="title" class="form-label">{{ __('general.lesson_title') }} <span
+                            <label for="title" class="form-label">{{ __('general.Tiêu đề') }} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror"
                                 id="title" wire:model="title" placeholder="{{ __('general.enter_lesson_title') }}">
