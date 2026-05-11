@@ -90,11 +90,11 @@ class Show extends Component
                 substr(strrchr((string) $value, '.'), 1)
             );
 
-            if ($decimal > 1) {
+            if ($decimal > 2) {
 
                 session()->flash(
                     'error',
-                    'Điểm của học viên "' . $studentName . '" chỉ được tối đa 1 số thập phân!'
+                    'Điểm của học viên "' . $studentName . '" chỉ được tối đa 2 số thập phân!'
                 );
 
                 return;

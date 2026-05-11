@@ -23,11 +23,11 @@ class Create extends Component
     public $types = [];
 
     public $allTypes = [
-        'text' => 'general.text_type',
-        'essay' => 'general.essay',
-        'image' => 'general.image_type',
-        'audio' => 'general.audio_type',
-        'video' => 'general.video_type',
+        'Trắc nghiệm ABCD' => 'Trắc nghiệm ABCD',
+        'Tự luận' => 'Tự luận',
+        'Đúng/Sai' => 'Đúng/Sai',
+        'Trả lời ngắn' => 'Trả lời ngắn',
+        'Điền vào chỗ trống' => 'Điền vào chỗ trống',
     ];
 
     public $classrooms = [];

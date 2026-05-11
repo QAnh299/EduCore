@@ -148,7 +148,7 @@
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
                             <i class="bi bi-people mr-2"></i>
-                            {{ __('general.students_and_submission_status') }}
+                            {{ __('Danh sách học viên') }}
                         </h5>
                     </div>
 
@@ -224,7 +224,7 @@
                                                 <td>
                                             
                                                         <input type="number"
-                                                        step="0.1"
+                                                        step="0.01"
                                                         min="0"
                                                         max="10"
                                                         wire:model.live="scores.{{ $student->id }}"
@@ -238,7 +238,7 @@
                                                         wire:model.live="comments.{{ $student->id }}"
                                                         class="form-control form-control-sm"
                                                         rows="2"
-                                                        placeholder="{{ __('general.comment') }}">
+                                                        placeholder="{{ __('') }}">
                                                 </td>
                                             </tr>
 

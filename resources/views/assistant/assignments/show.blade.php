@@ -168,7 +168,7 @@
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
                             <i class="bi bi-people me-2"></i>
-                            {{ __('general.students_and_submission_status') }}
+                            {{ __('Danh sách học viên') }}
                         </h5>
                     </div>
 
@@ -275,7 +275,7 @@
                                                         type="text"
                                                         wire:model.live="comments.{{ $student->id }}"
                                                         class="form-control form-control-sm"
-                                                        placeholder="{{ __('general.comment') }}"
+                                                        placeholder="{{ __('') }}"
                                                     >
 
                                                 </td>
