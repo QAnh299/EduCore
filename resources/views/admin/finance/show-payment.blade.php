@@ -203,13 +203,25 @@
                                 </td>
                                 <td>{{ $payment->paid_at ? $payment->paid_at->format('d/m/Y H:i') : '-' }}</td>
                                 <td>
+                                   
                                     @if ($payment->proof_path)
-                                        <a href="{{ Storage::url($payment->proof_path) }}" target="_blank">
-                                            <img src="{{ Storage::url($payment->proof_path) }}" width="80">
+                                        <a href="{{ asset('storage/' . $payment->proof_path) }}" target="_blank">
+                                            <img src="{{ asset('storage/' . $payment->proof_path) }}" width="80" class="img-thumbnail">
                                         </a>
                                     @endif
                                     <form wire:submit.prevent="uploadProof({{ $payment->id }})" class="mt-2">
                                         <input type="file" wire:model="proof" class="form-control-file mb-1">
+
+                                    @if ($payment->proof_path)
+                                        <div class="small text-success mt-1">
+                                            <i class="bi bi-file-earmark-check"></i>
+                                            {{ basename($payment->proof_path) }}
+                                        </div>
+                                    @else
+                                        <div class="small text-muted mt-1">
+                                            Chưa có minh chứng
+                                        </div>
+                                    @endif
                                         <button type="submit" class="btn btn-sm btn-primary">{{ __('views.upload_proof') }}</button>
                                     </form>
                                     @error('proof')
