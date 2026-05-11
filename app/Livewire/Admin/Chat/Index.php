@@ -264,18 +264,19 @@ class Index extends Component
     }
 
     public function getUsersProperty()
-    {
-        $query = User::where('id', '!=', Auth::id());
+{
+    $query = User::where('id', '!=', Auth::id())
+                 ->whereIn('role', ['teacher', 'assistant']); // chỉ giáo viên và trợ giảng
 
-        if ($this->searchTerm) {
-            $query->where(function ($q) {
-                $q->where('name', 'like', '%'.$this->searchTerm.'%')
-                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
-            });
-        }
-
-        return $query->orderBy('name')->get();
+    if ($this->searchTerm) {
+        $query->where(function ($q) {
+            $q->where('name', 'like', '%'.$this->searchTerm.'%')
+                ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
+        });
     }
+
+    return $query->orderBy('name')->get();
+}
 
     public function getClassesProperty()
     {

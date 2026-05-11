@@ -32,12 +32,14 @@
                                     <i class="bi bi-people-fill mr-1"></i>{{ __('general.users') }}
                                 </button>
                             </li>
+                            {{-- Tab lớp học đã ẩn theo yêu cầu
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'classes') active @endif"
                                     wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
                                     <i class="bi bi-diagram-3-fill mr-1"></i>{{ __('general.classes') }}
                                 </button>
                             </li>
+                            --}}
                         </ul>
 
                         <!-- Tab content -->
@@ -74,7 +76,7 @@
                                 </div>
                             </div>
 
-                            <!-- Classes tab -->
+                            {{-- Classes tab đã ẩn theo yêu cầu
                             <div class="tab-pane fade @if ($activeTab === 'classes') show active @endif"
                                 id="classes" role="tabpanel">
                                 <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
@@ -109,6 +111,7 @@
                                     @endforelse
                                 </div>
                             </div>
+                            --}}
                         </div>
                     </div>
                 </div>
@@ -227,7 +230,7 @@
                                                 <input type="text" id="messageText" wire:model="messageText" class="form-control"
                                                     placeholder="{{ __('general.enter_message') }}" maxlength="1000">
                                                 <!--sửa-->
-                                                <input type="file" id="attachment"   wire:model="attachment" class="d-none"
+                                                <input type="file" id="attachment" wire:model="attachment" class="d-none"
                                                     accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm"
                                                     onclick="document.getElementById('attachment').click()">
@@ -272,8 +275,9 @@
         </div>
     </div>
 
+    {{--
     @script
-        <!--<script>
+        <script>
             // Request notification permission
             if (Notification.permission === 'default') {
                 Notification.requestPermission();
@@ -321,14 +325,9 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Clear form
                             document.getElementById('messageText').value = '';
                             fileInput.value = '';
-
-                            // Add message to UI
                             addMessageToUI(data.message);
-
-                            // Show success notification
                             showNotification('{{ __('general.message_sent') }}', 'success');
                         } else {
                             alert('Lỗi: ' + data.error);
@@ -339,23 +338,18 @@
                         alert('{{ __('general.error_occurred_sending_message') }}');
                     })
                     .finally(() => {
-                        // Restore button
                         sendButton.innerHTML = originalText;
                         sendButton.disabled = false;
                     });
             }
 
-            // Add message to UI
             function addMessageToUI(message) {
                 const messagesContainer = document.getElementById('messagesContainer');
                 if (!messagesContainer) return;
-
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message-item mb-3';
-
                 const isMine = message.sender_id == {{ auth()->id() }};
                 const alignment = isMine ? 'text-end' : 'text-start';
-
                 let attachmentHtml = '';
                 if (message.attachment) {
                     attachmentHtml = `
@@ -367,7 +361,6 @@
                         </div>
                     `;
                 }
-
                 messageDiv.innerHTML = `
                     <div class="${alignment}">
                         <div class="d-inline-block">
@@ -383,123 +376,55 @@
                         </div>
                     </div>
                 `;
-
                 messagesContainer.appendChild(messageDiv);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
 
-            // Show browser notification
             function showNotification(title, type = 'info') {
                 if (Notification.permission === 'granted') {
                     new Notification(title, {
-                        body: type === 'success' ? '{{ __('general.success') }}!' :
-                            '{{ __('general.new_message_from') }}',
+                        body: type === 'success' ? '{{ __('general.success') }}!' : '{{ __('general.new_message_from') }}',
                         icon: '/favicon.ico',
                         badge: '/favicon.ico'
                     });
                 }
             }
 
-            // Real-time chat with Pusher
             document.addEventListener('DOMContentLoaded', function() {
-                // Initialize Pusher if available
                 if (window.Echo) {
-                    console.log('Pusher initialized');
-
-                    // Listen to private user channels
                     window.Echo.private(`chat-user-{{ auth()->id() }}`)
                         .listen('.message.sent', (e) => {
-                            console.log('Received message:', e);
-
-                            // Add message to UI
                             addMessageToUI(e.message);
-
-                            // Show notification if not focused
                             if (!document.hasFocus()) {
                                 showNotification('{{ __('general.new_message_from') }} ' + e.message.sender.name);
                             }
-
-                            // Auto scroll
                             const container = document.getElementById('messagesContainer');
-                            if (container) {
-                                container.scrollTop = container.scrollHeight;
-                            }
+                            if (container) container.scrollTop = container.scrollHeight;
                         });
-
-                    // Listen to class channels
-                    @if ($selectedClass)
-                        window.Echo.channel(`chat-class-{{ $selectedClass->id }}`)
-                            .listen('.message.sent', (e) => {
-                                console.log('Received class message:', e);
-
-                                // Add message to UI
-                                addMessageToUI(e.message);
-
-                                // Show notification if not focused
-                                if (!document.hasFocus()) {
-                                    showNotification('{{ __('general.new_message_in_class') }} ' +
-                                        '{{ $selectedClass->name }}');
-                                }
-
-                                // Auto scroll
-                                const container = document.getElementById('messagesContainer');
-                                if (container) {
-                                    container.scrollTop = container.scrollHeight;
-                                }
-                            });
-                    @endif
-                } else {
-                    console.log('Pusher not available');
                 }
 
-                // File input change handler
                 const fileInput = document.getElementById('attachment');
                 if (fileInput) {
                     fileInput.addEventListener('change', function(e) {
                         const file = e.target.files[0];
                         if (file) {
-                            console.log('File selected:', file.name, file.size, file.type);
-                            // Show selected file info
                             const fileInfo = document.createElement('div');
                             fileInfo.className = 'alert alert-info alert-sm mt-2';
-                            fileInfo.innerHTML = `
-                                <i class="bi bi-paperclip"></i> 
-                                ${file.name} (${(file.size / 1024).toFixed(1)} KB)
-                            `;
-
-                            // Remove previous file info
+                            fileInfo.innerHTML = `<i class="bi bi-paperclip"></i> ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
                             const prevInfo = document.querySelector('.alert-info');
                             if (prevInfo) prevInfo.remove();
-
-                            // Add new file info
                             fileInput.parentNode.parentNode.appendChild(fileInfo);
                         }
                     });
                 }
             });
 
-            // Auto refresh chat messages every 30 seconds as fallback using AJAX
-            function fetchChatMessages() {
-                // Replace '#chat-messages' with the actual id/class of your chat messages container
-                fetch('/admin/chat/messages') // Adjust this URL to your actual endpoint
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.text();
-                    })
-                    .then(html => {
-                        const chatContainer = document.querySelector('#chat-messages');
-                        if (chatContainer) {
-                            chatContainer.innerHTML = html;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Failed to fetch chat messages:', error);
-                    });
-            }
-
             setInterval(() => {
                 if (document.hasFocus()) {
-                    fetchChatMessages();
+                    fetch('/admin/chat/messages')
+                        .then(response => { if (!response.ok) throw new Error('Network response was not ok'); return response.text(); })
+                        .then(html => { const chatContainer = document.querySelector('#chat-messages'); if (chatContainer) chatContainer.innerHTML = html; })
+                        .catch(error => { console.error('Failed to fetch chat messages:', error); });
                 }
             }, 30000);
         </script>
@@ -512,28 +437,21 @@
                     var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('addMemberModal'));
                     if (modal) modal.hide();
                 });
-                // Hiển thị toast khi thêm thành viên
                 Livewire.on('showToast', function(data) {
                     let type = data.type || 'info';
                     let message = data.message || '';
                     let toast = document.createElement('div');
-                    toast.className = 'toast align-items-center text-bg-' + (type === 'success' ? 'success' : (
-                            type === 'error' ? 'danger' : 'info')) +
-                        ' border-0 position-fixed bottom-0 end-0 m-3';
+                    toast.className = 'toast align-items-center text-bg-' + (type === 'success' ? 'success' : (type === 'error' ? 'danger' : 'info')) + ' border-0 position-fixed bottom-0 end-0 m-3';
                     toast.style.zIndex = 9999;
-                    toast.innerHTML =
-                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white mr-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+                    toast.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white mr-2 m-auto" data-bs-dismiss="toast"></button></div>`;
                     document.body.appendChild(toast);
-                    var bsToast = new bootstrap.Toast(toast, {
-                        delay: 2500
-                    });
+                    var bsToast = new bootstrap.Toast(toast, { delay: 2500 });
                     bsToast.show();
-                    toast.addEventListener('hidden.bs.toast', function() {
-                        toast.remove();
-                    });
+                    toast.addEventListener('hidden.bs.toast', function() { toast.remove(); });
                 });
             });
-        </script>-->
+        </script>
     @endpush
+    --}}
 
 </x-layouts.dash-admin>
