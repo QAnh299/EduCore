@@ -52,6 +52,13 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function assistantClassrooms(): BelongsToMany
+    {
+        return $this->belongsToMany(Classroom::class, 'class_user', 'user_id', 'class_id')
+            ->wherePivot('role', 'assistant')
+            ->withTimestamps();
+    }
+
     public function enrolledClassrooms(): BelongsToMany
     {
         return $this->belongsToMany(Classroom::class, 'class_user', 'user_id', 'class_id')
