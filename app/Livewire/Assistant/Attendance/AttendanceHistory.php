@@ -5,6 +5,7 @@ namespace App\Livewire\Assistant\Attendance;
 use App\Models\Attendance;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class AttendanceHistory extends Component
@@ -23,10 +24,10 @@ class AttendanceHistory extends Component
     {
         $assistant = Auth::user();
 
-        // Kiểm tra xem assistant có quyền xem lịch sử điểm danh lớp này không
+        // Kiểm tra xem trợ giảng có quyền xem lịch sử điểm danh lớp này không
         $hasPermission = $classroom->users()
             ->where('user_id', $assistant->id)
-            
+            ->where('class_user.role', 'assistant')
             ->exists();
 
         if (! $hasPermission) {
@@ -72,7 +73,7 @@ class AttendanceHistory extends Component
             $studentRecord = \App\Models\Student::where('user_id', $student->id)->first();
 
             if (! $studentRecord) {
-                \Log::warning('Assistant.AttendanceHistory: Missing student record for user', [
+                Log::warning('Assistant.AttendanceHistory: Missing student record for user', [
                     'user_id' => $student->id,
                     'user_name' => $student->name,
                 ]);

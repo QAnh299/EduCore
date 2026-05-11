@@ -44,102 +44,89 @@
         </div>
 
         <!-- Thống kê tổng quan -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_students') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_students'] }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-people fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.classes_teaching') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_classes'] }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-mortarboard fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.attendance_sessions') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_attendance_days'] }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-calendar-event fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.average_rate') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['attendance_rate'] }}%</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-percent fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="row mb-4">
 
-        <!-- Thống kê chi tiết -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_present') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_present'] }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-check-circle fs-1"></i>
-                            </div>
-                        </div>
+    <div class="col">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title mb-0">{{ __('general.total_students') }}</h6>
+                        <h3 class="mb-0">{{ $overviewStats['total_students'] }}</h3>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card bg-danger text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_absent') }}</h6>
-                                <h3 class="mb-0">{{ $overviewStats['total_absent'] }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-x-circle fs-1"></i>
-                            </div>
-                        </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-people fs-1"></i>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title mb-0">{{ __('general.classes_teaching') }}</h6>
+                        <h3 class="mb-0">{{ $overviewStats['total_classes'] }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-mortarboard fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title mb-0">{{ __('general.attendance_sessions') }}</h6>
+                        <h3 class="mb-0">{{ $overviewStats['total_attendance_days'] }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-calendar-event fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title mb-0">{{ __('general.total_present') }}</h6>
+                        <h3 class="mb-0">{{ $overviewStats['total_present'] }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-check-circle fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-danger text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title mb-0">{{ __('general.total_absent') }}</h6>
+                        <h3 class="mb-0">{{ $overviewStats['total_absent'] }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-x-circle fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
         <!-- Danh sách lớp học và nút điểm danh -->
         <div class="row">
