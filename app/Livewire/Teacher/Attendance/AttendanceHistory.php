@@ -5,6 +5,7 @@ namespace App\Livewire\Teacher\Attendance;
 use App\Models\Attendance;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class AttendanceHistory extends Component
@@ -72,7 +73,7 @@ class AttendanceHistory extends Component
             $studentRecord = \App\Models\Student::where('user_id', $student->id)->first();
 
             if (! $studentRecord) {
-                \Log::warning('Teacher.AttendanceHistory: Missing student record for user', [
+                Log::warning('Teacher.AttendanceHistory: Missing student record for user', [
                     'user_id' => $student->id,
                     'user_name' => $student->name,
                 ]);
