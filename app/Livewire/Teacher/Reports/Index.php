@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\Classroom;
 use App\Models\Grade;
 use App\Models\User;
+use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
@@ -211,27 +212,43 @@ class Index extends Component
             $student->assignments_checked =
                 $assignmentsChecked;
 
-            /**
-             * ============================
-             * ĐIỂM DANH
-             * ============================
-             */
+           /**
+ * ============================
+ * ĐIỂM DANH
+ * ============================
+ */
 
-            $student->present_count =
-                Attendance::where(
-                    'student_id',
-                    $student->id
-                )
-                    ->where('present', true)
-                    ->count();
+/**
+ * Map user -> student record
+ */
+$studentRecord = Student::where(
+    'user_id',
+    $student->id
+)->first();
 
-            $student->total_attendance =
-                Attendance::where(
-                    'student_id',
-                    $student->id
-                )
-                    ->count();
+if ($studentRecord) {
 
+    $student->present_count =
+        Attendance::where(
+            'student_id',
+            $studentRecord->id
+        )
+            ->where('present', true)
+            ->count();
+
+    $student->total_attendance =
+        Attendance::where(
+            'student_id',
+            $studentRecord->id
+        )
+            ->count();
+
+} else {
+
+    $student->present_count = 0;
+
+    $student->total_attendance = 0;
+}
             return $student;
         });
 

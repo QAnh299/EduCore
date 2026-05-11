@@ -99,6 +99,8 @@
 
                             <th>Tỷ lệ nộp bài</th>
 
+                            <th>Số buổi tham gia</th>
+
                         </tr>
 
                     </thead>
@@ -261,18 +263,30 @@
 
                                 </td>
 
-                                <!-- ĐIỂM DANH -->
-                                <!--<td>
+                                <!-- SỐ BUỔI THAM GIA -->
+                                <td>
 
-                                    <span class="fw-bold text-info">
+                                     <div class="fw-bold text-info">
 
-                                        {{ $student->present_count }}
-                                        /
-                                        {{ $student->total_attendance }}
+        {{ $student->present_count }}
+        /
+        {{ $student->total_attendance }}
+        buổi
 
-                                    </span>
+    </div>
 
-                                </td> -->
+    <small class="text-muted">
+
+        @if($student->total_attendance > 0)
+
+            {{ round(($student->present_count / $student->total_attendance) * 100) }}%
+
+        @else
+
+            0%
+
+        @endif
+                                </td>
 
                             </tr>
 
