@@ -26,8 +26,8 @@ class Index extends Component
         $assistant = Auth::user();
         $events = [];
 
-        // Lấy các lớp học của giảng viên
-        $classrooms = $assistant->teachingClassrooms;
+        // Lấy các lớp học mà trợ giảng được phân công (role = 'assistant' trong class_user)
+        $classrooms = $assistant->assistantClassrooms;
 
         // Xác định khoảng thời gian hiển thị: từ ngày tạo lớp đến 2.5 tháng sau
         $globalStart = null;
