@@ -88,16 +88,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <!-- Quản lý người dùng & phân quyền -->
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('users.index') }}" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-users" style="font-size:2.5rem; color:#0d6efd;"></i>
-                                </div>
-                                <div>@lang('general.manage_users')</div>
-                            </a>@endif
-                        </div>
+                        
                         <!-- Quản lý lớp học -->
                         <div class="col-6 col-md-3 text-center mb-4">
                             @if(auth()->user()->role === 'boss')
@@ -128,55 +119,7 @@
                                 <div>@lang('general.manage_students')</div>
                             </a>@endif
                         </div>
-                        <!-- Điểm danh -->
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
-                            <a href="{{ route('attendances.overview') }}" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-clipboard-check" style="font-size:2.5rem; color:#ffc107;"></i>
-                                </div>
-                                <div>@lang('general.attendance')</div>
-                            </a>@endif
-                        </div>
-                        <!-- Giao bài tập -->
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
-                            <a href="{{ route('assignments.overview') }}" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-tasks" style="font-size:2.5rem; color:#fd5e53;"></i>
-                                </div>
-                                <div>@lang('general.assign_homework')</div>
-                            </a>@endif
-                        </div>
-                        <!-- Chấm bài 
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            <a href="#" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-check-circle" style="font-size:2.5rem; color:#6f42c1;"></i>
-                                </div>
-                                <div>@lang('general.grading')</div>
-                            </a>
-                        </div> -->
-                        <!-- Kiểm tra & Quiz -->
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
-                            <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-question-circle" style="font-size:2.5rem; color:#b23cfd;"></i>
-                                </div>
-                                <div>@lang('general.quizzes')</div>
-                            </a>@endif
-                        </div>
-                        <!-- Xem lại bài học & tài nguyên -->
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
-                            <a href="{{ route('lessons.index') }}" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-book" style="font-size:2.5rem; color:#28a745;"></i>
-                                </div>
-                                <div>@lang('general.lessons')</div>
-                            </a>@endif
-                        </div>
+                        
                         <!-- Thống kê - báo cáo -->
                         <div class="col-6 col-md-3 text-center mb-4">
                             @if(auth()->user()->role === 'boss')

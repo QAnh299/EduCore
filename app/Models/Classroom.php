@@ -38,6 +38,12 @@ class Classroom extends Model
             ->wherePivot('role', 'teacher')
             ->withTimestamps();
     }
+        public function assistant(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'class_user', 'class_id', 'user_id')
+            ->wherePivot('role', 'assistant')
+            ->withTimestamps();
+    }
 
     public function students(): BelongsToMany
     {

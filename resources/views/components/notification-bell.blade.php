@@ -72,7 +72,7 @@
                 @endforeach
 
                 <div class="dropdown-item text-center p-2">
-                    <a href="{{ auth()->user()->role === 'admin' ? route('notifications.index') : route('student.notifications.index') }}"
+                    <a href="{{ in_array(auth()->user()->role, ['boss', 'admin']) ? route('notifications.index') : route('student.notifications.index') }}"
                         class="text-decoration-none">
                         {{ __('general.view_all_notifications') }}
                     </a>

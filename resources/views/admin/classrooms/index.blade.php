@@ -63,7 +63,7 @@
                         <div class="col-md-3">
                             <select wire:model.live="filterStatus" class="form-control">
                                 <option value="">@lang('general.all_status')</option>
-                                <option value="draft">@lang('general.draft')</option>
+                                
                                 <option value="active">@lang('general.active')</option>
                                 <option value="inactive">@lang('general.inactive')</option>
                                 <option value="completed">@lang('general.completed')</option>
@@ -189,15 +189,7 @@
                                                     title="@lang('general.view_details')">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('classrooms.attendance', $classroom) }}"
-                                                    class="btn btn-sm btn-outline-info" title="@lang('general.take_attendance')">
-                                                    <i class="fas fa-calendar-check"></i>
-                                                </a>
-                                                <a href="{{ route('classrooms.attendance-history', $classroom) }}"
-                                                    class="btn btn-sm btn-outline-secondary"
-                                                    title="@lang('general.attendance_history')">
-                                                    <i class="fas fa-calendar-week"></i>
-                                                </a>
+                                                
                                                 <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                                     class="btn btn-sm btn-outline-success" title="@lang('general.assign_students')">
                                                     <i class="fas fa-user-plus"></i>

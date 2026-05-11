@@ -23,24 +23,17 @@
                         <span class="text-muted">-</span>
                     @endif
                 </div>
-                <div class="col-md-4">
+                <!--<div class="col-md-4">
                     <div class="fw-bold">{{ __('general.status') }}:</div>
                     <span class="badge {{ $needSupport ? 'bg-danger' : 'bg-success' }}">
                         {{ $needSupport ? __('views.needs_support') : __('views.stable') }}
                     </span>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <div class="fw-bold text-muted">{{ __('views.learning_progress') }}</div>
-                    <div class="display-6">{{ $progress }}%</div>
-                </div>
-            </div>
-        </div>
+        
         <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
@@ -81,7 +74,7 @@
             </ul>
         </div>
     </div>
-    <div class="alert alert-info">
+   {{--<div class="alert alert-info">
         <i class="bi bi-lightbulb mr-2"></i>
         <b>{{ __('views.support_suggestions') }}</b>
         @if ($needSupport)
@@ -89,5 +82,5 @@
         @else
             {{ __('views.student_is_stable_message') }}
         @endif
-    </div>
+    </div>--}}
 </x-layouts.dash-admin>

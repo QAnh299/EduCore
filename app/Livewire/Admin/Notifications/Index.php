@@ -71,7 +71,31 @@ class Index extends Component
         $this->is_global = false;
         $this->resetValidation();
     }
+    public $resetKey = 0;
+    public function resetFilters()
+{
+    $this->search = '';
+    $this->filterType = '';
+    $this->filterStatus = '';
 
+    $this->resetPage();
+
+    $this->resetKey++;
+}
+public function updatedSearch()
+{
+    $this->resetPage();
+}
+
+public function updatedFilterType()
+{
+    $this->resetPage();
+}
+
+public function updatedFilterStatus()
+{
+    $this->resetPage();
+}
     public function create()
     {
         $this->resetForm();

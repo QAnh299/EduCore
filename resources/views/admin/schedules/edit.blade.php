@@ -28,8 +28,13 @@
                             <p class="text-muted mb-0">
                                 <i class="bi bi-person-circle mr-2"></i>
                                 {{ __('general.teacher') }}:
-                                @if ($classroom->teachers->count())
-                                    {{ $classroom->teachers->pluck('name')->join(', ') }}
+                                @if ($classroom->teachers->count() || $classroom->assistants->count())
+                                    {{
+                                        $classroom->teachers
+                                        ->pluck('name')
+                                        ->merge($classroom->assistants->pluck('name'))
+                                        ->join(', ')
+                                }}
                                 @else
                                     {{ __('general.not_assigned') }}
                                 @endif

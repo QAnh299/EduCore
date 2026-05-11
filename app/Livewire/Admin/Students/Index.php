@@ -73,6 +73,7 @@ class Index extends Component
     public function render()
     {
         $query = User::where('role', 'student')
+            ->whereHas('enrolledClassrooms')
             ->with(['studentProfile', 'enrolledClassrooms']);
 
         // Tìm kiếm

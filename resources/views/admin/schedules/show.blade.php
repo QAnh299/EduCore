@@ -48,11 +48,20 @@
                                     <label
                                         class="form-label fw-bold text-muted">{{ __('general.assigned_teacher') }}</label>
                                     <p class="mb-0">
-                                        @if ($classroom->teachers->count())
+                                        @if ($classroom->teachers->count() || $classroom->assistant)
+
                                             <div class="mb-2">
                                                 <i class="bi bi-person-circle mr-2"></i>
-                                                {{ $classroom->teachers->pluck('name')->join(', ') }}
+
+                                                {{
+                                                    $classroom->teachers
+                                                        ->pluck('name')
+                                                        ->push(optional($classroom->assistant)->name)
+                                                        ->filter()
+                                                        ->join(', ')
+                                                }}
                                             </div>
+
                                         @else
                                             <span class="text-muted">{{ __('general.not_assigned') }}</span>
                                         @endif

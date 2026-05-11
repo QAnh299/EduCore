@@ -1,8 +1,14 @@
 /vendor
 /node_modules
 .env
+.phpunit.result.cache
 storage/*.key
 /public/storage
 /public/hot
 /storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/app/public/livewire-tmp/*
+/storage/logs/*
 
