@@ -76,6 +76,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users', UsersIndex::class)->name('users.index');
     Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
     Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
+    Route::get('/admin/notifications', AdminNotificationsIndex::class)->name('notifications.index');
 });
 
 // Boss routes

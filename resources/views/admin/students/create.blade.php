@@ -104,7 +104,7 @@
                                             <option value="new">{{ __('general.new_registration') }}</option>
                                             <option value="active">{{ __('general.studying') }}</option>
                                             <option value="paused">{{ __('general.paused') }}</option>
-                                            <option value="dropped">{{ __('general.reserved') }}</option>
+                                            <!--<option value="dropped">{{ __('general.reserved') }}</option>-->
                                         </select>
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>

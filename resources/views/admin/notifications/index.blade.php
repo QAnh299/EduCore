@@ -12,20 +12,22 @@
             <button wire:click="markAllAsRead" class="btn btn-outline-secondary mr-2">
                 <i class="bi bi-check-all mr-md-2"></i><span class="d-none d-md-inline">{{ __('views.mark_all_as_read') }}</span>
             </button>
+            <!--
             <button wire:click="deleteExpired" class="btn btn-outline-warning mr-2">
                 <i class="bi bi-trash mr-md-2"></i><span class="d-none d-md-inline">{{ __('views.delete_expired') }}</span>
-            </button>
+            </button>-->
             <button wire:click="create" class="btn btn-primary">
                 <i class="bi bi-plus-circle mr-md-2"></i><span class="d-none d-md-inline">{{ __('views.create_new_notification') }}</span>
             </button>
         </div>
     </div>
 
-    <!-- Filters -->
+    <!-- Filters wire:key="search-box"-->
+<div wire:key="filters-{{ $resetKey }}">
     <div class="card mb-4">
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-4" >
                     <label class="form-label">{{ __('views.search') }}</label>
                     <input wire:model.live="search" type="text" class="form-control"
                         placeholder="{{ __('views.search_by_title_or_content') }}">
@@ -37,7 +39,7 @@
                         <option value="info">{{ __('views.info') }}</option>
                         <option value="warning">{{ __('views.warning') }}</option>
                         <option value="success">{{ __('views.success') }}</option>
-                        <option value="danger">{{ __('views.danger') }}</option>
+                        
                         <option value="reminder">{{ __('views.reminder') }}</option>
                     </select>
                 </div>
@@ -50,14 +52,14 @@
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
-                    <button wire:click="$set('search', '')" class="btn btn-outline-secondary w-100">
-                        <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
-                    </button>
+                    <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100">
+                    <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
+                </button>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
     <!-- Notifications List -->
     <div class="card">
         <div class="card-body p-0">

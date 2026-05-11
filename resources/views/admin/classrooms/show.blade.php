@@ -208,7 +208,7 @@
                     </div>
                 </div>
 
-                <!-- Các hành động -->
+                <!-- Các hành động 
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
@@ -243,7 +243,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>

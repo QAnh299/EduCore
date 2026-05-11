@@ -20,10 +20,7 @@
                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
                             @endforeach
                         </select>
-                        @if ($selectedClass)
-                            <a href="{{ route('reports.class', $selectedClass) }}"
-                                class="btn btn-outline-primary ml-2">{{ __('views.class_report_button') }}</a>
-                        @endif
+                        
                     </div>
                 </div>
                 <div class="col-md-4">

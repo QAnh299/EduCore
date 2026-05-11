@@ -61,7 +61,10 @@ class Index extends Component
             ->orderBy('name')
             ->paginate(10);
 
-        $levels = Classroom::distinct()->pluck('level')->filter();
+        $levels = Classroom::whereRaw('LOWER(level) LIKE ?', ['toán%'])
+            ->distinct()
+            ->pluck('level')
+            ->filter();
         $teachers = \App\Models\User::whereIn('role', ['teacher', 'assistant'])->orderBy('name')->get();
 
         $user = Auth::user();

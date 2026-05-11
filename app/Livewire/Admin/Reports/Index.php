@@ -38,7 +38,7 @@ class Index extends Component
 
     if ($this->selectedClass) {
         $query->whereHas('classrooms', function ($q) {
-            $q->where('id', $this->selectedClass);
+            $q->where('classrooms.id', $this->selectedClass);
         });
     }
 
@@ -101,13 +101,35 @@ class Index extends Component
             ->count();
 
 
-        /* -------- QUIZ -------- */
-
-        $quizResults = $student->quizResults->filter(function ($qr) use ($classIds) {
+        /* điểm trung bình */
+        
+        /*$quizResults = $student->quizResults->filter(function ($qr) use ($classIds) {
             return $qr->quiz && $classIds->contains($qr->quiz->class_id);
         });
 
-        $avgScore = $quizResults->avg('score') ?? 0;
+        $avgScore = $quizResults->avg('score') ?? 0;*/
+        $grades = Grade::where('student_id', $student->id)
+            ->whereIn('class_id', $classIds)
+            ->get();
+
+        $homeworkAvg = $grades
+            ->where('grade_type', 'homework')
+            ->sum('score') ?? 0;
+
+        $minitestAvg = $grades
+            ->where('grade_type', 'minitest')
+            ->sum('score') ?? 0;
+
+        $monthlyExamAvg = $grades
+            ->where('grade_type', 'monthly_exam')
+            ->sum('score') ?? 0;
+
+        $avgScore = round(
+            ($homeworkAvg * 0.1) +
+            ($minitestAvg * 0.3) +
+            ($monthlyExamAvg * 0.6),
+            4
+);
 
 
         /* -------- PROGRESS LESSON -------- */

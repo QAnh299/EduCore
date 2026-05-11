@@ -13,8 +13,8 @@
             'label' => __('general.dashboard'),
             'route' => route('dashboard'),
             'icon' => 'fas fa-home',
-            //'visible' => true,
-            'visible' => $role === 'boss',
+            // 'visible' => $role === 'boss'
+            'visible' => true,
         ],
 
         // ===== ADMIN =====
@@ -27,23 +27,8 @@
             ],
 
 
+        
         // ===== BOSS =====
-        [
-            'key' => 'attendances',
-            'label' => __('general.attendance'),
-            'route' => safeRoute($role === 'boss', 'attendances.overview'),
-            'icon' => 'fas fa-calendar-check',
-            'visible' => $role === 'boss',
-        ],
-
-        // ===== BOSS =====
-        //[
-            //'key' => 'attendances',
-            //'label' => __('general.attendance'),
-            //'route' => safeRoute($role === 'boss', 'attendances.overview'),
-            //'icon' => 'fas fa-calendar-check',
-            //'visible' => $role === 'boss',
-        //],
         [
             'key' => 'classrooms',
             'label' => __('general.classrooms'),
@@ -56,6 +41,13 @@
             'label' => __('general.schedules'),
             'route' => safeRoute($role === 'boss', 'schedules.index'),
             'icon' => 'fas fa-calendar-alt',
+            'visible' => $role === 'boss',
+        ],
+        /*[
+            'key' => 'attendances',
+            'label' => __('general.attendance'),
+            'route' => safeRoute($role === 'boss', 'attendances.overview'),
+            'icon' => 'fas fa-calendar-check',
             'visible' => $role === 'boss',
         ],
         [
@@ -85,29 +77,8 @@
             'route' => safeRoute($role === 'boss', 'lessons.index'),
             'icon' => 'fas fa-book',
             'visible' => $role === 'boss',
-        ],
-        //[
-            //'key' => 'assignments',
-           // 'label' => __('general.assignments'),
-           // 'route' => safeRoute($role === 'boss', 'assignments.overview'),
-           // 'icon' => 'fas fa-tasks',
-           // 'visible' => $role === 'boss',
-        //],
+        ],*/
         
-       // [
-           // 'key' => 'quizzes',
-           // 'label' => __('general.quizzes'),
-           // 'route' => safeRoute($role === 'boss', 'quizzes.index'),
-           // 'icon' => 'fas fa-question-circle',
-           // 'visible' => $role === 'boss',
-        //],
-        //[
-            //'key' => 'lessons',
-           // 'label' => __('general.lessons'),
-           // 'route' => safeRoute($role === 'boss', 'lessons.index'),
-            //'icon' => 'fas fa-book',
-            //'visible' => $role === 'boss',
-       // ],
         [
             'key' => 'students',
             'label' => __('general.students'),
@@ -118,7 +89,6 @@
         [
             'key' => 'reports',
             'label' => 'Báo cáo học tập',
-            'label' => __('general.reports'),
             'route' => safeRoute($role === 'boss', 'reports.index'),
             'icon' => 'fas fa-chart-bar',
             'visible' => $role === 'boss',

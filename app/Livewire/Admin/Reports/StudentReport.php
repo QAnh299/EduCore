@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Admin\Reports;
 
+use App\Models\Assignment;
 use App\Models\Attendance;
+use App\Models\Classroom;
 use App\Models\Student;
 use Livewire\Component;
-
+use App\Models\Grade;
+use App\Models\Lesson;
 class StudentReport extends Component
 {
     public $student;
@@ -46,14 +49,34 @@ $submissions = \App\Models\Grade::where('student_id', $this->student->id)
         $this->attendanceCount = Attendance::where('student_id', $this->student->id)
             ->whereIn('class_id', $this->student->classrooms->pluck('id'))
             ->where('present', true)->count();
-        $quizResults = $this->student->quizResults->filter(function ($qr) {
-            return $qr->quiz && in_array($qr->quiz->class_id, $this->student->classrooms->pluck('id')->toArray());
-        });
-        $this->avgScore = round($quizResults->avg('score') ?? 0, 2);
+       
         $this->submitRate = $assignments->count() > 0
             ? round($submissions->count() / $assignments->count() * 100)
             : 0;
+//điểm trung bình
+            //điểm trung bình
+        $grades = Grade::where('student_id', $this->student->id)
+    ->whereIn('class_id', $classIds)
+    ->get();
 
+$homeworkAvg = $grades
+    ->where('grade_type', 'homework')
+    ->sum('score') ?? 0;
+
+$minitestAvg = $grades
+    ->where('grade_type', 'minitest')
+    ->sum('score') ?? 0;
+
+$monthlyExamAvg = $grades
+    ->where('grade_type', 'monthly_exam')
+    ->sum('score') ?? 0;
+
+$this->avgScore = round(
+    ($homeworkAvg * 0.1) +
+    ($minitestAvg * 0.3) +
+    ($monthlyExamAvg * 0.6),
+    4
+);
         // Tính tiến độ học tập dựa trên lesson_user
         $user = $this->student->user;
         $lessonIds = \App\Models\Lesson::whereIn('classroom_id', $this->student->classrooms->pluck('id'))->pluck('id');

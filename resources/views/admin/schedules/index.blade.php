@@ -91,10 +91,15 @@
                                             <span class="badge bg-info">{{ $classroom->level }}</span>
                                         </td>
                                         <td>
-                                            @if ($classroom->teachers->count())
+                                            @if ($classroom->teachers->count() || $classroom->assistants->count())
                                                 <div class="mb-2">
                                                     <i class="bi bi-person-circle mr-2"></i>
-                                                    {{ $classroom->teachers->pluck('name')->join(', ') }}
+                                                    {{
+                                                        $classroom->teachers
+                                                            ->merge($classroom->assistants)
+                                                            ->pluck('name')
+                                                            ->join(', ')
+                                                    }}
                                                 </div>
                                             @endif
                                         </td>
