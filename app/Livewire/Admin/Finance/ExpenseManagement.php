@@ -209,7 +209,7 @@ class ExpenseManagement extends Component
 
     public function getStaffsProperty()
     {
-        return User::where('role', 'boss')->orWhereIn('role', ['teacher', 'assistant'])->get();
+        return User::where('role', 'admin')->orWhereIn('role', ['teacher', 'assistant'])->get();
     }
 
     public function getClassroomsProperty()

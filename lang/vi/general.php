@@ -291,7 +291,7 @@ return [
     'unread_messages' => 'Tin nhắn chưa đọc',
     'unread_notifications' => 'Thông báo chưa đọc',
     'total_students' => 'Tổng số học sinh',
-    'total_teachers' => 'Tổng số giáo viên',
+    'total_teachers' => 'Tổng số giáo viên và trợ giảng',
     'financial_statistics' => 'Thống kê thu chi',
     'evaluation_management' => 'Feedback từ học viên',
     'today' => 'Hôm nay',
