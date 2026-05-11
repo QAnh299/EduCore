@@ -127,7 +127,7 @@ class TeacherRouteTest extends TestCase
             ['/teacher/ai/quiz-generator', 'get'], // 29
             ['/teacher/ai/question-bank-generator', 'get'], // 30
             ['/teacher/reports', 'get'], // 31
-            ['/teacher/evaluations', 'get'], // 32
+            //['/teacher/evaluations', 'get'], // 32 - tạm ẩn route này do teacher không có quyền truy cập vào đánh giá sinh viên
         ];
     }
 

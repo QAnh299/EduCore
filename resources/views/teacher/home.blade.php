@@ -96,15 +96,7 @@
                     <div>@lang('general.chat')</div>
                 </a>
             </div>
-            <!-- Báo cáo đánh giá SV -->
-            <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('teacher.evaluations.report') }}" class="text-decoration-none text-dark">
-                    <div class="mb-2">
-                        <i class="bi bi-star-fill" style="font-size:2.5rem; color:#e91e63;"></i>
-                    </div>
-                    <div>{{ __('general.evaluation_report') }}</div>
-                </a>
-            </div>
+            
         </div>
     </div>
 </x-layouts.dash-teacher>

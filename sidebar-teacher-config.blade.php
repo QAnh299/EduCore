@@ -78,13 +78,7 @@
             'icon' => 'bi bi-bar-chart',
             'visible' => true,
         ],
-        [
-            'key' => 'evaluations-report',
-            'label' => __('general.evaluation_report'),
-            'route' => route('teacher.evaluations.report'),
-            'icon' => 'bi bi-star',
-            'visible' => true,
-        ],
+        
     ];
 @endphp
 
