@@ -28,7 +28,7 @@ class Results extends Component
         $this->quiz = $quiz->load(['classroom']);
 
         // Kiểm tra quyền xem
-        $assistantClassIds = Auth::user()->teachingClassrooms->pluck('id');
+        $assistantClassIds = Auth::user()->assistantClassrooms->pluck('id');
         if (! $assistantClassIds->contains($this->quiz->class_id)) {
             session()->flash('error', 'Bạn không có quyền xem kết quả bài kiểm tra này.');
 

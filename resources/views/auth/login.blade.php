@@ -91,11 +91,7 @@
                         </form>
 
                         <!-- Forgot Password Link -->
-                        <div class="text-center mb-4">
-                            <a href="{{ route('password.request') }}" class="text-decoration-none text-muted">
-                                {{ __('auth.forgot_password') }}?
-                            </a>
-                        </div>
+
 
                         <!-- Footer -->
                         <div class="text-center mt-4 pt-3" style="border-top: 1px solid #e9ecef;">
