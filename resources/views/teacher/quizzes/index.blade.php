@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-patch-question mr-2"></i>{{ __('general.manage_quizzes') }}
+                        <i class="bi bi-patch-question mr-2"></i>{{ __('Quản lý bài tập Quiz') }}
                     </h4>
                     <p class="text-muted mb-0">{{ __('general.list_quizzes_for_your_classes') }}</p>
                 </div>
@@ -38,8 +38,8 @@
                         <label class="form-label">{{ __('general.status') }}</label>
                         <select class="form-control" wire:model.live="filterStatus">
                             <option value="">{{ __('general.all') }}</option>
-                            <option value="active">{{ __('general.active') }}</option>
-                            <option value="expired">{{ __('general.expired') }}</option>
+                            <option value="active">{{ __('Đang hoạt động') }}</option>
+                            <option value="expired">{{ __('Không hoạt động') }}</option>
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">

@@ -1,99 +1,20 @@
 <x-layouts.dash-teacher active="quizzes">
     @include('components.language')
+
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('teacher.quizzes.index') }}"
-                class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
+               class="text-decoration-none text-secondary d-inline-block mb-3">
+                <i class="bi bi-arrow-left me-3" ></i>{{ __('general.back') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_new_quiz') }}
+                <i class="bi bi-plus-circle me-2"></i>{{ __('Tạo bài tập Quiz mới ') }}
             </h4>
             <p class="text-muted mb-0">{{ __('general.add_new_quiz_desc') }}</p>
         </div>
 
-        <!-- AI Tools -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h6 class="mb-0">
-                            <i class="fas fa-robot mr-2"></i>{{ __('general.chinese_ai_tools') }}
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <style>
-                            /* Loading Button Styles */
-                            .loading-overlay {
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                right: 0;
-                                bottom: 0;
-                                background: rgba(255, 193, 7, 0.9);
-                                border-radius: 0.375rem;
-                                z-index: 10;
-                            }
-
-                            .loading-text {
-                                color: white;
-                                font-weight: 500;
-                            }
-                        </style>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-magic fa-3x text-primary mb-3"></i>
-                                    <h6>{{ __('general.create_chinese_quiz_with_ai') }}</h6>
-                                    <p class="text-muted small">{{ __('general.auto_create_chinese_quiz') }}</p>
-                                    <a href="{{ route('teacher.ai.quiz-generator') }}" class="btn btn-primary">
-                                        <i class="fas fa-robot mr-1"></i>{{ __('general.create_ai_quiz') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-database fa-3x text-success mb-3"></i>
-                                    <h6>{{ __('general.chinese_question_bank') }}</h6>
-                                    <p class="text-muted small">{{ __('general.create_chinese_question_bank_desc') }}</p>
-                                    <a href="{{ route('teacher.ai.question-bank-generator') }}" class="btn btn-success">
-                                        <i class="fas fa-database mr-1"></i>{{ __('general.create_bank') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-check-circle fa-3x text-warning mb-3"></i>
-                                    <h6>{{ __('general.check_quiz_errors') }}</h6>
-                                    <p class="text-muted small">{{ __('general.auto_check_fix_quiz_errors') }}</p>
-                                    <button type="button" class="btn btn-warning position-relative"
-                                        wire:click="validateQuizWithAI" wire:loading.attr="disabled"
-                                        wire:loading.class="disabled">
-                                        <div wire:loading.remove>
-                                            <i class="fas fa-check-circle mr-1"></i>{{ __('general.ai_check') }}
-                                        </div>
-                                        <div wire:loading class="loading-overlay">
-                                            <div class="spinner-border spinner-border-sm text-light mr-2"
-                                                role="status">
-                                                <span class="visually-hidden">{{ __('general.checking') }}</span>
-                                            </div>
-                                            <span class="loading-text">{{ __('general.checking') }}</span>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Thông báo -->
+        <!-- Flash Messages -->
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -108,9 +29,9 @@
             </div>
         @endif
 
-        @if (session()->has('info'))
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                {{ session('info') }}
+        @if (session()->has('message'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
@@ -122,15 +43,16 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-info-circle mr-2"></i>{{ __('general.quiz_information') }}
+                                <i class="bi bi-info-circle me-2"></i>{{ __('Thông tin bài tập Quiz') }}
                             </h6>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label">{{ __('general.quiz_title') }} <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                    wire:model="title" placeholder="{{ __('general.enter_quiz_title') }}">
+                                <label class="form-label">{{ __('Tiêu đề') }} <span class="text-danger">*</span></label>
+                                <input type="text" 
+                                       class="form-control @error('title') is-invalid @enderror"
+                                       wire:model="title" 
+                                       placeholder="{{ __('Nhập tiêu đề') }}">
                                 @error('title')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -138,8 +60,10 @@
 
                             <div class="mb-3">
                                 <label class="form-label">{{ __('general.description') }}</label>
-                                <textarea class="form-control @error('description') is-invalid @enderror" wire:model="description" rows="3"
-                                    placeholder="{{ __('general.describe_quiz_placeholder') }}"></textarea>
+                                <textarea class="form-control @error('description') is-invalid @enderror" 
+                                          wire:model="description" 
+                                          rows="3"
+                                          placeholder="{{ __('Nhập mô tả') }}"></textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -148,7 +72,7 @@
                             <div class="mb-3">
                                 <label class="form-label">{{ __('general.classroom') }} <span class="text-danger">*</span></label>
                                 <select class="form-control @error('class_id') is-invalid @enderror"
-                                    wire:model="class_id">
+                                        wire:model="class_id">
                                     <option value="">{{ __('general.choose_class') }}</option>
                                     @foreach ($classrooms as $classroom)
                                         <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -162,8 +86,9 @@
                             <div class="mb-3">
                                 <label class="form-label">{{ __('general.deadline') }}</label>
                                 <input type="datetime-local"
-                                    class="form-control @error('deadline') is-invalid @enderror" wire:model="deadline"
-                                    min="{{ date('Y-m-d\TH:i') }}">
+                                       class="form-control @error('deadline') is-invalid @enderror" 
+                                       wire:model="deadline"
+                                       min="{{ date('Y-m-d\TH:i') }}">
                                 @error('deadline')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -171,9 +96,11 @@
 
                             <div class="mb-3">
                                 <label class="form-label">{{ __('general.time_limit_minutes') }}</label>
-                                <input type="number" class="form-control @error('time_limit') is-invalid @enderror"
-                                    wire:model="time_limit" min="1" max="480"
-                                    placeholder="{{ __('general.enter_time_limit_example') }}">
+                                <input type="number" 
+                                       class="form-control @error('time_limit') is-invalid @enderror"
+                                       wire:model="time_limit" 
+                                       min="1" max="480"
+                                       placeholder="{{ __('general.enter_time_limit_example') }}">
                                 <small class="form-text text-muted">{{ __('general.no_time_limit_hint') }}</small>
                                 @error('time_limit')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -183,22 +110,23 @@
                     </div>
                 </div>
 
-                <!-- Thêm câu hỏi -->
+                <!-- Phần thêm câu hỏi -->
                 <div class="col-lg-8">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_new_question') }}
+                                <i class="bi bi-plus-circle me-2"></i>{{ __('general.add_new_question') }}
                             </h6>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="mb-3">
-                                        <label class="form-label">{{ __('general.question_content') }} <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">{{ __('general.question_content') }} <span class="text-danger">*</span></label>
                                         <textarea class="form-control @error('currentQuestion.question') is-invalid @enderror"
-                                            wire:model="currentQuestion.question" rows="3" placeholder="{{ __('general.question_content') }}..."></textarea>
+                                            wire:model="currentQuestion.question" 
+                                            rows="3" 
+                                            placeholder="{{ __('general.question_content') }}..."></textarea>
                                         @error('currentQuestion.question')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -206,10 +134,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label">{{ __('general.question_type') }} <span
-                                                class="text-danger">*</span></label>
-                                        <select
-                                            class="form-control @error('currentQuestion.type') is-invalid @enderror"
+                                        <label class="form-label">{{ __('general.question_type') }} <span class="text-danger">*</span></label>
+                                        <select class="form-control @error('currentQuestion.type') is-invalid @enderror"
                                             wire:model="currentQuestion.type">
                                             <option value="multiple_choice">{{ __('general.multiple_choice') }}</option>
                                         </select>
@@ -222,7 +148,8 @@
                                         <label class="form-label">{{ __('general.score') }} <span class="text-danger">*</span></label>
                                         <input type="number"
                                             class="form-control @error('currentQuestion.score') is-invalid @enderror"
-                                            wire:model="currentQuestion.score" min="1" max="10">
+                                            wire:model="currentQuestion.score" 
+                                            min="1" max="10">
                                         @error('currentQuestion.score')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -230,7 +157,7 @@
                                 </div>
                             </div>
 
-                            <!-- Tùy chọn cho câu hỏi trắc nghiệm -->
+                            <!-- Options cho trắc nghiệm -->
                             @if ($currentQuestion['type'] === 'multiple_choice')
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.answer_options') }} <span class="text-danger">*</span></label>
@@ -250,19 +177,17 @@
                                     @endforeach
                                     <button type="button" class="btn btn-sm btn-outline-primary"
                                         wire:click="addOption">
-                                        <i class="bi bi-plus mr-1"></i>{{ __('general.add_answer') }}
+                                        <i class="bi bi-plus me-1"></i>{{ __('general.add_answer') }}
                                     </button>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.correct_answer') }} <span class="text-danger">*</span></label>
-                                    <select
-                                        class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
+                                    <select class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
                                         wire:model.live="currentQuestion.correct_answer">
                                         <option value="">{{ __('general.choose_correct_answer') }}</option>
                                         @foreach ($currentQuestion['options'] as $index => $option)
-                                            <option value="{{ $option }}" {{ $option ? '' : 'disabled' }}>
-                                                {{ $option ?: __('general.answer_number', ['number' => $index + 1]) }}</option>
+                                            <option value="{{ $option }}">{{ $option ?: __('general.answer_number', ['number' => $index + 1]) }}</option>
                                         @endforeach
                                     </select>
                                     @error('currentQuestion.correct_answer')
@@ -271,24 +196,18 @@
                                 </div>
                             @endif
 
-
-
                             <div class="text-end">
-                                <button type="button" class="btn btn-outline-success mr-2"
-                                    wire:click="$set('showQuestionBank', true)">
-                                    <i class="bi bi-database mr-2"></i>{{ __('general.insert_from_question_bank') }}
-                                </button>
                                 @if ($editingIndex !== null)
-                                    <button type="button" class="btn btn-warning mr-2"
+                                    <button type="button" class="btn btn-warning me-2"
                                         wire:click="resetCurrentQuestion">
-                                        <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel_edit') }}
+                                        <i class="bi bi-x-circle me-2"></i>{{ __('general.cancel_edit') }}
                                     </button>
                                     <button type="button" class="btn btn-primary" wire:click="addQuestion">
-                                        <i class="bi bi-check-circle mr-2"></i>{{ __('general.update_question') }}
+                                        <i class="bi bi-check-circle me-2"></i>{{ __('general.update_question') }}
                                     </button>
                                 @else
                                     <button type="button" class="btn btn-primary" wire:click="addQuestion">
-                                        <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_question_btn') }}
+                                        <i class="bi bi-plus-circle me-2"></i>{{ __('general.add_question_btn') }}
                                     </button>
                                 @endif
                             </div>
@@ -300,7 +219,8 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0">
-                                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
+                                    <i class="bi bi-list-ul me-2"></i>
+                                    {{ __('general.question_list', ['count' => count($questions)]) }}
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -308,41 +228,37 @@
                                     <div class="border rounded p-3 mb-3">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div>
-                                                <span class="badge bg-primary mr-2">{{ __('general.question') }} {{ $index + 1 }}</span>
-                                                <span
-                                                    class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                                <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} {{ __('general.pts') }}</span>
+                                                <span class="badge bg-primary me-2">Câu {{ $index + 1 }}</span>
+                                                <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
+                                                <span class="badge bg-info">{{ $question['score'] ?? 1 }} pts</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
-                                                    wire:click="editQuestion({{ $index }})" title="{{ __('general.edit') }}">
+                                                    wire:click="editQuestion({{ $index }})">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 @if ($index > 0)
                                                     <button type="button" class="btn btn-outline-secondary"
-                                                        wire:click="moveQuestionUp({{ $index }})"
-                                                        >
+                                                        wire:click="moveQuestionUp({{ $index }})">
                                                         <i class="bi bi-arrow-up"></i>
                                                     </button>
                                                 @endif
                                                 @if ($index < count($questions) - 1)
                                                     <button type="button" class="btn btn-outline-secondary"
-                                                        wire:click="moveQuestionDown({{ $index }})"
-                                                        >
+                                                        wire:click="moveQuestionDown({{ $index }})">
                                                         <i class="bi bi-arrow-down"></i>
                                                     </button>
                                                 @endif
                                                 <button type="button" class="btn btn-outline-danger"
-                                                    wire:click="removeQuestion({{ $index }})" title="{{ __('general.delete') }}">
+                                                    wire:click="removeQuestion({{ $index }})">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="fw-medium">{{ $question['question'] }}</div>
-                                        @if ($question['type'] === 'multiple_choice' && isset($question['options']))
-                                            <div class="mt-2">
-                                                <small class="text-muted">{{ __('general.correct_answer') }}:
-                                                    <strong>{{ $question['correct_answer'] }}</strong></small>
+                                        @if ($question['type'] === 'multiple_choice' && !empty($question['options']))
+                                            <div class="mt-2 small text-muted">
+                                                Đáp án đúng: <strong>{{ $question['correct_answer'] }}</strong>
                                             </div>
                                         @endif
                                     </div>
@@ -353,212 +269,39 @@
                 </div>
             </div>
 
-            <!-- Nút lưu -->
-            <div class="row">
+            <!-- Nút hành động -->
+            <div class="row mt-4">
                 <div class="col-12">
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
-                            <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-secondary mr-2">
-                                <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
+                            <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-secondary me-2">
+                                <i class="bi bi-x-circle me-2"></i>{{ __('general.cancel') }}
                             </a>
-                            <button type="submit" class="btn btn-primary"
-                                @if (count($questions) === 0) disabled @endif>
-                                <i class="bi bi-check-circle mr-2"></i>{{ __('general.save_lesson') }}
+                            <button type="submit" class="btn btn-primary" @if (count($questions) === 0) disabled @endif>
+                                <i class="bi bi-save me-2"></i>{{ __('Lưu bài tập Quiz') }}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-
-        <!-- Modal Ngân hàng Câu hỏi -->
-        @if ($showQuestionBank)
-            <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-                <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header bg-success text-white">
-                            <h5 class="modal-title">
-                                <i class="bi bi-database mr-2"></i>{{ __('general.question_bank') }}
-                            </h5>
-                            <button type="button" class="btn-close btn-close-white"
-                                wire:click="closeQuestionBank"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Chọn ngân hàng câu hỏi -->
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.choose_question_bank') }}</label>
-                                    <select class="form-control" wire:model.live="selectedQuestionBank">
-                                        <option value="">{{ __('general.choose_question_bank_placeholder') }}</option>
-                                        @foreach ($questionBanks as $bank)
-                                            <option value="{{ $bank->id }}">{{ $bank->name }}
-                                                ({{ $bank->getQuestionCount() }} câu)
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">{{ __('general.search') }}:</label>
-                                    <input type="text" class="form-control" wire:model.live="questionBankFilter"
-                                        placeholder="{{ __('general.search_questions_placeholder') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">{{ __('general.question_type') }}:</label>
-                                    <select class="form-control" wire:model.live="questionTypeFilter">
-                                        <option value="">Tất cả</option>
-                                        <option value="multiple_choice">Trắc nghiệm</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Danh sách câu hỏi -->
-                            @if (!empty($questionBankQuestions))
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6>{{ __('general.question_list', ['count' => count($filteredQuestions)]) }}</h6>
-                                            <div>
-                                                <button type="button" class="btn btn-success btn-sm"
-                                                    wire:click="addSelectedQuestions">
-                                                    <i class="bi bi-plus mr-1"></i>{{ __('general.add_selected_questions') }}
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th width="50">
-                                                            <input type="checkbox" wire:click="toggleAllQuestions"
-                                                                @if (count($selectedQuestions) == count($filteredQuestions)) checked @endif>
-                                                        </th>
-                                                        <th>{{ __('general.question_content') }}</th>
-                                                        <th width="120">{{ __('general.question_type') }}</th>
-                                                        <th width="80">{{ __('general.score') }}</th>
-                                                        <th width="100">{{ __('general.difficulty') }}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @forelse ($filteredQuestions as $index => $question)
-                                                        <tr>
-                                                            <td>
-                                                                <input type="checkbox"
-                                                                    wire:click="toggleQuestionSelection({{ $index }})"
-                                                                    @if (in_array($index, $selectedQuestions)) checked @endif>
-                                                            </td>
-                                                            <td>
-                                                                <div class="fw-medium">
-                                                                    {{ Str::limit($question['question'] ?? '', 100) }}
-                                                                </div>
-                                                                @if (isset($question['options']) && is_array($question['options']))
-                                                                    <small class="text-muted">{{ __('general.correct_answer') }}: <strong>{{ $question['correct_answer'] ?? '' }}</strong></small>
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge bg-secondary">
-                                                                    {{ __('general.' . ($question['type'] ?? 'multiple_choice')) }}
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge bg-info">{{ $question['score'] ?? 1 }} {{ __('general.pts') }}</span>
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge bg-{{ ($question['difficulty'] ?? 'medium') == 'easy' ? 'success' : (($question['difficulty'] ?? 'medium') == 'medium' ? 'warning' : 'danger') }}">{{ ucfirst($question['difficulty'] ?? 'medium') }}</span>
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-muted">
-                                                                <i class="bi bi-inbox fa-2x mb-2"></i>
-                                                                <br>{{ __('general.no_questions_in_this_bank') }}
-                                                            </td>
-                                                        </tr>
-                                                    @endforelse
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="text-center text-muted py-5">
-                                    <i class="bi bi-database fa-3x mb-3"></i>
-                                    <h5>{{ __('general.no_question_bank_yet') }}</h5>
-                                    <p>{{ __('general.please_create_question_bank_with_ai_before_using_this_feature') }}</p>
-                                    <a href="{{ route('teacher.ai.question-bank-generator') }}"
-                                        class="btn btn-primary">
-                                        <i class="bi bi-plus mr-1"></i>{{ __('general.create_bank') }}
-                                    </a>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeQuestionBank">
-                                <i class="bi bi-x mr-1"></i>{{ __('general.close') }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        <!-- Flash Message -->
-        @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
-                <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
     </div>
 
+    <!-- Script cảnh báo rời trang khi có thay đổi -->
     <script>
         (function() {
             let isDirty = false;
 
-            // Đánh dấu có thay đổi trên toàn trang
-            document.addEventListener('input', () => {
-                isDirty = true;
-            }, {
-                passive: true
-            });
-            document.addEventListener('change', () => {
-                isDirty = true;
-            }, {
-                passive: true
-            });
+            document.addEventListener('input', () => isDirty = true, { passive: true });
+            document.addEventListener('change', () => isDirty = true, { passive: true });
 
-            // Xác định form lưu để reset cờ khi submit
-            const form = document.querySelector('form[wire\\:submit="save"], form[wire\\:submit]') || document
-                .querySelector('form');
-            if (form) {
-                form.addEventListener('submit', () => {
-                    isDirty = false;
-                });
-            }
-
-            // Cảnh báo trước khi rời/trang reload (full reload)
             window.addEventListener('beforeunload', function(e) {
-                if (!isDirty) return;
-                e.preventDefault();
-                e.returnValue = '';
-                return '';
-            });
-
-            // Chặn click vào link nếu có thay đổi, hiển thị confirm
-            document.addEventListener('click', function(e) {
-                const anchor = e.target.closest('a[href]');
-                if (!anchor) return;
-                if (anchor.hasAttribute('data-bypass-leave-confirm')) return;
-                if (!isDirty) return;
-                const proceed = confirm('Bạn có thay đổi chưa lưu. Bạn có chắc muốn rời trang?');
-                if (!proceed) {
+                if (isDirty) {
                     e.preventDefault();
-                    e.stopImmediatePropagation();
+                    e.returnValue = '';
+                    return '';
                 }
-            }, true);
+            });
         })();
     </script>
 </x-layouts.dash-teacher>
