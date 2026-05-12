@@ -1,4 +1,4 @@
-<x-layouts.dash-student active="profile">
+<x-layouts.dash-teacher active="profile">
 
 <div class="container-fluid py-4">
 
@@ -42,4 +42,4 @@ Quay về trang chủ
 
 </div>
 
-</x-layouts.dash-student>
+</x-layouts.dash-teacher>
