@@ -8,7 +8,7 @@ return [
     'schedules' => 'Schedules',
     'assignments' => 'Assignments',
     'grading' => 'Grading',
-    'quizzes' => 'Quizzes & Tests',
+    'quizzes' => 'Quizzes',
     'lessons' => 'Lessons & Resources',
     'my_class' => 'My Class',
     'students' => 'Students',
