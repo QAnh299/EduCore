@@ -10,7 +10,7 @@
 
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-bar-chart mr-2"></i>
-                Báo cáo học tập
+                Báo cáo & Thống kê học tập
             </h4>
 
         </div>

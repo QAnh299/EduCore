@@ -78,7 +78,6 @@
             'icon' => 'bi bi-bar-chart',
             'visible' => true,
         ],
-        
     ];
 @endphp
 

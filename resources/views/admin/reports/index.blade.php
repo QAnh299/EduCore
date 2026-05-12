@@ -1,92 +1,320 @@
+<div>
+
 <x-layouts.dash-admin active="reports">
+
     @include('components.language')
+
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <div>
+
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-bar-chart mr-2"></i>{{ __('general.reports_and_statistics') }}
+                <i class="bi bi-bar-chart mr-2"></i>
+                Báo cáo & Thống kê học tập
             </h4>
-            <p class="text-muted mb-0">{{ __('general.reports_description') }}</p>
+
+            <div class="text-muted fs-5">
+                Tổng hợp tiến độ, điểm, tỷ lệ nộp bài,
+                số buổi tham gia của toàn bộ học viên
+            </div>
+
         </div>
+
     </div>
-    <div class="card mb-4">
+
+    <!-- FILTER -->
+    <div class="card shadow-sm mb-4">
+
         <div class="card-body">
+
             <div class="row g-3">
+
+                <!-- LỚP -->
                 <div class="col-md-4">
-                    <label class="form-label">{{ __('general.select_class') }}</label>
-                    <div class="input-group">
-                        <select wire:model.live="selectedClass" class="form-control">
-                            <option value="">{{ __('general.all_classes') }}</option>
-                            @foreach ($classrooms as $class)
-                                <option value="{{ $class->id }}">{{ $class->name }}</option>
-                            @endforeach
-                        </select>
-                        
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">{{ __('views.search_student') }}</label>
-                    <select wire:model.live="selectedStudent" class="form-control">
-                        <option value="">{{ __('views.all_students') }}</option>
-                        @foreach ($students as $student)
-                            <option value="{{ $student->id }}">{{ $student->user->name }}</option>
+
+                    <label class="form-label fw-bold">
+                        Lọc theo lớp
+                    </label>
+
+                    <select
+                        class="form-control"
+                        wire:model.live="selectedClass"
+                    >
+
+                        <option value="">
+                            Tất cả lớp
+                        </option>
+
+                        @foreach ($classrooms as $classroom)
+
+                            <option value="{{ $classroom->id }}">
+                                {{ $classroom->name }}
+                            </option>
+
                         @endforeach
+
                     </select>
+
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary w-100">
-                        <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
-                    </a>
+
+                <!-- HỌC VIÊN -->
+                <div class="col-md-4">
+
+                    <label class="form-label fw-bold">
+                        Tìm kiếm học viên
+                    </label>
+
+                    <select
+                        class="form-control"
+                        wire:model.live="selectedStudent"
+                    >
+
+                        <option value="">
+                            Tất cả học viên
+                        </option>
+
+                        @foreach ($students as $student)
+
+                            <option value="{{ $student->id }}">
+                                {{ $student->name }}
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
                 </div>
+
+                <!-- RESET -->
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        &nbsp;
+                    </label>
+
+                    <button
+                        class="btn btn-outline-secondary w-100"
+                        wire:click="resetFilters"
+                    >
+
+                        <i class="bi bi-arrow-clockwise mr-1"></i>
+
+                        Đặt lại
+
+                    </button>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
-    <div class="card">
+
+    <!-- TABLE -->
+    <div class="card shadow-sm">
+
         <div class="card-body p-0">
+
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+
+                <table
+                    class="table table-hover align-middle mb-0"
+                >
+
                     <thead class="table-light">
+
                         <tr>
-                            <th>{{ __('views.student') }}</th>
-                            <th>{{ __('views.class') }}</th>
-                        
-                            <th>{{ __('views.average_score') }}</th>
-                            <th>{{ __('views.submission_rate') }}</th>
-                            <th>{{ __('views.attendance_count') }}</th>
-                        
-                            <th>{{ __('views.details') }}</th>
+
+                            <th>Học viên</th>
+
+                            <th>Lớp</th>
+
+                            <th>Điểm trung bình</th>
+
+                            <th>Xếp hạng</th>
+
+                            <th>Tỷ lệ nộp bài</th>
+
+                            <th>Số buổi tham gia</th>
+
+                            <th width="120">
+                                Chi tiết
+                            </th>
+
                         </tr>
+
                     </thead>
+
                     <tbody>
-                        @forelse($reportData as $row)
+
+                        @forelse ($reportData as $student)
+
                             <tr>
-                                <td>{{ $row['student_name'] }}</td>
+
+                                <!-- TÊN -->
+                                <td class="fw-semibold">
+
+                                    {{ $student['student_name'] }}
+
+                                </td>
+
+                                <!-- LỚP -->
                                 <td>
-                                    @if (isset($row['class_names']) && count($row['class_names']))
-                                        @foreach ($row['class_names'] as $cname)
-                                            <span class="badge bg-secondary mr-1">{{ $cname }}</span>
-                                        @endforeach
+
+                                    @if($student['class_name'])
+
+                                        <span class="badge bg-primary">
+
+                                            {{ $student['class_name'] }}
+
+                                        </span>
+
                                     @else
-                                        <span class="text-muted">-</span>
+
+                                        <span class="text-muted">
+                                            Chưa có lớp
+                                        </span>
+
                                     @endif
+
                                 </td>
 
-                                <td><span class="fw-bold">{{ $row['avg_score'] }}</span></td>
-                                <td>{{ $row['submit_rate'] }}%</td>
-                                <td>{{ $row['attendance_count'] }}</td>
-
+                                <!-- ĐIỂM TB -->
                                 <td>
-                                    <a href="{{ route('reports.student', $row['student_id']) }}"
-                                        class="btn btn-sm btn-outline-primary">{{ __('views.view') }}</a>
+
+                                    @if($student['average_score'] > 0)
+
+                                        <span
+                                            class="fw-bold text-primary"
+                                        >
+
+                                            {{ number_format($student['average_score'], 1) }}
+
+                                        </span>
+
+                                    @else
+
+                                        <span class="text-muted">
+                                            Chưa có điểm
+                                        </span>
+
+                                    @endif
+
                                 </td>
+
+                                <!-- XẾP HẠNG -->
+                                <td>
+
+                                    @if(
+                                        $student['rank']
+                                        !=
+                                        'Chưa có xếp hạng'
+                                    )
+
+                                        <span
+                                            class="badge bg-warning text-dark"
+                                        >
+
+                                            {{ $student['rank'] }}
+
+                                        </span>
+
+                                    @else
+
+                                        <span class="text-muted">
+                                            Chưa có xếp hạng
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+                                <!-- TỶ LỆ NỘP BÀI -->
+                                <td>
+
+                                    <div class="fw-bold">
+
+                                        {{ $student['submit_rate'] }}%
+
+                                    </div>
+
+                                    <small class="text-muted">
+
+                                        {{ $student['graded_assignments'] }}
+                                        /
+                                        {{ $student['assignments_checked'] }}
+                                        bài
+
+                                    </small>
+
+                                </td>
+
+                                <!-- ĐIỂM DANH -->
+                                <td>
+
+                                    <div
+                                        class="fw-bold text-info"
+                                    >
+
+                                        {{ $student['present_count'] }}
+                                        /
+                                        {{ $student['total_attendance'] }}
+                                        buổi
+
+                                    </div>
+
+                                    <small class="text-muted">
+
+                                        {{ $student['attendance_rate'] }}%
+
+                                    </small>
+
+                                </td>
+
+                                <!-- CHI TIẾT -->
+                                <td>
+
+                                    <a
+                                        href="{{ route('reports.student', $student['student_id']) }}"
+                                        class="btn btn-outline-primary btn-sm"
+                                    >
+
+                                        Xem
+
+                                    </a>
+
+                                </td>
+
                             </tr>
+
                         @empty
+
                             <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">{{ __('views.no_data_available') }}</td>
+
+                                <td
+                                    colspan="7"
+                                    class="text-center py-4 text-muted"
+                                >
+
+                                    Không có dữ liệu
+
+                                </td>
+
                             </tr>
+
                         @endforelse
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
     </div>
+
 </x-layouts.dash-admin>
+
+</div>
