@@ -19,6 +19,7 @@
 
         // ===== ADMIN =====
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         [
             'key' => 'users',
             'label' => __('general.manage_users'),
@@ -31,6 +32,8 @@
         
         // ===== BOSS =====
 =======
+=======
+>>>>>>> Stashed changes
         [
             'key' => 'users',
             'label' => __('general.manage_users'),
@@ -62,6 +65,7 @@
             'icon' => 'fas fa-calendar-alt',
             'visible' => $role === 'boss',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         ],
         /*[
             'key' => 'attendances',
@@ -69,6 +73,8 @@
             'route' => safeRoute($role === 'boss', 'attendances.overview'),
             'icon' => 'fas fa-calendar-check',
             'visible' => $role === 'boss',
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         ],
@@ -100,9 +106,12 @@
             'icon' => 'fas fa-book',
             'visible' => $role === 'boss',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         ],*/
         
 =======
+=======
+>>>>>>> Stashed changes
         ],
 >>>>>>> Stashed changes
         [
@@ -118,6 +127,9 @@
             'label' => 'Báo cáo học tập',
 =======
             'label' => __('general.reports'),
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             'route' => safeRoute($role === 'boss', 'reports.index'),
             'icon' => 'fas fa-chart-bar',

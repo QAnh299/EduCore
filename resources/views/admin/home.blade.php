@@ -92,7 +92,11 @@
                         @if(auth()->user()->role === 'admin')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'admin')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'admin')
 >>>>>>> Stashed changes
@@ -102,9 +106,12 @@
                                 </div>
                                 <div>@lang('general.manage_users')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -112,7 +119,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -122,9 +133,12 @@
                                 </div>
                                 <div>@lang('general.manage_classrooms')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -132,7 +146,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                            
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -142,9 +160,12 @@
                                 </div>
                                 <div>@lang('general.schedules')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -152,7 +173,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -162,10 +187,13 @@
                                 </div>
                                 <div>@lang('general.manage_students')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
                         
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
                         <!-- Điểm danh -->
@@ -222,7 +250,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -232,9 +264,12 @@
                                 </div>
                                 <div>@lang('general.statistics_reports')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -242,7 +277,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -252,9 +291,12 @@
                                 </div>
                                 <div>{{ __('general.financial_statistics') }}</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -262,7 +304,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -272,9 +318,12 @@
                                 </div>
                                 <div>{{ __('general.evaluation_management') }}</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -282,7 +331,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -292,9 +345,12 @@
                                 </div>
                                 <div>@lang('general.notifications_reminders')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
 =======
+=======
+>>>>>>> Stashed changes
                             </a>@endif
                         </div>
 >>>>>>> Stashed changes
@@ -302,7 +358,11 @@
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             
+=======
+                            @if(auth()->user()->role === 'boss')
+>>>>>>> Stashed changes
 =======
                             @if(auth()->user()->role === 'boss')
 >>>>>>> Stashed changes
@@ -312,8 +372,13 @@
                                 </div>
                                 <div>@lang('general.chat')</div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             </a>
                         </div>@endif
+=======
+                            </a>@endif
+                        </div>
+>>>>>>> Stashed changes
 =======
                             </a>@endif
                         </div>
