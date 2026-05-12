@@ -51,7 +51,7 @@
                                     <i class="fas fa-magic fa-3x text-primary mb-3"></i>
                                     <h6>{{ __('general.create_chinese_quiz_with_ai') }}</h6>
                                     <p class="text-muted small">{{ __('general.auto_create_chinese_quiz') }}</p>
-                                    <a href="{{ route('teacher.ai.quiz-generator') }}" class="btn btn-primary">
+                                    <a href="{{ route('teacher.quizzes.create') }}" class="btn btn-primary">
                                         <i class="fas fa-robot mr-1"></i>{{ __('general.create_ai_quiz') }}
                                     </a>
                                 </div>
