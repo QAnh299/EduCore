@@ -38,11 +38,16 @@ class Index extends Component
         ->orderBy('classrooms.name')
         ->get();
     }
+    public function resetFilters()
+{
+    $this->reset(['search', 'filterClass', 'filterStatus']);
 
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingFilterClass() { $this->resetPage(); }
-    public function updatingFilterStatus() { $this->resetPage(); }
+    $this->resetPage();
 
+    return redirect()->route('teacher.quizzes.index');
+}
+
+    
     public function deleteQuiz($quizId)
     {
         $quiz = Quiz::findOrFail($quizId);

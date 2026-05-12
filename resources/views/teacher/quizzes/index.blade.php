@@ -43,9 +43,9 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise mr-2"></i>{{ __('general.reset') }}
-                        </button>
+                        <button class="btn btn-outline-secondary w-100" wire:click="resetFilters">
+    <i class="bi bi-arrow-clockwise mr-2"></i>{{ __('general.reset') }}
+</button>
                     </div>
                 </div>
             </div>
