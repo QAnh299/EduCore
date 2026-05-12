@@ -221,7 +221,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
+                            <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list') }}
                         </h6>
                     </div>
                     <div class="card-body">

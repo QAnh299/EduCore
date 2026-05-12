@@ -637,6 +637,7 @@ return [
     // Admin Sidebar translations
     'financial_statistics' => 'Thống kê thu chi',
     'evaluation_management' => 'Feedback từ học viên',
+    'quiz_duration'=> 'Thời gian làm bài',
     // Evaluation Component translations
     'evaluation_required' => 'Yêu cầu đánh giá chất lượng học tập',
     'function_locked' => 'Chức năng đã bị khóa',
@@ -647,6 +648,9 @@ return [
     'google_drive_video' => 'Google Drive Video',
     'vimeo_video' => 'Vimeo Video',
     'video' => 'Video',
+    'quiz_completed_title' => 'Bài tập Quiz thành công',
+    'back_to_home' => 'Quay về trang chủ',
+    'warning_label' => 'Cảnh báo',
     'open_in_new_tab' => 'Mở trong tab mới',
     'cannot_embed_video' => 'Không thể nhúng video này.',
     'watch_video' => 'Xem video',
