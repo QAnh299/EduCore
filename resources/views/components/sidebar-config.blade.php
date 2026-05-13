@@ -1,8 +1,11 @@
 @php
     // Cấu hình menu mặc định cho hệ thống EduCore
-    $role = auth()->user()->role ?? 'guest';
+    // $role = auth()->user()->role ?? 'guest';
 
     // Helper tránh lỗi route không tồn tại
+    $role = auth()->user()->role;
+
+    // helper tránh lỗi route
     function safeRoute($condition, $routeName) {
         return $condition && Route::has($routeName) ? route($routeName) : '#';
     }
@@ -15,7 +18,6 @@
             'icon'   => 'fas fa-home',
             'visible'=> true,
         ],
-
         // ==================== ADMIN ====================
         [
             'key'    => 'users',
@@ -38,34 +40,6 @@
             'label'  => __('general.schedules'),
             'route'  => safeRoute($role === 'boss', 'schedules.index'),
             'icon'   => 'fas fa-calendar-alt',
-            'visible'=> $role === 'boss',
-        ],
-        [
-            'key'    => 'attendances',
-            'label'  => __('general.attendance'),
-            'route'  => safeRoute($role === 'boss', 'attendances.overview'),
-            'icon'   => 'fas fa-calendar-check',
-            'visible'=> $role === 'boss',
-        ],
-        [
-            'key'    => 'assignments',
-            'label'  => __('general.assignments'),
-            'route'  => safeRoute($role === 'boss', 'assignments.overview'),
-            'icon'   => 'fas fa-tasks',
-            'visible'=> $role === 'boss',
-        ],
-        [
-            'key'    => 'quizzes',
-            'label'  => __('general.quizzes'),
-            'route'  => safeRoute($role === 'boss', 'quizzes.index'),
-            'icon'   => 'fas fa-question-circle',
-            'visible'=> $role === 'boss',
-        ],
-        [
-            'key'    => 'lessons',
-            'label'  => __('general.lessons'),
-            'route'  => safeRoute($role === 'boss', 'lessons.index'),
-            'icon'   => 'fas fa-book',
             'visible'=> $role === 'boss',
         ],
         [
@@ -110,6 +84,7 @@
             'icon'   => 'fas fa-comments',
             'visible'=> $role === 'boss',
         ],
+    
     ];
 @endphp
 
