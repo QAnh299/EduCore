@@ -14,9 +14,9 @@
                     <i class="fas fa-envelope"></i>
                 </div>
                 @if(auth()->user()->role === 'boss')
-                <a href="{{ route('chat.index') }}" class="small-box-footer">
-                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
-                </a>
+                    <a href="{{ route('chat.index') }}" class="small-box-footer">
+                        {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 @endif
             </div>
         </div>
@@ -32,9 +32,9 @@
                     <i class="fas fa-bell"></i>
                 </div>
                 @if(auth()->user()->role === 'boss')
-                <a href="{{ route('notifications.index') }}" class="small-box-footer">
-                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
-                </a>
+                    <a href="{{ route('notifications.index') }}" class="small-box-footer">
+                        {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 @endif
             </div>
         </div>
@@ -50,9 +50,9 @@
                     <i class="fas fa-users"></i>
                 </div>
                 @if(auth()->user()->role === 'boss')
-                <a href="{{ route('students.index') }}" class="small-box-footer">
-                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
-                </a>
+                    <a href="{{ route('students.index') }}" class="small-box-footer">
+                        {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 @endif
             </div>
         </div>
@@ -61,16 +61,16 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>{{ \App\Models\User::whereIn('role', ['teacher','assistant'])->count() }}</h3>
+                    <h3>{{ \App\Models\User::whereIn('role', ['teacher', 'assistant'])->count() }}</h3>
                     <p>{{ __('general.total_teachers') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chalkboard-teacher"></i>
                 </div>
-                @if(auth()->user()->role === 'admin')
-                <a href="{{ route('users.index') }}" class="small-box-footer">
-                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
-                </a>
+                @if(in_array(auth()->user()->role, ['admin', 'boss']))
+                    <a href="{{ route('users.index') }}" class="small-box-footer">
+                        {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 @endif
             </div>
         </div>
@@ -88,302 +88,163 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <!--Quản lý người dùng-->
+
+                        <!-- Quản lý người dùng (Admin) -->
                         @if(auth()->user()->role === 'admin')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'admin')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'admin')
->>>>>>> Stashed changes
                             <a href="{{ route('users.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-graduation-cap" style="font-size:2.5rem; color:#fd7e14;"></i>
                                 </div>
                                 <div>@lang('general.manage_users')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
+                        @endif
+
                         <!-- Quản lý lớp học -->
-                         @if(auth()->user()->role === 'boss')
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-graduation-cap" style="font-size:2.5rem; color:#fd7e14;"></i>
                                 </div>
                                 <div>@lang('general.manage_classrooms')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
+                        @endif
+
                         <!-- Lịch học -->
-                         @if(auth()->user()->role === 'boss')
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                           
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('schedules.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-calendar-alt" style="font-size:2.5rem; color:#6f42c1;"></i>
                                 </div>
                                 <div>@lang('general.schedules')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
+                        @endif
+
                         <!-- Quản lý học viên -->
-                         @if(auth()->user()->role === 'boss')
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('students.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-user-graduate" style="font-size:2.5rem; color:#20c997;"></i>
                                 </div>
                                 <div>@lang('general.manage_students')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-                        
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
+                        @endif
+
                         <!-- Điểm danh -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('attendances.overview') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-clipboard-check" style="font-size:2.5rem; color:#ffc107;"></i>
                                 </div>
                                 <div>@lang('general.attendance')</div>
-                            </a>@endif
+                            </a>
                         </div>
+                        @endif
+
                         <!-- Giao bài tập -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('assignments.overview') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-tasks" style="font-size:2.5rem; color:#fd5e53;"></i>
                                 </div>
                                 <div>@lang('general.assign_homework')</div>
-                            </a>@endif
-                        </div>
-                        <!-- Chấm bài 
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            <a href="#" class="text-decoration-none text-dark">
-                                <div class="mb-2">
-                                    <i class="fas fa-check-circle" style="font-size:2.5rem; color:#6f42c1;"></i>
-                                </div>
-                                <div>@lang('general.grading')</div>
                             </a>
-                        </div> -->
+                        </div>
+                        @endif
+
                         <!-- Kiểm tra & Quiz -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-question-circle" style="font-size:2.5rem; color:#b23cfd;"></i>
                                 </div>
                                 <div>@lang('general.quizzes')</div>
-                            </a>@endif
+                            </a>
                         </div>
-                        <!-- Xem lại bài học & tài nguyên -->
+                        @endif
+
+                        <!-- Bài học & Tài nguyên -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('lessons.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-book" style="font-size:2.5rem; color:#28a745;"></i>
                                 </div>
                                 <div>@lang('general.lessons')</div>
-                            </a>@endif
+                            </a>
                         </div>
->>>>>>> Stashed changes
-                        <!-- Thống kê - báo cáo -->
-                         @if(auth()->user()->role === 'boss')
+                        @endif
+
+                        <!-- Thống kê - Báo cáo -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('reports.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-chart-bar" style="font-size:2.5rem; color:#ff9800;"></i>
                                 </div>
                                 <div>@lang('general.statistics_reports')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
+                        @endif
+
                         <!-- Thống kê thu chi -->
-                         @if(auth()->user()->role === 'boss')
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('admin.finance.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-coins" style="font-size:2.5rem; color:#ffc107;"></i>
                                 </div>
                                 <div>{{ __('general.financial_statistics') }}</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
-                        <!-- Quản lý đánh giá -->
-                         @if(auth()->user()->role === 'boss')
+                        @endif
+
+                        <!-- Đánh giá -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('evaluation-management') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
                                 </div>
                                 <div>{{ __('general.evaluation_management') }}</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
-                        <!-- Thông báo & nhắc lịch -->
-                         @if(auth()->user()->role === 'boss')
+                        @endif
+
+                        <!-- Thông báo -->
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('notifications.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2 position-relative d-inline-block">
                                     <i class="fas fa-bell" style="font-size:2.5rem; color:#f59e42;"></i>
                                 </div>
                                 <div>@lang('general.notifications_reminders')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-=======
->>>>>>> Stashed changes
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
+                        @endif
+
                         <!-- Chat -->
-                         @if(auth()->user()->role === 'boss')
+                        @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                            
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
-=======
-                            @if(auth()->user()->role === 'boss')
->>>>>>> Stashed changes
                             <a href="{{ route('chat.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-comments" style="font-size:2.5rem; color:#17a2b8;"></i>
                                 </div>
                                 <div>@lang('general.chat')</div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                             </a>
-                        </div>@endif
-=======
-                            </a>@endif
                         </div>
->>>>>>> Stashed changes
-=======
-                            </a>@endif
-                        </div>
->>>>>>> Stashed changes
-                        
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -391,8 +252,8 @@
     </div>
 
     <!-- Charts Row -->
+    @if(auth()->user()->role === 'boss')
     <div class="row">
-         @if(auth()->user()->role === 'boss')
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -402,8 +263,9 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="attendanceChart"
-                        style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    <canvas id="attendanceChart" 
+                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;">
+                    </canvas>
                 </div>
             </div>
         </div>
@@ -417,154 +279,91 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="timeline">
-                        <!-- Timeline items would go here -->
-                        <div class="time-label">
-                            <span class="bg-red">{{ __('general.today') }}</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-envelope bg-blue"></i>
-                            <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i>
-                                    {{ __('general.minutes_ago', ['count' => 2]) }}</span>
-                                <h3 class="timeline-header">{{ __('general.new_teacher_message') }}</h3>
-                                <div class="timeline-body">
-                                    {{ __('general.unread_messages_count', ['count' => $unreadCount]) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <i class="fas fa-bell bg-yellow"></i>
-                            <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i>
-                                    {{ __('general.minutes_ago', ['count' => 5]) }}</span>
-                                <h3 class="timeline-header">{{ __('general.new_notification') }}</h3>
-                                <div class="timeline-body">
-                                    {{ __('general.unread_notifications_count', ['count' => $unreadNotification]) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Bạn có thể thêm timeline ở đây -->
                 </div>
             </div>
-        </div>@endif
+        </div>
     </div>
+    @endif
 
     @push('scripts')
-        <script>
-            // Chart.js for attendance statistics (live data)
-            document.addEventListener('DOMContentLoaded', function() {
-                function ensureChartJsLoaded(callback) {
-                    if (window.Chart) return callback();
-                    var s = document.createElement('script');
-                    s.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-                    s.onload = callback;
-                    document.head.appendChild(s);
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function ensureChartJsLoaded(callback) {
+                if (window.Chart) return callback();
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = callback;
+                document.head.appendChild(script);
+            }
+
+            function renderDashboardAttendanceChart() {
+                const el = document.getElementById('attendanceChart');
+                if (!el) return;
+
+                const ctx = el.getContext('2d');
+
+                const dataFromBlade = @js([
+                    'present' => (int) ($attendanceStatusCounts['present'] ?? 0),
+                    'absent'  => (int) ($attendanceStatusCounts['absent'] ?? 0),
+                    'late'    => (int) ($attendanceStatusCounts['late'] ?? 0),
+                ]);
+
+                const present = dataFromBlade.present;
+                const absent  = dataFromBlade.absent;
+                const late    = dataFromBlade.late;
+
+                const selectedMonth = {{ (int) ($selectedMonth ?? now()->month) }};
+                const selectedYear  = {{ (int) ($selectedYear ?? now()->year) }};
+                const monthStr = String(selectedMonth).padStart(2, '0') + '/' + selectedYear;
+
+                if (el._chartInstance) {
+                    el._chartInstance.destroy();
                 }
 
-                function renderDashboardAttendanceChart() {
-                    const el = document.getElementById('attendanceChart');
-                    if (!el) return;
-                    const ctx = el.getContext('2d');
+                const total = present + absent + late;
+                let labels = [
+                    "{{ __('general.present') }}",
+                    "{{ __('general.absent') }}",
+                    "{{ __('general.late') }}"
+                ];
+                let data = [present, absent, late];
+                let backgroundColor = ['#28a745', '#dc3545', '#ffc107'];
 
-                    //tạm bỏ 3 dòng dưới
-                    //const present = {{ (int) ($attendanceStatusCounts['present'] ?? 0) }};
-                    //const absent = {{ (int) ($attendanceStatusCounts['absent'] ?? 0) }};
-                    //const late = {{ (int) ($attendanceStatusCounts['late'] ?? 0) }};
+                if (total === 0) {
+                    labels = ["{{ __('general.no_data_for_month', ['month' => ':month']) }}".replace(':month', monthStr)];
+                    data = [1];
+                    backgroundColor = ['#e9ecef'];
+                }
 
-                    //thay 3 dòng trên bằng
-                    const dataFromBlade = @js([
-                        'present' => (int) ($attendanceStatusCounts['present'] ?? 0),
-                        'absent' => (int) ($attendanceStatusCounts['absent'] ?? 0),
-                        'late' => (int) ($attendanceStatusCounts['late'] ?? 0),
-                    ]);
-                    const present = dataFromBlade.present;
-                    const absent  = dataFromBlade.absent;
-                    const late    = dataFromBlade.late;
-
-                    // Tháng/Năm đang chọn (nếu có) hoặc mặc định tháng/năm hiện tại
-                    const selectedMonth = {{ (int) ($selectedMonth ?? now()->month) }};
-                    const selectedYear = {{ (int) ($selectedYear ?? now()->year) }};
-                    const monthStr = String(selectedMonth).padStart(2, '0') + '/' + selectedYear;
-                    const noDataTemplate = "{{ __('general.no_data_for_month', ['month' => ':month']) }}";
-                    const noDataLabel = noDataTemplate.replace(':month', monthStr);
-
-                    if (el._chartInstance) {
-                        el._chartInstance.destroy();
-                        el._chartInstance = null;
-                    }
-
-                    // Nếu không có dữ liệu, hiển thị lát cắt xám "Chưa có dữ liệu MM/YYYY"
-                    const total = present + absent + late;
-                    //thay dòng let labels bên dưới bằng
-                    //let labels = ['{{ __('general.present') }}', '{{ __('general.absent') }}'];
-                    'presentLabel' => __('general.present'),
-                    'absentLabel'  => __('general.absent'),
-                    'lateLabel'    => __('general.late'),
-                    labels = [
-                        dataFromBlade.presentLabel,
-                        dataFromBlade.absentLabel,
-                        dataFromBlade.lateLabel
-                    ];
-                    let data = [present, absent];
-                    let backgroundColor = ['#28a745', '#dc3545', '#ffc107'];
-
-                    if (total === 0) {
-                        labels = [noDataLabel];
-                        data = [1];
-                        backgroundColor = ['#e9ecef'];
-                    }
-
-                    const isNoData = labels.length === 1 && labels[0] === noDataLabel;
-
-                    el._chartInstance = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                data: data,
-                                backgroundColor: backgroundColor,
-                                borderWidth: 0,
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                },
-                                tooltip: {
-                                    enabled: !isNoData
-                                }
-                            }
+                el._chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: backgroundColor,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: { enabled: total > 0 }
                         }
-                    });
-                }
-
-                function init() {
-                    ensureChartJsLoaded(renderDashboardAttendanceChart);
-                }
-                init();
-
-                // Re-render after Livewire updates the DOM
-                document.addEventListener('livewire:load', function() {
-                    /*if (window.Livewire) {
-                        window.Livewire.hook('message.processed', function() {
-                            init();
-                        });
-                    }*/
-                   if (window.Livewire) {
-                        window.Livewire.hook('message.processed', init);
-                        window.Livewire.hook('morph.updated', init);
                     }
                 });
-                if (window.Livewire && window.Livewire.hook) {
-                    window.Livewire.hook('morph.updated', function() {
-                        init();
-                    });
-                }
-            });
-        </script>
+            }
+
+            ensureChartJsLoaded(renderDashboardAttendanceChart);
+
+            // Livewire support
+            if (window.Livewire) {
+                window.Livewire.hook('morph.updated', renderDashboardAttendanceChart);
+            }
+        });
+    </script>
     @endpush
 </x-layouts.dash-admin>
