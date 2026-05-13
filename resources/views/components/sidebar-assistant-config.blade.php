@@ -78,14 +78,7 @@
             'icon' => 'bi bi-bar-chart',
             'visible' => true,
         ],
-        [
-            'key' => 'evaluations-report',
-            'label' => __('general.evaluation_report'),
-            'route' => route('assistant.evaluations.report'),
-            'icon' => 'bi bi-star',
-            'visible' => true,
-        ],
-    ];
+        
 @endphp
 
 {{-- Component sidebar với cấu hình menu cho giáo viên --}}
