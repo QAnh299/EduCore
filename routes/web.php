@@ -63,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile');
 });
 
-Route::middleware(['auth', 'role:admin,teacher,student,boss'])->group(function () {
+Route::middleware(['auth', 'role:admin,teacher,student,boss,assistant'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
     
     //Route::get('/dashboard', function () {return 'DASHBOARD OK';});

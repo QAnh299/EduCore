@@ -205,16 +205,30 @@ class Index extends Component
 
     public function render()
 {
-    $classrooms = Classroom::orderBy('name')->get();
+    //$classrooms = Classroom::orderBy('name')->get();
+    //Đoạn thay đổi lấy lớp của giáo viên đó thôi
+    $classrooms = Classroom::whereHas('users', function ($q) {
 
+    $q->where('users.id', auth()->id())
+      ->where('class_user.role', 'teacher');
+    })
+    ->orderBy('name')
+    ->get();
     $students = User::query()
 
         ->where('role', 'student')
+        //thêm đoạn này
+        ->whereHas('classrooms', function ($q) use ($classrooms) {
+        $q->whereIn(
+            'classrooms.id',
+            $classrooms->pluck('id')
+        );
+        $q->where('class_user.role', 'student');
+    })
 
         ->with('classrooms')
 
         ->when($this->search, function ($query) {
-
             $query->where(
                 'users.name',
                 'like',

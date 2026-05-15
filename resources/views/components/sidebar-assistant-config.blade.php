@@ -78,7 +78,7 @@
             'icon' => 'bi bi-bar-chart',
             'visible' => true,
         ],
-        
+    ];  
 @endphp
 
 {{-- Component sidebar với cấu hình menu cho giáo viên --}}
