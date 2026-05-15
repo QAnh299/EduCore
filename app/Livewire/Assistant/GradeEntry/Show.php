@@ -22,7 +22,7 @@ class Show extends Component
         ->when($this->filter !== 'all', function ($query) {
             $query->where('grade_type', $this->filter);
         })
-        ->with(['assistant', 'assignment'])
+        ->with(['teacher', 'assignment'])
         ->orderByDesc('graded_at')
         ->get();
 }
