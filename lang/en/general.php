@@ -113,7 +113,7 @@ return [
     'student_status_active' => 'Studying',
     'student_status_paused' => 'Paused',
     'student_status_reserved' => 'Reserved',
-    'student_status_new' => 'New',
+    'student_status_new' => 'Active',
     'status' => 'Status',
     'actions' => 'Actions',
     'show_trashed' => 'Show trashed classes',

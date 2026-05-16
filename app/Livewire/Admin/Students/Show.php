@@ -59,7 +59,7 @@ class Show extends Component
         $this->completedAssignments = Grade::where('student_id', $studentId)
             ->whereIn('class_id', $classIds)
             ->where('grade_type', 'homework')
-            -whereNotNull('score')
+            ->whereNotNull('score')
             ->count();
 
         // Tính tỷ lệ điểm danh

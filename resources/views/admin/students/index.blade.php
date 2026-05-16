@@ -45,7 +45,7 @@
                     <div class="col-md-2">
                         <select wire:model.live="statusFilter" class="form-control">
                             <option value="">{{ __('general.status_filter') }}</option>
-                            <option value="new">{{ __('general.new_registration') }}</option>
+                            <!--<option value="new">{{ __('general.new_registration') }}</option>-->
                             <option value="active">{{ __('general.studying') }}</option>
                             <option value="paused">{{ __('general.paused') }}</option>
                            <!-- <option value="dropped">{{ __('general.reserved') }}</option>-->
@@ -140,7 +140,7 @@
                                                     'dropped' => 'danger',
                                                 ];
                                                 $statusLabels = [
-                                                    'new' => __('general.new_registration'),
+                                                    
                                                     'active' => __('general.studying'),
                                                     'paused' => __('general.paused'),
                                                     'dropped' => __('general.reserved'),

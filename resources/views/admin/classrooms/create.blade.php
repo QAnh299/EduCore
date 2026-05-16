@@ -206,14 +206,14 @@
                                 <select wire:model="level" class="form-control @error('level') is-invalid @enderror"
                                     id="level">
                                     <option value="">{{ __('general.choose_level') }}</option>
-                                    <option value="Toán lớp 6">Lớp 6A</option>
-                                    <option value="Toán lớp 6">Lớp 6B</option>
-                                    <option value="Toán lớp 7">Lớp 7A</option>
-                                    <option value="Toán lớp 7">Lớp 7B</option>
-                                    <option value="Toán lớp 8">Lớp 8A</option>
-                                    <option value="Toán lớp 8">Lớp 8B</option>
-                                    <option value="Toán lớp 9">Lớp 9A</option>
-                                    <option value="Toán lớp 9">Lớp 9B</option>
+                                    <option value="Toán lớp 6">Toán lớp 6</option>
+                                 
+                                   
+                                    <option value="Toán lớp 7">Toán lớp 7</option>
+                                   
+                                    <option value="Toán lớp 8">Toán lớp 8</option>
+                                 
+                                    <option value="Toán lớp 9">Toán lớp 9</option>
                                 </select>
                                 @error('level')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -256,10 +256,10 @@
                                         class="text-danger">*</span></label>
                                 <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                     id="status">
-                                    <option value="draft">{{ __('general.draft') }}</option>
+                                
                                     <option value="active">{{ __('general.active') }}</option>
                                     <option value="inactive">{{ __('general.inactive') }}</option>
-                                    <option value="completed">{{ __('general.completed') }}</option>
+                                    <!--<option value="completed">{{ __('general.completed') }}</option>-->
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>

@@ -21,7 +21,7 @@ class Create extends Component
 
     public $joined_at = '';
 
-    public $status = 'new';
+    public $status = 'active';
 
     public $level = '';
 

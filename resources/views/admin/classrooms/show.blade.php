@@ -174,7 +174,7 @@
                                                                 'active' => __('general.student_status_active'),
                                                                 'paused' => __('general.student_status_paused'),
                                                                 'dropped' => __('general.student_status_reserved'),
-                                                                'new' => __('general.student_status_new'),
+                                                                'new' => __('general.student_status_active'),
                                                             ];
                                                             $color =
                                                                 $statusColors[$student->studentProfile->status] ??

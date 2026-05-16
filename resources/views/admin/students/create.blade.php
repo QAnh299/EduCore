@@ -90,7 +90,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> 
                         <!-- Thông tin học tập -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">{{ __('general.academic_info') }}</h5>
@@ -101,7 +101,7 @@
                                                 class="text-danger">*</span></label>
                                         <select wire:model="status"
                                             class="form-control @error('status') is-invalid @enderror" id="status">
-                                            <option value="new">{{ __('general.new_registration') }}</option>
+                                            <!--<option value="new">{{ __('general.new_registration') }}</option>-->
                                             <option value="active">{{ __('general.studying') }}</option>
                                             <option value="paused">{{ __('general.paused') }}</option>
                                             <!--<option value="dropped">{{ __('general.reserved') }}</option>-->

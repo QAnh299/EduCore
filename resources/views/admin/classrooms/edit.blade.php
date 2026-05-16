@@ -256,10 +256,10 @@
                                         class="text-danger">*</span></label>
                                 <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                     id="status">
-                                    <option value="draft">@lang('general.draft')</option>
+                                    <!--<option value="draft">@lang('general.draft')</option>-->
                                     <option value="active">@lang('general.active')</option>
                                     <option value="inactive">@lang('general.inactive')</option>
-                                    <option value="completed">@lang('general.completed')</option>
+                                    <!--<option value="completed">@lang('general.completed')</option>-->
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>

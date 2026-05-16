@@ -74,7 +74,7 @@
                                         <th>@lang('general.student')</th>
                                         <th>@lang('general.email')</th>
                                         <th>@lang('general.phone_number')</th>
-                                        <th class="text-center">@lang('general.status')</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,23 +101,7 @@
                                             </td>
                                             <td>{{ $student->email }}</td>
                                             <td>{{ $student->phone ?? __('general.not_available') }}</td>
-                                            <td class="text-center">
-                                                @php
-                                                    $statusColors = [
-                                                        'active' => 'success',
-                                                        'paused' => 'warning',
-                                                        'dropped' => 'danger',
-                                                    ];
-                                                    $statusLabels = [
-                                                        'active' => __('general.student_status_active'),
-                                                        'paused' => __('general.student_status_paused'),
-                                                        'dropped' => __('general.student_status_reserved'),
-                                                    ];
-                                                    $color = $statusColors[$student->status] ?? 'secondary';
-                                                    $label = $statusLabels[$student->status] ?? __('general.undefined');
-                                                @endphp
-                                                <span class="badge bg-{{ $color }}">{{ $label }}</span>
-                                            </td>
+                                            
                                         </tr>
                                     @empty
                                         <tr>
