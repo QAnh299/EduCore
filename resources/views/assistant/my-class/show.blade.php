@@ -74,7 +74,7 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center">
                         <i class="bi bi-calendar-check text-primary" style="font-size: 2rem;"></i>
-                        <h4 class="mt-2 mb-1">{{ $classroom->attendances->count() }}</h4>
+                        <h4 class="mt-2 mb-1">{{ $totalAttendanceSessions }}</h4>
                         <p class="text-muted mb-0">{{ __('general.sessions') }}</p>
                     </div>
                 </div>

@@ -26,7 +26,8 @@ class Show extends Component
 
         $this->classroom = Classroom::whereHas('users', function ($query) use ($assistant) {
             $query->where('user_id', $assistant->id);
-                
+            $query->where('class_user.role', 'assistant');
+
         })
             ->with(['students', 'lessons', 'assignments'])
             ->findOrFail($classroomId);
@@ -58,27 +59,42 @@ class Show extends Component
         $this->showAddLessonModal = false;
         $this->showAddAssignmentModal = false;
     }
+     // ==================== COMPUTED PROPERTIES ====================
 
-    public function render()
+
+    /** Tổng số buổi điểm danh (số ngày duy nhất) - Dùng cho thẻ thống kê */
+    public function getTotalAttendanceSessionsProperty()
     {
-        // Tính tổng hợp lịch sử điểm danh theo ngày (mỗi ngày 1 dòng)
-        $attendanceSessions = Attendance::forClass($this->classroom->id)
+        return Attendance::forClass($this->classroom->id)
+            ->distinct('date')
+            ->count('date');
+    }
+    /** Danh sách các buổi điểm danh (đã group by date) */
+    public function getAttendanceSessionsProperty()
+    {
+        return Attendance::forClass($this->classroom->id)
             ->orderByDesc('date')
             ->get()
             ->groupBy('date')
             ->map(function ($records, $date) {
                 return [
-                    'date' => Carbon::parse($date),
+                    'date'          => Carbon::parse($date),
                     'present_count' => $records->where('present', true)->count(),
-                    'absent_count' => $records->where('present', false)->count(),
+                    'absent_count'  => $records->where('present', false)->count(),
+                    // total_students ở đây để sau này linh hoạt (nếu có buổi thiếu điểm danh)
+                    'total_students'=> $records->count(),
                 ];
             })
             ->values();
-
+    }
+     public function render()
+    {
         return view('assistant.my-class.show', [
-            'classroom' => $this->classroom,
-            'assistant' => Auth::user(),
-            'attendanceSessions' => $attendanceSessions,
+            'classroom'               => $this->classroom,
+            'assistant'               => Auth::user(),
+            'attendanceSessions'      => $this->attendanceSessions,
+            'totalAttendanceSessions' => $this->totalAttendanceSessions,   // ← Quan trọng
         ]);
     }
+
 }

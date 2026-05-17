@@ -51,7 +51,10 @@ class Overview extends Component
             ->whereIn('class_id', $assistantClassrooms)
             ->get();
 
-        $totalAttendanceDays = $monthlyAttendances->count();
+        $totalAttendanceDays = $monthlyAttendances
+            ->unique(fn($att) => $att->date . '-' . $att->class_id)
+            ->count();
+
         $totalPresent = $monthlyAttendances->where('present', true)->count();
         $totalAbsent = $monthlyAttendances->where('present', false)->count();
 
@@ -65,9 +68,10 @@ class Overview extends Component
             ->get()
             ->groupBy('class_id')
             ->map(function ($attendances) {
+                $uniqueDays = $attendances->unique('date')->count();
                 return [
                     'classroom' => $attendances->first()->classroom,
-                    'total_days' => $attendances->count(),
+                    'total_days' => $uniqueDays,
                     'present_days' => $attendances->where('present', true)->count(),
                     'attendance_rate' => $attendances->count() > 0 ?
                         round(($attendances->where('present', true)->count() / $attendances->count()) * 100, 1) : 0,
