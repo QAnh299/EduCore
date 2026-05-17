@@ -286,7 +286,7 @@ class Edit extends Component
 
         session()->flash('message', 'Bài kiểm tra đã được cập nhật thành công.');
 
-        return redirect()->route('quizzes.show', $this->quiz);
+        return redirect()->route('teacher.quizzes.show', $this->quiz);
     }
 
     /**
