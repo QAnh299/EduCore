@@ -17,8 +17,9 @@
                 <a href="{{ route('chat.index') }}" class="small-box-footer">
                     {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
+            </div>
         </div>@endif
-</div>
+
 
         <!-- Unread Notifications -->
         <div class="col-lg-3 col-6">
