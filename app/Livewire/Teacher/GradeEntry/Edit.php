@@ -62,7 +62,7 @@ class Edit extends Component
 
         session()->flash('success', 'Cập nhật điểm thành công');
 
-        return redirect()->route('grade-entry.show', $this->grade->student_id);
+        return redirect()->route('teacher.grade-entry-teacher.show', $this->grade->student_id);
     }
     public function render()
     {
