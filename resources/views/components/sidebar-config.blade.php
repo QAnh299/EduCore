@@ -1,5 +1,5 @@
 @php
-    // Cấu hình menu mặc định cho hệ thống EduCore
+    // Cấu hình menu mặc định cho hệ thống EduCorem
     // $role = auth()->user()->role ?? 'guest';
 
     // Helper tránh lỗi route không tồn tại
