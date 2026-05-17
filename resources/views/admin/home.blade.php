@@ -18,6 +18,7 @@
                     {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
         </div>@endif
+</div>
 
         <!-- Unread Notifications -->
         <div class="col-lg-3 col-6">
