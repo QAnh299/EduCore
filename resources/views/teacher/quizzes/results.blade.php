@@ -74,7 +74,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h6 class="card-title">{{ __('general.highest_score') }}</h6>
-                                <h3 class="mb-0">{{ $maxScore }}/{{ $quiz->getMaxScore() }}</h3>
+                                <h3 class="mb-0">{{ $maxScore }}/100</h3>
                             </div>
                             <div class="align-self-center">
                                 <i class="bi bi-trophy fs-1"></i>
@@ -138,10 +138,7 @@
                             <tbody>
                                 @foreach ($results as $index => $result)
                                     @php
-                                        $percentage =
-                                            $quiz->getMaxScore() > 0
-                                                ? ($result->score / $quiz->getMaxScore()) * 100
-                                                : 0;
+                                        $percentage = $result->score ?? 0;
                                         $status = match (true) {
                                             $percentage >= 90 => ['text' => __('general.excellent'), 'class' => 'bg-success'],
                                             $percentage >= 70 => ['text' => __('general.good'), 'class' => 'bg-info'],
@@ -157,7 +154,7 @@
                                                 class="text-muted">{{ $result->student->user->email ?? 'N/A' }}</small>
                                         </td>
                                         <td>
-                                            <div class="fw-bold">{{ $result->score }}/{{ $quiz->getMaxScore() }}</div>
+                                            <div class="fw-bold">{{ $result->score }}/100</div>
                                         </td>
                                         <td>
                                             <div class="progress" style="height: 20px;">
