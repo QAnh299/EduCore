@@ -330,7 +330,7 @@ class Index extends Component
         }
 
         $query = User::where('id', '!=', $currentUserId)
-            ->whereIn('role', ['student', 'teacher']);
+            ->whereIn('role', ['boss','student', 'teacher']);
 
         if ($this->searchTerm) {
             $query->where(function ($q) {

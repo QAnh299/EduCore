@@ -203,7 +203,7 @@ class Index extends Component
     public function getUsersProperty()
     {
         $query = User::where('id', '!=', Auth::id())
-            ->whereIn('role', ['admin', 'teacher']);
+            ->whereIn('role', ['teacher']);
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
