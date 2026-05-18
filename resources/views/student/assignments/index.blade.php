@@ -93,27 +93,6 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
-                        <label class="form-label">Từ ngày</label>
-
-                        <input
-                            type="date"
-                            class="form-control"
-                            wire:model.live="filterDateFrom"
-                            {{ $filterTimeRange !== 'custom' ? 'disabled' : '' }}
-                        >
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Đến ngày</label>
-
-                        <input
-                            type="date"
-                            class="form-control"
-                            wire:model.live="filterDateTo"
-                            {{ $filterTimeRange !== 'custom' ? 'disabled' : '' }}
-                        >
-                    </div>
 
                     <div class="col-md-3 d-flex align-items-end">
                         <button
