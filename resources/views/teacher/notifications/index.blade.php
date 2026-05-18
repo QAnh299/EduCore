@@ -197,7 +197,7 @@
             style="display: block; background-color: rgba(0,0,0,0.5);">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header"> 
                         <h5 class="modal-title">{{ __('general.create_new_notification') }}</h5>
                         <button type="button" class="btn-close"
                             wire:click="$set('showCreateModal', false)"></button>

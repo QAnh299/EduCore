@@ -94,7 +94,7 @@ class Index extends Component
                     'scheduled_at' => $this->scheduled_at ?: now(),
                     'is_urgent' => $this->is_urgent,
                 ]);
-            }
+            } 
         } else {
             // Kiểm tra xem teacher có quyền gửi thông báo cho lớp này không
             if ($classrooms->contains('id', $this->class_id)) {
