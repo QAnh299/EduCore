@@ -61,7 +61,7 @@
                                     <th>{{ __('general.title') }}</th>
                                     <th>{{ __('general.class') }}</th>
                                     <th>{{ __('general.video') }}</th>
-                                    <th>{{ __('general.document') }}</th>
+                                    
                                     <th>{{ __('general.created_date') }}</th>
                                     <th>{{ __('general.actions') }}</th>
                                 </tr>
@@ -86,14 +86,7 @@
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($lesson->attachment)
-                                                <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                                    class="badge bg-success">{{ __('general.document') }}</a>
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
-                                        </td>
+
                                         <td>
                                             <small>{{ $lesson->created_at?->format('d/m/Y') }}</small>
                                         </td>
