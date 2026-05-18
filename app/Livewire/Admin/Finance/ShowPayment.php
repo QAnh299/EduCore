@@ -79,12 +79,17 @@ class ShowPayment extends Component
     {
         $payment = Payment::findOrFail($paymentId);
         //$payment->status = $status;
-        $payment->status = $this->editStatus[$paymentId];
+        $payment->status =
+        $this->editStatus[$paymentId]
+        ?? $payment->status;
+
         // cập nhật ngày thanh toán
         //if (!empty($this->paidAt[$paymentId])) {
          //$payment->paid_at = $this->paidAt[$paymentId];
         //}
-        $payment->paid_at = $this->paidAt[$paymentId];
+        $payment->paid_at =
+        $this->paidAt[$paymentId]
+        ?? $payment->paid_at;
         $payment->save();
         //$this->loadPayments();
         session()->flash('success', 'Cập nhật trạng thái thành công!');
