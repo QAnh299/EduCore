@@ -41,8 +41,8 @@ class Index extends Component
     public function deleteQuiz($quizId)
     {
         $quiz = Quiz::findOrFail($quizId);
-        // Kiểm tra xem quiz có thuộc lớp mà giáo viên đang dạy không
-        $assistantClassIds = Auth::user()->teachingClassrooms->pluck('id');
+        // Kiểm tra xem quiz có thuộc lớp mà trợ giảng phụ trách không
+        $assistantClassIds = Auth::user()->assistantClassrooms->pluck('id');
         if (! $assistantClassIds->contains($quiz->class_id)) {
             session()->flash('error', 'Bạn không có quyền xóa bài kiểm tra này.');
 
@@ -56,7 +56,7 @@ class Index extends Component
     public function render()
     {
         $user = Auth::user();
-        $assistantClassIds = $user->teachingClassrooms->pluck('id');
+        $assistantClassIds = $user->assistantClassrooms->pluck('id');
 
         $quizzes = Quiz::query()
             ->with(['classroom'])
@@ -78,7 +78,7 @@ class Index extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        $classrooms = $user->teachingClassrooms()->orderBy('name')->get();
+        $classrooms = $user->assistantClassrooms()->orderBy('name')->get();
 
         return view('assistant.quizzes.index', [
             'quizzes' => $quizzes,
