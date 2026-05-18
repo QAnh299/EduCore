@@ -80,7 +80,7 @@ class Index extends Component
         $this->validate();
 
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         // Nếu không chọn lớp cụ thể, gửi cho tất cả lớp assistant đang dạy
         if (empty($this->class_id)) {
@@ -118,7 +118,7 @@ class Index extends Component
     public function edit($id)
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $this->editingNotification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
@@ -156,7 +156,7 @@ class Index extends Component
     public function delete($id)
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $notification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
@@ -168,7 +168,7 @@ class Index extends Component
     public function duplicate($id)
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $original = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
@@ -186,7 +186,7 @@ class Index extends Component
     public function sendNow($id)
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $notification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
@@ -198,7 +198,7 @@ class Index extends Component
     public function markAllAsRead()
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->where('is_read', false)
@@ -210,7 +210,7 @@ class Index extends Component
     public function toggleRead($id)
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $notification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
@@ -224,7 +224,7 @@ class Index extends Component
     public function deleteExpired()
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $deleted = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->where('scheduled_at', '<', now()->subDays(30))
@@ -236,7 +236,7 @@ class Index extends Component
     public function render()
     {
         $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
+        $classrooms = $user->assistantClassrooms;
 
         $query = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->with(['classroom', 'user']);
