@@ -60,18 +60,18 @@ class Results extends Component
             ->when($this->filterScore, function ($query) {
                 switch ($this->filterScore) {
                     case 'excellent':
-                        $query->where('score', '>=', $this->quiz->getMaxScore() * 0.9);
+                        $query->where('score', '>=', 90);
                         break;
                     case 'good':
-                        $query->where('score', '>=', $this->quiz->getMaxScore() * 0.7)
-                            ->where('score', '<', $this->quiz->getMaxScore() * 0.9);
+                        $query->where('score', '>=', 70)
+                            ->where('score', '<', 90);
                         break;
                     case 'average':
-                        $query->where('score', '>=', $this->quiz->getMaxScore() * 0.5)
-                            ->where('score', '<', $this->quiz->getMaxScore() * 0.7);
+                        $query->where('score', '>=', 50)
+                            ->where('score', '<', 70);
                         break;
                     case 'poor':
-                        $query->where('score', '<', $this->quiz->getMaxScore() * 0.5);
+                        $query->where('score', '<', 50);
                         break;
                 }
             })
@@ -85,7 +85,7 @@ class Results extends Component
         $maxScore = $allResults->max('score') ?? 0;
         $minScore = $allResults->min('score') ?? 0;
         $passRate = $totalResults > 0
-            ? ($allResults->where('score', '>=', $this->quiz->getMaxScore() * 0.5)->count() / $totalResults) * 100
+            ? ($allResults->where('score', '>=', 50)->count() / $totalResults) * 100
             : 0;
 
         return view('assistant.quizzes.results', [
