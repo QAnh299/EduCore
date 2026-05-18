@@ -18,26 +18,39 @@ class Index extends Component
 
     public $selectedNotification = null;
 
-    public function markAsRead($id)
-    {
-        $notification = Notification::where(function ($query) {
-            $query->where('user_id', auth()->id())
-                ->orWhereNull('user_id');
-        })->findOrFail($id);
+public function markAsRead($id)
+{
+    $student = auth()->user()->student;
 
-        $notification->markAsRead();
-        session()->flash('message', 'Đã đánh dấu thông báo là đã đọc!');
-    }
+    $classroomIds = $student->classrooms->pluck('id');
 
-    public function markAllAsRead()
-    {
-        Notification::where(function ($query) {
-            $query->where('user_id', auth()->id())
-                ->orWhereNull('user_id');
-        })->where('is_read', false)->update(['is_read' => true]);
+    $notification = Notification::where(function ($query) use ($classroomIds) {
+        $query->where('user_id', auth()->id())
+            ->orWhereNull('user_id')
+            ->orWhereIn('class_id', $classroomIds);
+    })->findOrFail($id);
 
-        session()->flash('message', 'Đã đánh dấu tất cả thông báo là đã đọc!');
-    }
+    $notification->markAsRead();
+
+    session()->flash('message', 'Đã đánh dấu thông báo là đã đọc!');
+}
+
+public function markAllAsRead()
+{
+    $student = auth()->user()->student;
+
+    $classroomIds = $student->classrooms->pluck('id');
+
+    Notification::where(function ($query) use ($classroomIds) {
+        $query->where('user_id', auth()->id())
+            ->orWhereNull('user_id')
+            ->orWhereIn('class_id', $classroomIds);
+    })
+    ->where('is_read', false)
+    ->update(['is_read' => true]);
+
+    session()->flash('message', 'Đã đánh dấu tất cả thông báo là đã đọc!');
+}
 
     public function delete($id)
     {
@@ -59,74 +72,95 @@ class Index extends Component
         $this->filterStatus = '';
     }
 
-    public function showNotification($id)
-    {
-        $this->selectedNotification = Notification::with(['classroom'])
-            ->where(function ($query) {
-                $query->where('user_id', auth()->id())
-                    ->orWhereNull('user_id');
-            })
-            ->findOrFail($id);
-    }
+public function showNotification($id)
+{
+    $student = auth()->user()->student;
+
+    $classroomIds = $student->classrooms->pluck('id');
+
+    $this->selectedNotification = Notification::with(['classroom'])
+        ->where(function ($query) use ($classroomIds) {
+            $query->where('user_id', auth()->id())
+                ->orWhereNull('user_id')
+                ->orWhereIn('class_id', $classroomIds);
+        })
+        ->findOrFail($id);
+}
 
     public function closeNotification()
     {
         $this->selectedNotification = null;
     }
 
-    public function getNotificationsProperty()
-    {
-        $query = Notification::with(['classroom'])
-            ->where(function ($query) {
-                $query->where('user_id', auth()->id())
-                    ->orWhereNull('user_id');
-            })
-            // Chỉ hiển thị thông báo đã đến lịch gửi (scheduled_at <= now hoặc null)
-            ->where(function ($query) {
-                $query->whereNull('scheduled_at')
-                    ->orWhere('scheduled_at', '<=', now());
-            })
-            // Chỉ hiển thị thông báo còn hạn (expires_at > now hoặc null)
-            ->where(function ($query) {
-                $query->whereNull('expires_at')
-                    ->orWhere('expires_at', '>', now());
-            })
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('title', 'like', '%'.$this->search.'%')
-                        ->orWhere('message', 'like', '%'.$this->search.'%');
-                });
-            })
-            ->when($this->filterType, function ($query) {
-                $query->where('type', $this->filterType);
-            })
-            ->when($this->filterStatus !== '', function ($query) {
-                $query->where('is_read', $this->filterStatus === 'read');
-            })
+public function getNotificationsProperty()
+{
+    $student = auth()->user()->student;
 
-            ->orderBy('created_at', 'desc');
+    $classroomIds = $student->classrooms->pluck('id');
 
-        return $query->paginate(10);
-    }
-
-    public function getUnreadCountProperty()
-    {
-        return Notification::where(function ($query) {
+    $query = Notification::with(['classroom'])
+        ->where(function ($query) use ($classroomIds) {
             $query->where('user_id', auth()->id())
-                ->orWhereNull('user_id');
+                ->orWhereNull('user_id')
+                ->orWhereIn('class_id', $classroomIds);
         })
-            // Chỉ đếm thông báo đã đến lịch gửi
-            ->where(function ($query) {
-                $query->whereNull('scheduled_at')
-                    ->orWhere('scheduled_at', '<=', now());
-            })
-            // Chỉ đếm thông báo còn hạn
-            ->where(function ($query) {
-                $query->whereNull('expires_at')
-                    ->orWhere('expires_at', '>', now());
-            })
-            ->where('is_read', false)->count();
-    }
+
+        // Chỉ hiển thị thông báo đã đến lịch gửi
+        ->where(function ($query) {
+            $query->whereNull('scheduled_at')
+                ->orWhere('scheduled_at', '<=', now());
+        })
+
+        // Chỉ hiển thị thông báo còn hạn
+        ->where(function ($query) {
+            $query->whereNull('expires_at')
+                ->orWhere('expires_at', '>', now());
+        })
+
+        ->when($this->search, function ($query) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('message', 'like', '%'.$this->search.'%');
+            });
+        })
+
+        ->when($this->filterType, function ($query) {
+            $query->where('type', $this->filterType);
+        })
+
+        ->when($this->filterStatus !== '', function ($query) {
+            $query->where('is_read', $this->filterStatus === 'read');
+        })
+
+        ->orderBy('created_at', 'desc');
+
+    return $query->paginate(10);
+}
+
+public function getUnreadCountProperty()
+{
+    $student = auth()->user()->student;
+
+    $classroomIds = $student->classrooms->pluck('id');
+
+    return Notification::where(function ($query) use ($classroomIds) {
+        $query->where('user_id', auth()->id())
+            ->orWhereNull('user_id')
+            ->orWhereIn('class_id', $classroomIds);
+    })
+        // Chỉ đếm thông báo đã đến lịch gửi
+        ->where(function ($query) {
+            $query->whereNull('scheduled_at')
+                ->orWhere('scheduled_at', '<=', now());
+        })
+        // Chỉ đếm thông báo còn hạn
+        ->where(function ($query) {
+            $query->whereNull('expires_at')
+                ->orWhere('expires_at', '>', now());
+        })
+        ->where('is_read', false)
+        ->count();
+}
 
     public function render()
     {

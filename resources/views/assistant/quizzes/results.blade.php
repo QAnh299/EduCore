@@ -169,17 +169,17 @@
                                         </td>
                                         <td>
                                             @if ($result->duration)
-                                                <div class="fw-medium">{{ $result->duration }} {{ __('general.minutes') }}</div>
+                                                <div class="fw-medium">{{ $result->getDurationString() }}</div>
                                             @else
                                                 <span class="text-muted">{{ __('general.not_available') }}</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($result->completed_at)
-                                                <div class="fw-medium">{{ $result->completed_at->format('d/m/Y') }}
+                                            @if ($result->submitted_at)
+                                                <div class="fw-medium">{{ $result->submitted_at->format('d/m/Y') }}
                                                 </div>
                                                 <small
-                                                    class="text-muted">{{ $result->completed_at->format('H:i') }}</small>
+                                                    class="text-muted">{{ $result->submitted_at->format('H:i') }}</small>
                                             @else
                                                 <span class="text-muted">{{ __('general.not_completed') }}</span>
                                             @endif

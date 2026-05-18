@@ -78,12 +78,15 @@ class Results extends Component
             ->orderBy('score', 'desc')
             ->paginate(15);
 
-        // Thống kê
-        $totalResults = $results->total();
-        $avgScore = $results->avg('score') ?? 0;
-        $maxScore = $results->max('score') ?? 0;
-        $minScore = $results->min('score') ?? 0;
-        $passRate = $totalResults > 0 ? ($results->where('score', '>=', $this->quiz->getMaxScore() * 0.5)->count() / $totalResults) * 100 : 0;
+        // Thống kê - tính trên toàn bộ kết quả (không phụ thuộc vào filter/pagination)
+        $allResults = QuizResult::where('quiz_id', $this->quiz->id);
+        $totalResults = $allResults->count();
+        $avgScore = $allResults->avg('score') ?? 0;
+        $maxScore = $allResults->max('score') ?? 0;
+        $minScore = $allResults->min('score') ?? 0;
+        $passRate = $totalResults > 0
+            ? ($allResults->where('score', '>=', $this->quiz->getMaxScore() * 0.5)->count() / $totalResults) * 100
+            : 0;
 
         return view('assistant.quizzes.results', [
             'results' => $results,
