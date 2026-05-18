@@ -56,7 +56,7 @@
                                     <th>Tiêu đề</th>
                                     <th>Lớp học</th>
                                     <th>Mô tả</th>
-                                    <th>Tệp/Video</th>
+                                    <th>Video</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -75,10 +75,7 @@
                                             <small class="text-muted">{!! Str::limit(strip_tags($lesson->description), 50) !!}</small>
                                         </td>
                                         <td>
-                                            @if ($lesson->attachment)
-                                                <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                                    class="badge bg-success">Tệp</a>
-                                            @endif
+                                        
                                             @if ($lesson->video)
                                                 <a href="{{ $lesson->video }}" target="_blank"
                                                     class="badge bg-warning text-dark">Video</a>
