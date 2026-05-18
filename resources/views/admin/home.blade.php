@@ -90,7 +90,6 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-
                         <!-- Quản lý người dùng (Admin) -->
                         @if(auth()->user()->role === 'admin')
                         <div class="col-6 col-md-3 text-center mb-4">
@@ -107,30 +106,33 @@
                         <!-- Quản lý lớp học -->
                         @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-graduation-cap" style="font-size:2.5rem; color:#fd7e14;"></i>
                                 </div>
                                 <div>@lang('general.manage_classrooms')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         @endif
 
                         <!-- Lịch học -->
                         @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
+                            @if(auth()->user()->role === 'boss')
                             <a href="{{ route('schedules.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-calendar-alt" style="font-size:2.5rem; color:#6f42c1;"></i>
                                 </div>
                                 <div>@lang('general.schedules')</div>
-                            </a>
+                            </a>@endif
                         </div>
                         @endif
 
                         <!-- Quản lý học viên -->
                         @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
+                            
                             <a href="{{ route('students.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-user-graduate" style="font-size:2.5rem; color:#20c997;"></i>
@@ -141,7 +143,6 @@
                         <!-- Thống kê - báo cáo -->
                          @if(auth()->user()->role === 'boss')
                         <div class="col-6 col-md-3 text-center mb-4">
-                            
                             <a href="{{ route('reports.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-chart-bar" style="font-size:2.5rem; color:#ff9800;"></i>
@@ -192,8 +193,7 @@
 
                         <!-- Chat -->
                         @if(auth()->user()->role === 'boss')
-                        <div class="col-6 col-md-3 text-center mb-4">
-                            
+                            <div class="col-6 col-md-3 text-center mb-4">
                             <a href="{{ route('chat.index') }}" class="text-decoration-none text-dark">
                                 <div class="mb-2">
                                     <i class="fas fa-comments" style="font-size:2.5rem; color:#17a2b8;"></i>

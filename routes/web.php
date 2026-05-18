@@ -54,6 +54,8 @@ Route::post('/logout', function (Request $request) {
 
 Route::middleware(['auth', 'role:admin,teacher,student,assistant,boss'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
+    
+    //Route::get('/dashboard', function () {return 'DASHBOARD OK';});
 });
 
 
@@ -78,6 +80,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 // Boss routes
+
 Route::middleware(['auth', 'role:boss'])->group(function () {
     Route::get('/test123', function () {
     return 'HELLO';

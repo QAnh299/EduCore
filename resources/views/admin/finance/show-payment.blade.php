@@ -135,7 +135,7 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-primary">
                         <tr>
-                            <th class="text-center">#</th>
+                            <!--<th class="text-center">#</th>-->
                             <th><i class="bi bi-building mr-1"></i>{{ __('general.classroom') }}</th>
                             <th><i class="bi bi-cash mr-1"></i>{{ __('general.amount') }}</th>
                             <th><i class="bi bi-tag mr-1"></i>{{ __('views.type') }}</th>
@@ -148,7 +148,7 @@
                     <tbody>
                         @forelse($payments as $payment)
                             <tr class="align-middle">
-                                <td class="text-center fw-bold text-primary">{{ $payment->id }}</td>
+                                <!--<td class="text-center fw-bold text-primary">{{ $payment->id }}</td>-->
                                 <td>
                                     <div class="fw-semibold">{{ $payment->classroom->name ?? '-' }}</div>
                                 </td>
@@ -230,6 +230,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
+                                        <!--nút sửa-->
                                         <button class="btn btn-primary" data-toggle="modal"
                                             data-target="#editStatusModal{{ $payment->id }}">{{ __('general.edit') }}</button>
                                         <button class="btn btn-outline-danger" data-toggle="modal"
@@ -259,10 +260,16 @@
                                             </p>
                                             <p>{{ __('general.classroom') }}: <strong>{{ $payment->classroom->name ?? '-' }}</strong></p>
                                             <p>{{ __('general.notes') }}: <strong>{{ $payment->note ?? '-' }}</strong></p>
+                                            <div class="form-group mt-3">
+                                                <label>{{ __('views.payment_date') }}</label>
+
+                                                 <input type="datetime-local" class="form-control"
+                                                     wire:model.defer="paidAt.{{ $payment->id }}">
+                                             </div>
 
                                             <div class="form-group">
                                                 <label>{{ __('views.choose_new_status') }}:</label>
-                                                <div class="mt-2">
+                                                <!--<div class="mt-2">
                                                     <button type="button" class="btn btn-success btn-block mb-2"
                                                         data-dismiss="modal"
                                                         wire:click="updateStatus({{ $payment->id }}, 'paid')">
@@ -278,10 +285,19 @@
                                                         wire:click="updateStatus({{ $payment->id }}, 'unpaid')">
                                                         <i class="fas fa-times-circle"></i> {{ __('views.unpaid') }}
                                                     </button>
-                                                </div>
+                                                </div>-->
+                                                <!--Thay thế bằng select để chọn trạng thái mới-->
+                                                <select class="form-control" wire:model.live="editStatus.{{ $payment->id }}">
+                                                    <option value="paid">{{ __('views.paid_full') }}</option>
+                                                    <option value="partial">{{ __('views.partial') }}</option>
+                                                    <option value="unpaid">{{ __('views.unpaid') }}</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"
+                                                wire:click="updateStatus({{ $payment->id }})">
+                                                <i class="bi bi-check-circle mr-1"></i>{{ __('views.save_changes') }}</button>
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">{{ __('general.close') }}</button>
                                         </div>
@@ -342,5 +358,16 @@
             background: linear-gradient(135deg, #0dcaf0 0%, #6f42c1 100%) !important;
         }
     </style>
+<script>
+    window.addEventListener('close-modal', () => {
 
+        $('.modal').modal('hide');
+
+        $('.modal-backdrop').remove();
+
+        $('body').removeClass('modal-open');
+
+        $('body').css('padding-right', '');
+    });
+</script>
 </x-layouts.dash-admin>

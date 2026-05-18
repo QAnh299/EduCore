@@ -57,6 +57,10 @@
                                     <option value="">{{ __('general.choose_role') }}</option>
                                     <option value="admin">{{ __('general.administrator') }}</option>
                                     <option value="teacher">{{ __('general.instructor') }}</option>
+<<<<<<< Updated upstream
+=======
+                                    <option value="student">{{ __('general.learner') }}</option>
+>>>>>>> Stashed changes
                                     <option value="boss">Quản lý</option>
                                     <option value="assistant">Trợ giảng</option>
                                 </select>

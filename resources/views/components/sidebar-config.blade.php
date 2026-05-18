@@ -1,4 +1,5 @@
 @php
+
     // Cấu hình menu mặc định cho hệ thống EduCorem
     // $role = auth()->user()->role ?? 'guest';
 
@@ -85,7 +86,7 @@
             'icon'   => 'fas fa-comments',
             'visible'=> $role === 'boss',
         ],
-    
+        
     ];
 @endphp
 

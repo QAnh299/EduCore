@@ -41,16 +41,26 @@ class ShowPayment extends Component
         'newStatus' => 'nullable|string',
         'newPaidAt' => 'nullable|date',
     ];
-
+    //THÊM MỚI  
+    public $editStatus = [];
+    public $paidAt = [];
     public function mount(User $user)
     {
         $this->user = $user;
         $this->loadPayments();
+    
+        foreach ($this->payments as $payment) {
+        $this->editStatus[$payment->id] = $payment->status;
+        $this->paidAt[$payment->id] =
+            $payment->paid_at
+                ? $payment->paid_at->format('Y-m-d\TH:i')
+                : null;
+    }
     }
 
     public function loadPayments()
     {
-        $this->payments = Payment::where('user_id', $this->user->id)->orderByDesc('created_at')->get();
+        $this->payments = Payment::where('user_id', $this->user->id)->orderByDesc('paid_at')->get();
     }
 
     public function uploadProof($paymentId)
@@ -65,13 +75,20 @@ class ShowPayment extends Component
         session()->flash('success', 'Tải lên minh chứng thành công!');
     }
 
-    public function updateStatus($paymentId, $status)
+    public function updateStatus($paymentId)
     {
         $payment = Payment::findOrFail($paymentId);
-        $payment->status = $status;
+        //$payment->status = $status;
+        $payment->status = $this->editStatus[$paymentId];
+        // cập nhật ngày thanh toán
+        //if (!empty($this->paidAt[$paymentId])) {
+         //$payment->paid_at = $this->paidAt[$paymentId];
+        //}
+        $payment->paid_at = $this->paidAt[$paymentId];
         $payment->save();
-        $this->loadPayments();
+        //$this->loadPayments();
         session()->flash('success', 'Cập nhật trạng thái thành công!');
+        $this->dispatch('close-modal');
     }
 
     public function deletePayment($paymentId)
