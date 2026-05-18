@@ -91,7 +91,7 @@ class ShowPayment extends Component
         $this->paidAt[$paymentId]
         ?? $payment->paid_at;
         $payment->save();
-        //$this->loadPayments();
+        $this->loadPayments();
         session()->flash('success', 'Cập nhật trạng thái thành công!');
         $this->dispatch('close-modal');
     }

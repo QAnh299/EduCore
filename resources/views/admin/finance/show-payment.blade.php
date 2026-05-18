@@ -147,7 +147,7 @@
                     </thead>
                     <tbody>
                         @forelse($payments as $payment)
-                            <tr class="align-middle">
+                            <tr class="align-middle" wire:key="payment-{{ $payment->id }}">
                                 <!--<td class="text-center fw-bold text-primary">{{ $payment->id }}</td>-->
                                 <td>
                                     <div class="fw-semibold">{{ $payment->classroom->name ?? '-' }}</div>
@@ -287,7 +287,7 @@
                                                     </button>
                                                 </div>-->
                                                 <!--Thay thế bằng select để chọn trạng thái mới-->
-                                                <select class="form-control" wire:model.live="editStatus.{{ $payment->id }}">
+                                                <select class="form-control" wire:model.defer="editStatus.{{ $payment->id }}">
                                                     <option value="paid">{{ __('views.paid_full') }}</option>
                                                     <option value="partial">{{ __('views.partial') }}</option>
                                                     <option value="unpaid">{{ __('views.unpaid') }}</option>
