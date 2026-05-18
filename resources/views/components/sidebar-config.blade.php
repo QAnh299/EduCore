@@ -3,6 +3,7 @@
     // $role = auth()->user()->role ?? 'guest';
 
     // Helper tránh lỗi route không tồn tại
+    // Cấu hình menu mặc định cho hệ thống 
     $role = auth()->user()->role;
 
     // helper tránh lỗi route

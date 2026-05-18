@@ -49,7 +49,7 @@
     <footer class="main-footer text-center">
         <strong>{{ __('views.copyright') }}</strong>
     </footer>
+
+   <!-- @livewireScripts-->
 </div>
 <!-- ./wrapper -->
-
-@livewireScripts

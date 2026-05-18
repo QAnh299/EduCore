@@ -80,7 +80,6 @@
                                 <th>{{ __('general.contact_information') }}</th>
                                 <th>{{ __('general.enrolled_classes') }}</th>
                                 <th class="text-center">{{ __('general.status') }}</th>
-                                <th class="text-center">{{ __('general.progress') }}</th>
                                 <th class="text-end">{{ __('general.actions') }}</th>
                             </tr>
                         </thead>
