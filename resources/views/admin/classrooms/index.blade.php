@@ -70,7 +70,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-2">
+                    <!--<div class="row mt-2">
                         <div class="col-md-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" wire:model.live="showTrashed"
@@ -89,7 +89,7 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
 
