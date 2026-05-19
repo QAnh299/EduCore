@@ -67,7 +67,7 @@ class Profile extends Component
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            return view('admin.profile')->layout('components.layouts.app');
+            return view('profile')->layout('components.layouts.app');
         }
 
         if ($user->role === 'teacher') {
